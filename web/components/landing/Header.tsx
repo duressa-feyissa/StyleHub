@@ -85,7 +85,7 @@ const Header = () => {
             currentImageIndex === 1
               ? "right-24 bottom-[620px]"
               : currentImageIndex === 2
-              ? "left-5 bottom-[600px]"
+              ? "left-5 bottom-[605px]"
               : "right-10 bottom-[600px]"
           } relative transition-all duration-500 ease-in-out`}
         >
