@@ -11,8 +11,6 @@ namespace Application.Features.Product.Handlers.Queries
     {
 
         private readonly IMapper _mapper;
-
-
         private readonly IUnitOfWork _unitOfWork;
 
         public GetProductByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)

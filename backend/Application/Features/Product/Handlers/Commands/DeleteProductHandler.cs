@@ -30,20 +30,20 @@ namespace Application.Features.Product.Handlers
                 throw new BadRequestException("Invalid Product Id");
             }
 
-            var product = await _unitOfWork.ProductRepository.GetById(request.Id);
+            var Product = await _unitOfWork.ProductRepository.GetById(request.Id);
 
-            if (product == null)
+            if (Product == null)
             {
-                throw new  NotFoundException("Product Not Found");
+                throw new NotFoundException("Product Not Found");
             }
 
-            await _unitOfWork.ProductRepository.Delete(product);
+            await _unitOfWork.ProductRepository.Delete(Product);
 
             return new BaseResponse<ProductResponseDTO>
             {
                 Message = "Product Deleted Successfully",
                 Success = true,
-                Data = _mapper.Map<ProductResponseDTO>(product)
+                Data = _mapper.Map<ProductResponseDTO>(Product)
             };
 
         }

@@ -22,13 +22,25 @@ namespace Application.Features.Product.Handlers.Queries
 
         public async Task<List<ProductResponseDTO>> Handle(GetAllProduct request, CancellationToken cancellationToken)
         {
-            var products = await _unitOfWork.ProductRepository.GetAll();
-            if (products == null)
-            {
-                throw new NotFoundException("No products found");
-            }
+            var products = await _unitOfWork.ProductRepository.GetAll(
+                search: request.Search,
+                brandId: request.BrandId,
+                colorIds: request.ColorIds,
+                materialIds: request.MaterialIds,
+                sizeIds: request.SizeIds,
+                isNegotiable: request.IsNegotiable,
+                minPrice: request.MinPrice,
+                maxPrice: request.MaxPrice,
+                minQuantity: request.MinQuantity,
+                maxQuantity: request.MaxQuantity,
+                target: request.Target,
+                condition: request.Condition,
+                skip: request.Skip,
+                limit: request.Limit
+            );
             var productResponse = _mapper.Map<List<ProductResponseDTO>>(products);
             return productResponse;
         }
+
     }
 }
