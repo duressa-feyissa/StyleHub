@@ -1,17 +1,22 @@
+using System;
 using System.Net;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 using Application.Exceptions;
 using Application.Response;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace WebApi.Middlewares
 {
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+
         public ExceptionMiddleware(RequestDelegate next)
         {
-            _next = next;
+            _next = next ?? throw new ArgumentNullException(nameof(next));
         }
+
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
@@ -23,23 +28,20 @@ namespace WebApi.Middlewares
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
+
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
-
-            string result = JsonConvert.SerializeObject(
-                new BaseResponse<string>()
-                {
-                    Message = exception.Message,
-                });
-
-
+            HttpStatusCode statusCode;
+            string result;
 
             switch (exception)
             {
                 case BadRequestException badRequestException:
                     statusCode = HttpStatusCode.BadRequest;
+                    result = JsonConvert.SerializeObject(
+                        new BaseResponse<string> { Message = exception.Message }
+                    );
                     break;
                 case ValidationErrorException validationException:
                     statusCode = HttpStatusCode.BadRequest;
@@ -47,8 +49,18 @@ namespace WebApi.Middlewares
                     break;
                 case NotFoundException notFoundException:
                     statusCode = HttpStatusCode.NotFound;
+                    result = JsonConvert.SerializeObject(
+                        new BaseResponse<string> { Message = exception.Message }
+                    );
                     break;
                 default:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    result = JsonConvert.SerializeObject(
+                        new BaseResponse<string>
+                        {
+                            Message = "An error occurred while processing your request."
+                        }
+                    );
                     break;
             }
 
