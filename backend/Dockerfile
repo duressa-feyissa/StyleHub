@@ -1,5 +1,6 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /App
+EXPOSE 8080 8081
 
 COPY . ./
 RUN dotnet restore
@@ -10,7 +11,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 
 COPY --from=build-env /App/out .
-
-EXPOSE 80
 
 ENTRYPOINT ["dotnet", "backend.dll"]
