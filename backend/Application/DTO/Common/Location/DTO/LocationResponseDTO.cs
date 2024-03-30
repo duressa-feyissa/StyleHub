@@ -9,7 +9,5 @@ namespace Application.DTO.Common.Location.DTO
 
         public required double Longitude { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }
