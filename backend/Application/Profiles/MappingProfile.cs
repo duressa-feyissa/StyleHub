@@ -60,6 +60,9 @@ namespace Application.Profiles
             CreateMap<CategoryResponseDTO, Category>().ReverseMap();
             CreateMap<CreateCategoryDTO, Category>().ReverseMap();
             CreateMap<UpdateCategoryDTO, Category>().ReverseMap();
+            CreateMap<RoleResponseDTO, Role>().ReverseMap();
+            CreateMap<CreateRoleDTO, Role>().ReverseMap();
+            CreateMap<UpdateRoleDTO, Role>().ReverseMap();
         }
     }
 }
