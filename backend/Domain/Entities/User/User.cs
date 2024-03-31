@@ -17,12 +17,8 @@ namespace Domain.Entities.User
 
         [Required]
         public required string Password { get; set; }
-
-        [Required]
-        public required string latitude { get; set; }
-
-        [Required]
-        public required string longitude { get; set; }
+        public string? latitude { get; set; }
+        public string? longitude { get; set; }
         public string? ProfilePicture { get; set; }
         public string? Email { get; set; }
         public DateTime? DateOfBirth { get; set; }
