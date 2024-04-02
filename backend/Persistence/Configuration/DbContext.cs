@@ -1,5 +1,6 @@
 using Domain.Entities.Common;
 using Domain.Entities.Product;
+using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Configuration
@@ -32,6 +33,8 @@ namespace Persistence.Configuration
         public virtual DbSet<Category> Categories { get; set; }
 
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,48 +51,10 @@ namespace Persistence.Configuration
             modelBuilder.Entity<Location>().HasKey(l => l.Id);
             modelBuilder.Entity<Category>().HasKey(c => c.Id);
             modelBuilder.Entity<ProductCategory>().HasKey(pc => pc.Id);
-
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(StyleHubDBContext).Assembly);
-
             base.OnModelCreating(modelBuilder);
-        }
-
-        private override async Task<int> SaveChangesAsync(
-            CancellationToken cancellationToken = default
-        )
-        {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedAt = DateTime.Now;
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.UpdatedAt = DateTime.Now;
-                        break;
-                }
-            }
-
-            return await base.SaveChangesAsync(cancellationToken);
-        }
-
-        private override int SaveChanges()
-        {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedAt = DateTime.Now;
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.UpdatedAt = DateTime.Now;
-                        break;
-                }
-            }
-
-            return base.SaveChanges();
         }
     }
 }

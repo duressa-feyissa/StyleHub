@@ -8,9 +8,9 @@ namespace Persistence.Configuration
         public StyleHubDBContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                 .SetBasePath(Directory.GetCurrentDirectory())
-                 .AddJsonFile("appsettings.json")
-                 .Build();
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<StyleHubDBContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");

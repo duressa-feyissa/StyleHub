@@ -1,10 +1,12 @@
 using Application.Contracts.Persistance.Repositories;
 using Application.Contracts.Persistence.Repositories.Common;
 using Application.Contracts.Persistence.Repositories.Product;
+using Application.Contracts.Persistence.Repositories.User;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories;
 using Persistence.Repositories.Common;
 using Persistence.Repositories.Product;
+using Persistence.Repositories.User;
 
 namespace Persistence.Configuration
 {
@@ -12,13 +14,25 @@ namespace Persistence.Configuration
     {
         public static IServiceCollection ConfigurePersistenceService(
             this IServiceCollection services,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IHostEnvironment hostEnvironment
         )
         {
-            services.AddDbContext<StyleHubDBContext>(options =>
+            if (hostEnvironment.IsDevelopment())
             {
-                options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!);
-            });
+                services.AddDbContext<StyleHubDBContext>(options =>
+                {
+                    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!);
+                });
+            }
+            else
+            {
+                var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+                services.AddDbContext<StyleHubDBContext>(options =>
+                {
+                    options.UseMySQL(connectionString!);
+                });
+            }
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -34,6 +48,8 @@ namespace Persistence.Configuration
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
             return services;
         }

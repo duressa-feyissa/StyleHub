@@ -1,13 +1,13 @@
 using Application.Contracts.Persistence.Repositories.Common;
-using Domain.Entities.Product;
 
 namespace Application.Contracts.Persistence.Repositories.User
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<Domain.Entities.User.User>
     {
-        Task<IReadOnlyList<User>> GetAll();
-        Task<User> GetById(string id);
-        Task<User> GetByPhoneNumber(string phoneNumber);
-        Task<User> GetByEmail(string email);
+        Task<IReadOnlyList<Domain.Entities.User.User>> GetAll();
+        Task<Domain.Entities.User.User> GetById(string id);
+        Task<Domain.Entities.User.User> GetByPhoneNumber(string phoneNumber);
+        Task<Domain.Entities.User.User> GetByEmail(string email);
+        Task<bool> IsPhoneNumberRegistered(string phoneNumber);
     }
 }

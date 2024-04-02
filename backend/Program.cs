@@ -1,15 +1,15 @@
 ﻿using Application;
-using Infrastructure;
+using Infrastructure.Configuration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Persistence.Configuration;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Console.WriteLine("Hello, World!");
-
-builder.Services.ConfigurePersistenceService(builder.Configuration);
-builder.Services.ConfigureInfrastructureService(builder.Configuration);
+builder.Services.ConfigurePersistenceService(builder.Configuration, builder.Environment);
+builder.Services.ConfigureInfrastructureService(builder.Configuration, builder.Environment);
 builder.Services.ConfigureApplicationServices();
 builder.Services.AddCors(opt =>
 {
@@ -21,32 +21,52 @@ builder.Services.AddCors(opt =>
         }
     );
 });
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "StyleHub.WebApi", Version = "v1" });
-});
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Description = "JWT Authorization header using the Bearer scheme.",
+            Type = SecuritySchemeType.Http,
+        }
+    );
+    options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement()
+        {
+            {
+                new OpenApiSecurityScheme()
+                {
+                    Reference = new OpenApiReference()
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                new List<string>()
+            }
+        }
+    );
+});
 var app = builder.Build();
 
-// Configure Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "StyleHub.WebApi v1");
 });
-
-// Middleware
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 app.UseCors("AllowAnyOrigin");
-
-// Map controllers
 app.MapControllers();
-
 app.Run();

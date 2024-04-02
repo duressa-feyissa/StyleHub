@@ -53,6 +53,12 @@ namespace WebApi.Middlewares
                         new BaseResponse<string> { Message = exception.Message }
                     );
                     break;
+                case UnauthorizedAccessException unauthorizedException:
+                    statusCode = HttpStatusCode.Unauthorized;
+                    result = JsonConvert.SerializeObject(
+                        new BaseResponse<string> { Message = "Unauthorized access" }
+                    );
+                    break;
                 default:
                     statusCode = HttpStatusCode.InternalServerError;
                     result = JsonConvert.SerializeObject(

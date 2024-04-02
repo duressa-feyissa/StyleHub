@@ -1,4 +1,4 @@
-namespace Application.DTO.Authentication
+namespace Application.DTO.User.AuthenticationDTO.DTO
 {
     public class VerifyPhoneDTO
     {

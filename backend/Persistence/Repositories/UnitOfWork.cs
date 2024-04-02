@@ -1,9 +1,11 @@
 using Application.Contracts.Persistance.Repositories;
 using Application.Contracts.Persistence.Repositories.Common;
 using Application.Contracts.Persistence.Repositories.Product;
+using Application.Contracts.Persistence.Repositories.User;
 using Persistence.Configuration;
 using Persistence.Repositories.Common;
 using Persistence.Repositories.Product;
+using Persistence.Repositories.User;
 
 namespace Persistence.Repositories
 {
@@ -11,28 +13,19 @@ namespace Persistence.Repositories
     {
         private readonly StyleHubDBContext _context;
         private IProductRepository _productRepository;
-
         private IColorRepository _colorRepository;
-
         private ISizeRepository _sizeRepository;
-
         private IBrandRepository _brandRepository;
-
         private IMaterialRepository _materialRepository;
-
         private IProductColorRepository _productColorRepository;
-
         private IProductSizeRepository _productSizeRepository;
-
         private IProductMaterialRepository _productMaterialRepository;
-
         private IProductImageRepository _productImageRepository;
-
         private ILocationRepository _locationRepository;
-
         private ICategoryRepository _categoryRepository;
-
         private IProductCategoryRepository _productCategoryRepository;
+        private IRoleRepository _roleRepository;
+        private IUserRepository _userRepository;
 
         public UnitOfWork(
             StyleHubDBContext context,
@@ -47,7 +40,9 @@ namespace Persistence.Repositories
             IProductImageRepository productImageRepository,
             ILocationRepository locationRepository,
             ICategoryRepository categoryRepository,
-            IProductCategoryRepository productCategoryRepository
+            IProductCategoryRepository productCategoryRepository,
+            IRoleRepository roleRepository,
+            IUserRepository userRepository
         )
         {
             _context = context;
@@ -63,6 +58,8 @@ namespace Persistence.Repositories
             _locationRepository = locationRepository;
             _categoryRepository = categoryRepository;
             _productCategoryRepository = productCategoryRepository;
+            _roleRepository = roleRepository;
+            _userRepository = userRepository;
         }
 
         public IProductRepository ProductRepository
@@ -182,6 +179,26 @@ namespace Persistence.Repositories
                 if (_productCategoryRepository == null)
                     _productCategoryRepository = new ProductCategoryRepository(_context);
                 return _productCategoryRepository;
+            }
+        }
+
+        public IRoleRepository RoleRepository
+        {
+            get
+            {
+                if (_roleRepository == null)
+                    _roleRepository = new RoleRepository(_context);
+                return _roleRepository;
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (_userRepository == null)
+                    _userRepository = new UserRepository(_context);
+                return _userRepository;
             }
         }
 

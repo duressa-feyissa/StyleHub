@@ -14,13 +14,17 @@ namespace Infrastructure.Repository
             _cloudinary = cloudinary;
         }
 
-        public async Task<string> Upload(string base64Image, string publicId)
+        public async Task<string> Upload(
+            string base64Image,
+            string publicId,
+            bool backgroundRemoval = false
+        )
         {
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(@$"{base64Image}"),
                 PublicId = publicId,
-                //BackgroundRemoval = "cloudinary_ai",
+                BackgroundRemoval = backgroundRemoval ? "cloudinary_ai" : null,
             };
 
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
@@ -68,14 +72,17 @@ namespace Infrastructure.Repository
             }
         }
 
-        public async Task<string> Update(string base64Image, string publicId)
+        public async Task<string> Update(
+            string base64Image,
+            string publicId,
+            bool backgroundRemoval = false
+        )
         {
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(@$"{base64Image}"),
                 PublicId = publicId,
-                Overwrite = true,
-                //BackgroundRemoval = "cloudinary_ai",
+                BackgroundRemoval = backgroundRemoval ? "cloudinary_ai" : null,
             };
 
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);

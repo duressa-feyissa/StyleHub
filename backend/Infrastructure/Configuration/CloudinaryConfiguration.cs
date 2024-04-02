@@ -1,6 +1,6 @@
 using CloudinaryDotNet;
 
-namespace Infrastructure
+namespace Infrastructure.Configuration
 {
     public static class CloudinaryConfiguration
     {
@@ -12,9 +12,9 @@ namespace Infrastructure
 
         private static Account GetCloudinaryAccount(IConfiguration configuration)
         {
-            var cloudName = "dtghsmx0s"; //configuration["Cloudinary:CloudName"];
-            var apiKey = "155646927271619"; // configuration["Cloudinary:APIKey"];
-            var apiSecret = "kYyrS0ssz2NlVjQw0i17Z5ZnnfY"; // configuration["Cloudinary:APISecret"];
+            var cloudName = configuration.GetSection("Cloudinary:CloudName").Value;
+            var apiKey = configuration.GetSection("Cloudinary:APIKey").Value;
+            var apiSecret = configuration.GetSection("Cloudinary:APISecret").Value;
 
             if (
                 string.IsNullOrEmpty(cloudName)

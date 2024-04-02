@@ -6,17 +6,10 @@ namespace Domain.Entities.User
 {
     public class User : BaseEntity
     {
-        [Required]
-        public required string FirstName { get; set; }
-
-        [Required]
-        public required string LastName { get; set; }
-
-        [Required]
-        public required string PhoneNumber { get; set; }
-
-        [Required]
-        public required string Password { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Password { get; set; }
         public string? latitude { get; set; }
         public string? longitude { get; set; }
         public string? ProfilePicture { get; set; }
@@ -32,17 +25,14 @@ namespace Domain.Entities.User
         public string? productColorPreferences { get; set; }
         public bool IsPreferencesSet { get; set; } = false;
         public bool IsEmailVerified { get; set; } = false;
-        public bool IsVerified { get; set; } = false;
+        public bool IsPhoneNumberVerified { get; set; } = false;
         public bool IsProfileCompleted { get; set; } = false;
-        public string? VerificationCode { get; set; }
-        public string? VerificationCodeExpiration { get; set; }
+        public string? PhoneNumberVerificationCode { get; set; }
+        public DateTime? PhoneNumberVerificationCodeExpiration { get; set; }
         public string? ResetPasswordCode { get; set; }
         public string? ResetPasswordCodeExpiration { get; set; }
         public string? EmailVerificationCode { get; set; }
-        public string? EmailVerificationCodeExpiration { get; set; }
-        public string? RefreshToken { get; set; }
-        public string? AccessToken { get; set; }
-        public string? Token { get; set; }
+        public DateTime? EmailVerificationCodeExpiration { get; set; }
         public required Role Role { get; set; }
     }
 }
