@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Application.Common;
 using Application.Contracts.Infrastructure.Repositories;
@@ -16,26 +17,29 @@ namespace Infrastructure.Configuration
             IHostEnvironment hostEnvironment
         )
         {
-            EmailSettings emailSettings = new EmailSettings();
-            PhoneNumberOTPSettings phoneNumberOTPSettings = new PhoneNumberOTPSettings();
-            ApiSettings apiSetting = new ApiSettings();
-            JwtSettings jwtSettings = new JwtSettings();
-            CloudinarySettings cloudinarySettings = new CloudinarySettings();
-
+            var cloudinarySettings = new CloudinarySettings();
             if (hostEnvironment.IsDevelopment())
             {
                 services.Configure<EmailSettings>(options =>
                     configuration.GetSection("EmailSettings").Bind(options)
                 );
+
                 services.Configure<PhoneNumberOTPSettings>(options =>
                     configuration.GetSection("PhoneNumberOTPSettings").Bind(options)
                 );
+
                 services.Configure<ApiSettings>(options =>
                     configuration.GetSection("ApiSettings").Bind(options)
                 );
+
                 services.Configure<JwtSettings>(options =>
                     configuration.GetSection("JwtSettings").Bind(options)
                 );
+
+                services.Configure<CloudinarySettings>(options =>
+                    configuration.GetSection("CloudinarySettings").Bind(options)
+                );
+
                 cloudinarySettings.CloudName = configuration["CloudinarySettings:CloudName"];
                 cloudinarySettings.APIKey = configuration["CloudinarySettings:APIKey"];
                 cloudinarySettings.APISecret = configuration["CloudinarySettings:APISecret"];
@@ -67,31 +71,38 @@ namespace Infrastructure.Configuration
             }
             else
             {
-                emailSettings.SenderEmail = Environment.GetEnvironmentVariable("SenderEmail");
-                emailSettings.SenderPassword = Environment.GetEnvironmentVariable("SenderPassword");
-                emailSettings.DisplayName = Environment.GetEnvironmentVariable("DisplayName");
-                services.AddSingleton(emailSettings);
-                phoneNumberOTPSettings.AccountSid = Environment.GetEnvironmentVariable(
-                    "AccountSid"
-                );
-                phoneNumberOTPSettings.AuthToken = Environment.GetEnvironmentVariable("AuthToken");
-                phoneNumberOTPSettings.PhoneNumber = Environment.GetEnvironmentVariable(
-                    "PhoneNumber"
-                );
-                services.AddSingleton(phoneNumberOTPSettings);
+                services.Configure<EmailSettings>(options =>
+                {
+                    options.SenderEmail = Environment.GetEnvironmentVariable("SenderEmail");
+                    options.SenderPassword = Environment.GetEnvironmentVariable("SenderPassword");
+                    options.DisplayName = Environment.GetEnvironmentVariable("DisplayName");
+                });
 
-                apiSetting.SecretKey = Environment.GetEnvironmentVariable("SecretKey");
-                services.AddSingleton(apiSetting);
+                services.Configure<PhoneNumberOTPSettings>(options =>
+                {
+                    options.AccountSid = Environment.GetEnvironmentVariable("AccountSid");
+                    options.AuthToken = Environment.GetEnvironmentVariable("AuthToken");
+                    options.PhoneNumber = Environment.GetEnvironmentVariable("PhoneNumber");
+                });
 
-                jwtSettings.Key = Environment.GetEnvironmentVariable("JwtKey");
-                jwtSettings.Issuer = Environment.GetEnvironmentVariable("Issuer");
-                jwtSettings.Audience = Environment.GetEnvironmentVariable("Audience");
-                services.AddSingleton(jwtSettings);
+                services.Configure<ApiSettings>(options =>
+                {
+                    options.SecretKey = Environment.GetEnvironmentVariable("SecretKey");
+                });
 
-                cloudinarySettings.CloudName = Environment.GetEnvironmentVariable("CloudName");
-                cloudinarySettings.APIKey = Environment.GetEnvironmentVariable("APIKey");
-                cloudinarySettings.APISecret = Environment.GetEnvironmentVariable("APISecret");
-                services.AddSingleton(cloudinarySettings);
+                services.Configure<JwtSettings>(options =>
+                {
+                    options.Key = Environment.GetEnvironmentVariable("JwtKey");
+                    options.Issuer = Environment.GetEnvironmentVariable("Issuer");
+                    options.Audience = Environment.GetEnvironmentVariable("Audience");
+                });
+
+                services.Configure<CloudinarySettings>(options =>
+                {
+                    options.CloudName = Environment.GetEnvironmentVariable("CloudName");
+                    options.APIKey = Environment.GetEnvironmentVariable("APIKey");
+                    options.APISecret = Environment.GetEnvironmentVariable("APISecret");
+                });
 
                 services
                     .AddAuthentication(
@@ -110,14 +121,42 @@ namespace Infrastructure.Configuration
                             ValidateAudience = true,
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
-                            ValidIssuer = jwtSettings.Issuer,
-                            ValidAudience = jwtSettings.Audience,
+                            ValidIssuer = configuration["JwtSettings:Issuer"],
+                            ValidAudience = configuration["JwtSettings:Audience"],
                             IssuerSigningKey = new SymmetricSecurityKey(
-                                Encoding.UTF8.GetBytes(jwtSettings.Key ?? "")
+                                Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"] ?? "")
                             )
                         };
                     });
+
+                Console.WriteLine(
+                    "EmailSettings: " + Environment.GetEnvironmentVariable("SenderEmail")
+                );
+                Console.WriteLine(
+                    "PhoneNumberOTPSettings: " + Environment.GetEnvironmentVariable("AccountSid")
+                );
+                Console.WriteLine(
+                    "ApiSettings: " + Environment.GetEnvironmentVariable("SecretKey")
+                );
+                Console.WriteLine("JwtSettings: " + Environment.GetEnvironmentVariable("JwtKey"));
+                Console.WriteLine(
+                    "CloudinarySettings: " + Environment.GetEnvironmentVariable("CloudName")
+                );
+                Console.WriteLine(
+                    "CloudinarySettings: " + Environment.GetEnvironmentVariable("APIKey")
+                );
+                Console.WriteLine(
+                    "CloudinarySettings: " + Environment.GetEnvironmentVariable("APISecret")
+                );
+                Console.WriteLine("JwtSettings: " + Environment.GetEnvironmentVariable("Issuer"));
+                Console.WriteLine("JwtSettings: " + Environment.GetEnvironmentVariable("Audience"));
+                Console.WriteLine("JwtSettings: " + Environment.GetEnvironmentVariable("JwtKey"));
+                Console.WriteLine("SecretKey: " + Environment.GetEnvironmentVariable("SecretKey"));
+                cloudinarySettings.CloudName = Environment.GetEnvironmentVariable("CloudName");
+                cloudinarySettings.APIKey = Environment.GetEnvironmentVariable("APIKey");
+                cloudinarySettings.APISecret = Environment.GetEnvironmentVariable("APISecret");
             }
+
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddSingleton(CloudinaryConfiguration.Configure(cloudinarySettings));
