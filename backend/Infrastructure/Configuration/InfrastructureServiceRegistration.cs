@@ -104,6 +104,10 @@ namespace Infrastructure.Configuration
                     options.APISecret = Environment.GetEnvironmentVariable("APISecret");
                 });
 
+                var key = Encoding.ASCII.GetBytes(
+                    Environment.GetEnvironmentVariable("JwtKey") ?? ""
+                );
+
                 services
                     .AddAuthentication(
                         Microsoft
@@ -121,11 +125,9 @@ namespace Infrastructure.Configuration
                             ValidateAudience = true,
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
-                            ValidIssuer = configuration["JwtSettings:Issuer"],
-                            ValidAudience = configuration["JwtSettings:Audience"],
-                            IssuerSigningKey = new SymmetricSecurityKey(
-                                Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"] ?? "")
-                            )
+                            ValidIssuer = Environment.GetEnvironmentVariable("Issuer"),
+                            ValidAudience = Environment.GetEnvironmentVariable("Audience"),
+                            IssuerSigningKey = new SymmetricSecurityKey(key)
                         };
                     });
 
