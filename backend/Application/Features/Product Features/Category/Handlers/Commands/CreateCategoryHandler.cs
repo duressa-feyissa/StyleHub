@@ -15,17 +15,17 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+        private readonly IImageRepository _imageRepository;
 
         public CreateCategoryHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadRepository imageUploadRepository
+            IImageRepository imageRepository
         )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<BaseResponse<CategoryResponseDTO>> Handle(
@@ -41,7 +41,7 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
             }
 
             var Category = _mapper.Map<Domain.Entities.Product.Category>(request.Category);
-            Category.Image = await _imageUploadRepository.Upload(Category.Image, Category.Id);
+            Category.Image = await _imageRepository.Upload(Category.Image, Category.Id);
 
             await _unitOfWork.CategoryRepository.Add(Category);
 

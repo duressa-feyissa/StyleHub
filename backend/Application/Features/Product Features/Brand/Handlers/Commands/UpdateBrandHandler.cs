@@ -14,17 +14,17 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+        private readonly IImageRepository _imageRepository;
 
         public UpdateBrandHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadRepository imageUploadRepository
+            IImageRepository imageRepository
         )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<BaseResponse<BrandResponseDTO>> Handle(
@@ -49,7 +49,7 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
             }
 
             if (request?.Brand?.Logo != null)
-                existingBrand.Logo = await _imageUploadRepository.Update(
+                existingBrand.Logo = await _imageRepository.Update(
                     request.Brand.Logo,
                     existingBrand.Id
                 );

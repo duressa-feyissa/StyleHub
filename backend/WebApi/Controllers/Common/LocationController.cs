@@ -26,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<LocationResponseDTO>> fetchLocationById(string id)
         {
             var result = await _mediator.Send(new GetLocationById { Id = id });

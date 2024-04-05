@@ -15,19 +15,16 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
         : IRequestHandler<LoginUserRequest, BaseResponse<AuthenticationResponseDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IOtpService _otpService;
         private readonly IAuthenticationService _authenticationService;
 
         public LoginUserHandler(
             IUnitOfWork unitOfWork,
-            IMapper mapper,
             IOtpService otpService,
             IAuthenticationService authenticationService
         )
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _otpService = otpService;
             _authenticationService = authenticationService;
         }
@@ -49,18 +46,18 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
                 if (user == null)
                     throw new NotFoundException("User not found");
 
-                // if (!user.IsEmailVerified)
-                // {
-                //     user.EmailVerificationCode = await _otpService.SendVerificationEmailAsync(
-                //         user,
-                //         5
-                //     );
-                //     user.EmailVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
-                //     await _unitOfWork.UserRepository.Update(user);
-                //     throw new BadRequestException("Email not verified");
-                // }
+                if (user.IsEmailVerified == false)
+                {
+                    user.EmailVerificationCode = await _otpService.SendVerificationEmailAsync(
+                        user,
+                        5
+                    );
+                    user.EmailVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
+                    await _unitOfWork.UserRepository.Update(user);
+                    throw new BadRequestException("Email not verified");
+                }
 
-                var token = _authenticationService.Login(request.LoginRequest, user, false);
+                var token = _authenticationService.Login(request.LoginRequest, user, true);
 
                 return new BaseResponse<AuthenticationResponseDTO>
                 {
@@ -69,23 +66,23 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
                     Success = true
                 };
             }
-            else if (request.LoginRequest.PhoneNumber != null)
-            {
-                var user = await _unitOfWork.UserRepository.GetByPhoneNumber(
-                    request.LoginRequest.PhoneNumber
-                );
-                if (user == null)
-                    throw new NotFoundException("User not found");
+            // else if (request.LoginRequest.PhoneNumber != null)
+            // {
+            //     var user = await _unitOfWork.UserRepository.GetByPhoneNumber(
+            //         request.LoginRequest.PhoneNumber
+            //     );
+            //     if (user == null)
+            //         throw new NotFoundException("User not found");
 
-                var token = _authenticationService.Login(request.LoginRequest, user, false);
+            //     var token = _authenticationService.Login(request.LoginRequest, user, false);
 
-                return new BaseResponse<AuthenticationResponseDTO>
-                {
-                    Data = token,
-                    Message = "Login successful",
-                    Success = true
-                };
-            }
+            //     return new BaseResponse<AuthenticationResponseDTO>
+            //     {
+            //         Data = token,
+            //         Message = "Login successful",
+            //         Success = true
+            //     };
+            // }
             else
                 throw new BadRequestException("Invalid request");
         }

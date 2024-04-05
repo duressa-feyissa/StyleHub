@@ -1,10 +1,10 @@
-using Application.Contracts.Infrastructure.Repositories;
 using Application.Contracts.Persistance.Repositories;
 using Application.DTO.Product.ProductDTO.DTO;
 using Application.Exceptions;
 using Application.Features.Product_Features.Product.Requests.Commands;
 using Application.Response;
 using AutoMapper;
+using Domain.Entities.Product;
 using MediatR;
 
 namespace Application.Features.Product_Features.Product.Requests.Handlers.Commands
@@ -15,17 +15,10 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        private readonly IImageUploadRepository _imageUploadRepository;
-
-        public CreateProductHandler(
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IImageUploadRepository imageUploadRepository
-        )
+        public CreateProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _imageUploadRepository = imageUploadRepository;
         }
 
         public async Task<BaseResponse<ProductResponseDTO>> Handle(
@@ -33,119 +26,102 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
             CancellationToken cancellationToken
         )
         {
-            IReadOnlyList<Domain.Entities.Product.Color>? colors = null;
-            IReadOnlyList<Domain.Entities.Product.Size>? sizes = null;
-            IReadOnlyList<Domain.Entities.Product.Material>? materials = null;
-            Domain.Entities.Product.Brand? brand = null;
-
             var validator = new CreateProductValidation();
             var validationResult = await validator.ValidateAsync(request.Product!);
             if (!validationResult.IsValid)
-                throw new BadRequestException("Invalid Product Data");
-
-            var location = await _unitOfWork.LocationRepository.GetById(request.Product.LocationId);
-
-            var categories = await _unitOfWork.CategoryRepository.GetByIds(
-                request.Product.CategoryIds
-            );
-            if (categories == null || categories.Count != request.Product.CategoryIds.Count)
-                throw new NotFoundException("category Not Found");
-
-            if (location == null)
-                throw new NotFoundException("Location Not Found");
-
-            if (request?.Product?.ColorIds != null || request?.Product?.ColorIds?.Count > 0)
-            {
-                colors = await _unitOfWork.ColorRepository.GetByIds(request.Product.ColorIds);
-                if (colors == null || colors?.Count != request.Product.ColorIds.Count)
-                    throw new NotFoundException("Color Not Found");
-            }
-
-            if (request?.Product?.SizeIds != null || request?.Product?.SizeIds?.Count > 0)
-            {
-                sizes = await _unitOfWork.SizeRepository.GetByIds(request.Product.SizeIds);
-                if (sizes == null || sizes?.Count != request.Product.SizeIds.Count)
-                    throw new NotFoundException("Size Not Found");
-            }
-
-            if (request?.Product?.MaterialIds != null || request?.Product?.MaterialIds?.Count > 0)
-            {
-                materials = await _unitOfWork.MaterialRepository.GetByIds(
-                    request.Product.MaterialIds
+                throw new BadRequestException(
+                    validationResult.Errors.FirstOrDefault()?.ErrorMessage!
                 );
-                if (materials == null || materials?.Count != request.Product.MaterialIds.Count)
-                    throw new NotFoundException("Material Not Found");
-            }
-
-            if (request?.Product?.BrandId == null)
-            {
-                brand = await _unitOfWork.BrandRepository.GetById(request?.Product?.BrandId!);
-                if (brand == null)
-                    throw new NotFoundException("Brand Not Found");
-            }
 
             var product = _mapper.Map<Domain.Entities.Product.Product>(request?.Product);
-            if (brand != null)
-                product.Brand = brand;
-            product.Location = location;
-            await _unitOfWork.ProductRepository.Add(product);
+            var user = await _unitOfWork.UserRepository.GetById(request?.UserId ?? "");
+            product.User = user;
 
-            if (sizes != null && sizes?.Count > 0)
-                for (int i = 0; i < sizes?.Count; i++)
+            if (request?.Product.BrandId != null)
+            {
+                var brand = await _unitOfWork.BrandRepository.GetById(request.Product.BrandId);
+                if (brand == null)
+                    throw new NotFoundException("Brand Not Found");
+                product.Brand = brand;
+            }
+            else
+            {
+                throw new BadRequestException("Brand Id is Required");
+            }
+
+            if (request?.Product.CategoryIds.Count > 0)
+            {
+                var categories = await _unitOfWork.CategoryRepository.GetByIds(
+                    request.Product.CategoryIds
+                );
+
+                if (categories == null || categories.Count != request.Product.CategoryIds.Count)
+                    throw new NotFoundException("category Not Found");
+
+                for (int i = 0; i < categories.Count; i++)
                 {
-                    var productSize = new Domain.Entities.Product.ProductSize
+                    var productCategory = new ProductCategory
                     {
                         ProductId = product.Id,
-                        Size = sizes[i]
+                        Category = categories[i]
                     };
-                    await _unitOfWork.ProductSizeRepository.Add(productSize);
+                    product.ProductCategories.Add(productCategory);
                 }
+            }
 
-            if (colors != null && colors?.Count > 0)
-                for (int i = 0; i < colors?.Count; i++)
+            if (request?.Product.ColorIds.Count > 0)
+            {
+                var colors = await _unitOfWork.ColorRepository.GetByIds(request.Product.ColorIds);
+
+                if (colors == null || colors.Count != request.Product.ColorIds.Count)
+                    throw new NotFoundException("color Not Found");
+
+                for (int i = 0; i < colors.Count; i++)
                 {
-                    var productColor = new Domain.Entities.Product.ProductColor
+                    var productColor = new ProductColor
                     {
                         ProductId = product.Id,
                         Color = colors[i]
                     };
-                    await _unitOfWork.ProductColorRepository.Add(productColor);
+                    product.ProductColors.Add(productColor);
                 }
+            }
 
-            if (materials != null && materials?.Count > 0)
-                for (int i = 0; i < materials?.Count; i++)
+            if (request?.Product.SizeIds.Count > 0)
+            {
+                var sizes = await _unitOfWork.SizeRepository.GetByIds(request.Product.SizeIds);
+
+                if (sizes == null || sizes.Count != request.Product.SizeIds.Count)
+                    throw new NotFoundException("sizes Not Found");
+
+                for (int i = 0; i < sizes.Count; i++)
                 {
-                    var productMaterial = new Domain.Entities.Product.ProductMaterial
+                    var productSize = new ProductSize { ProductId = product.Id, Size = sizes[i] };
+                    product.ProductSizes.Add(productSize);
+                }
+            }
+
+            if (request?.Product.MaterialIds.Count > 0)
+            {
+                var materialIds = await _unitOfWork.MaterialRepository.GetByIds(
+                    request.Product.MaterialIds
+                );
+
+                if (materialIds == null || materialIds.Count != request.Product.MaterialIds.Count)
+                    throw new NotFoundException("materialIds Not Found");
+
+                for (int i = 0; i < materialIds.Count; i++)
+                {
+                    var productMaterial = new ProductMaterial
                     {
                         ProductId = product.Id,
-                        Material = materials[i]
+                        Material = materialIds[i]
                     };
-                    await _unitOfWork.ProductMaterialRepository.Add(productMaterial);
+                    product.ProductMaterials.Add(productMaterial);
                 }
-
-            for (int i = 0; i < request?.Product.BinaryImages.Count; i++)
-            {
-                var productImage = new Domain.Entities.Product.ProductImage
-                {
-                    ImageUrl = request.Product.BinaryImages[i],
-                    ProductId = product.Id
-                };
-                productImage.Id = await _imageUploadRepository.Upload(
-                    productImage.ImageUrl,
-                    productImage.Id
-                );
-                await _unitOfWork.ProductImageRepository.Add(productImage);
             }
 
-            for (int i = 0; i < categories.Count; i++)
-            {
-                var productCategory = new Domain.Entities.Product.ProductCategory
-                {
-                    ProductId = product.Id,
-                    Category = categories[i]
-                };
-                await _unitOfWork.ProductCategoryRepository.Add(productCategory);
-            }
+            product = await _unitOfWork.ProductRepository.Add(product);
 
             return new BaseResponse<ProductResponseDTO>
             {

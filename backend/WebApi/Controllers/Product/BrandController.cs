@@ -1,12 +1,12 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Application.DTO.Product.BrandDTO.DTO;
-using Application.Features.Product_Features.Brand.Requests.Queries;
 using Application.Features.Product_Features.Brand.Requests.Commands;
+using Application.Features.Product_Features.Brand.Requests.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class BrandController : ControllerBase
@@ -18,7 +18,6 @@ namespace WebApi.Controllers
             _mediator = mediator;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<List<BrandResponseDTO>>> fetchAllBrands()
         {
@@ -27,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<BrandResponseDTO>> fetchBrandById(string id)
         {
             var result = await _mediator.Send(new GetBrandById { Id = id });
@@ -34,7 +34,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BrandResponseDTO>> CreateBrand([FromBody] CreateBrandRequest command)
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<BrandResponseDTO>> CreateBrand(
+            [FromBody] CreateBrandRequest command
+        )
         {
             var result = await _mediator.Send(command);
 
@@ -42,14 +45,17 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<BrandResponseDTO>> UpdateBrandRequest([FromBody] UpdateBrandRequest command)
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<BrandResponseDTO>> UpdateBrandRequest(
+            [FromBody] UpdateBrandRequest command
+        )
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<BrandResponseDTO>> DeleteBrandRequest(string id)
         {
             var result = await _mediator.Send(new DeleteBrandRequest { Id = id });

@@ -2,6 +2,7 @@ using Application.DTO.Product.CategoryDTO.DTO;
 using Application.Features.Product_Features.Category.Requests.Commands;
 using Application.Features.Product_Features.Category.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -25,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<CategoryResponseDTO>> fetchCategoryById(string id)
         {
             var result = await _mediator.Send(new GetCategoryById { Id = id });
@@ -32,6 +34,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CategoryResponseDTO>> CreateCategory(
             [FromBody] CreateCategoryRequest command
         )
@@ -42,6 +45,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CategoryResponseDTO>> UpdateCategoryRequest(
             [FromBody] UpdateCategoryRequest command
         )
@@ -51,6 +55,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CategoryResponseDTO>> DeleteCategoryRequest(string id)
         {
             var result = await _mediator.Send(new DeleteCategoryRequest { Id = id });

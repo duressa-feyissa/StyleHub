@@ -44,12 +44,12 @@ namespace Persistence.Configuration
             services.AddScoped<IProductColorRepository, ProductColorRepository>();
             services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
             services.AddScoped<IProductMaterialRepository, ProductMaterialRepository>();
-            services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
 
             return services;
         }

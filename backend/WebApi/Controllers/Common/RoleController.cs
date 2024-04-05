@@ -2,6 +2,7 @@ using Application.DTO.Common.Role.DTO;
 using Application.Features.Common_Features.Role.Requests.Commands;
 using Application.Features.Common_Features.Role.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -25,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<RoleResponseDTO>> fetchRoleById(string id)
         {
             var result = await _mediator.Send(new GetRoleById { Id = id });
@@ -32,6 +34,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<RoleResponseDTO>> CreateRole(
             [FromBody] CreateRoleRequest command
         )
@@ -42,6 +45,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<RoleResponseDTO>> UpdateRoleRequest(
             [FromBody] UpdateRoleRequest command
         )
@@ -51,6 +55,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<RoleResponseDTO>> DeleteRoleRequest(string id)
         {
             var result = await _mediator.Send(new DeleteRoleRequest { Id = id });

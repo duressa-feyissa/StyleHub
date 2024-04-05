@@ -14,17 +14,17 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+        private readonly IImageRepository _imageRepository;
 
         public DeleteCategoryHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadRepository imageUploadRepository
+            IImageRepository imageRepository
         )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<BaseResponse<CategoryResponseDTO>> Handle(
@@ -40,7 +40,7 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
             if (Category == null)
                 throw new NotFoundException("Category Not Found");
 
-            var isDeleted = await _imageUploadRepository.Delete(Category.Id);
+            var isDeleted = await _imageRepository.Delete(Category.Id);
             if (!isDeleted)
                 throw new BadRequestException("Failed to delete Category");
 

@@ -5,16 +5,39 @@ using CloudinaryDotNet.Actions;
 
 namespace Infrastructure.Repository
 {
-    public class ImageUploadRepository : IImageUploadRepository
+    public class ImageRepository : IImageRepository
     {
         private readonly Cloudinary _cloudinary;
 
-        public ImageUploadRepository(Cloudinary cloudinary)
+        public ImageRepository(Cloudinary cloudinary)
         {
             _cloudinary = cloudinary;
         }
 
-        public async Task<string> Upload(
+        public async Task<bool> Delete(string publicId)
+        {
+            try
+            {
+                var deletionParams = new DeletionParams(publicId);
+
+                var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+
+                if (deletionResult != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<string> Update(
             string base64Image,
             string publicId,
             bool backgroundRemoval = false
@@ -49,30 +72,7 @@ namespace Infrastructure.Repository
             }
         }
 
-        public async Task<bool> Delete(string publicId)
-        {
-            try
-            {
-                var deletionParams = new DeletionParams(publicId);
-
-                var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
-
-                if (deletionResult != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<string> Update(
+        public async Task<string> Upload(
             string base64Image,
             string publicId,
             bool backgroundRemoval = false

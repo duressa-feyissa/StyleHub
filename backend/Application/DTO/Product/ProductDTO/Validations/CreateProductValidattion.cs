@@ -61,17 +61,21 @@ namespace Application.DTO.Product.ProductDTO.DTO
                 .Must(x => Target.Contains(x))
                 .WithMessage("Target must be men, women or kids");
 
-            RuleFor(x => x.BinaryImages)
+            RuleFor(x => x.Latitude)
                 .NotNull()
-                .WithMessage("BinaryImages is required")
-                .NotEmpty()
-                .WithMessage("BinaryImages cannot be empty");
+                .WithMessage("Latitude is required")
+                .GreaterThanOrEqualTo(-90)
+                .WithMessage("Latitude must be greater than -90")
+                .LessThanOrEqualTo(90)
+                .WithMessage("Latitude must be less than 90");
 
-            RuleFor(x => x.IsNegotiable)
+            RuleFor(x => x.Longitude)
                 .NotNull()
-                .WithMessage("IsNegotiable is required")
-                .NotEmpty()
-                .WithMessage("IsNegotiable cannot be empty");
+                .WithMessage("Longitude is required")
+                .GreaterThanOrEqualTo(-180)
+                .WithMessage("Longitude must be greater than -180")
+                .LessThanOrEqualTo(180)
+                .WithMessage("Longitude must be less than 180");
         }
     }
 }

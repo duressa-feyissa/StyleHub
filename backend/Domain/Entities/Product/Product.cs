@@ -25,11 +25,23 @@ namespace Domain.Entities.Product
         public required string Condition { get; set; }
 
         [Required]
-        public virtual required Brand Brand { get; set; }
+        public virtual required User.User User { get; set; }
 
         [Required]
-        public virtual required Location Location { get; set; }
-        public virtual HashSet<ProductImage> Images { get; set; } = new HashSet<ProductImage>();
+        public bool IsPublished { get; set; } = false;
+
+        [Required]
+        public required string City { get; set; }
+
+        [Required]
+        public required double Latitude { get; set; }
+
+        [Required]
+        public required double Longitude { get; set; }
+
+        [Required]
+        public virtual required Brand Brand { get; set; }
+        public virtual HashSet<Image> Images { get; set; } = new HashSet<Image>();
         public virtual HashSet<ProductSize> ProductSizes { get; set; } = new HashSet<ProductSize>();
         public virtual HashSet<ProductColor> ProductColors { get; set; } =
             new HashSet<ProductColor>();
@@ -37,6 +49,6 @@ namespace Domain.Entities.Product
             new HashSet<ProductMaterial>();
         public virtual HashSet<ProductCategory> ProductCategories { get; set; } =
             new HashSet<ProductCategory>();
-        public required bool IsNegotiable { get; set; }
+        public required bool IsNegotiable { get; set; } = false;
     }
 }

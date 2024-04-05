@@ -1,12 +1,12 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Application.DTO.Product.MaterialDTO.DTO;
-using Application.Features.Product_Features.Material.Requests.Queries;
 using Application.Features.Product_Features.Material.Requests.Commands;
+using Application.Features.Product_Features.Material.Requests.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class MaterialController : ControllerBase
@@ -18,7 +18,6 @@ namespace WebApi.Controllers
             _mediator = mediator;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<List<MaterialResponseDTO>>> fetchAllMaterials()
         {
@@ -27,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<MaterialResponseDTO>> fetchMaterialById(string id)
         {
             var result = await _mediator.Send(new GetMaterialById { Id = id });
@@ -34,7 +34,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MaterialResponseDTO>> CreateMaterial([FromBody] CreateMaterialRequest command)
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<MaterialResponseDTO>> CreateMaterial(
+            [FromBody] CreateMaterialRequest command
+        )
         {
             var result = await _mediator.Send(command);
 
@@ -42,14 +45,17 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<MaterialResponseDTO>> UpdateMaterialRequest([FromBody] UpdateMaterialRequest command)
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<MaterialResponseDTO>> UpdateMaterialRequest(
+            [FromBody] UpdateMaterialRequest command
+        )
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<MaterialResponseDTO>> DeleteMaterialRequest(string id)
         {
             var result = await _mediator.Send(new DeleteMaterialRequest { Id = id });

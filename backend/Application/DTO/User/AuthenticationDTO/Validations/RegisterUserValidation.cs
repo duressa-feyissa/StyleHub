@@ -45,20 +45,20 @@ namespace Application.DTO.User.UserDTO.Validations
             //     "Password must contain at least one uppercase letter, one lowercase letter, one digit and one special character"
             // );
 
-            RuleFor(x => x.PhoneNumber)
-                .NotEmpty()
-                .When(x => x.PhoneNumber != null)
-                .WithMessage("Phone number cannot be empty")
-                .MustAsync(
-                    async (phoneNumber, cancellation) =>
-                    {
-                        if (phoneNumber == null)
-                            return true;
-                        return await _UserRepository.GetByPhoneNumber(phoneNumber) == null;
-                    }
-                )
-                .When(x => x.PhoneNumber != null)
-                .WithMessage("Phone number is already registered");
+            // RuleFor(x => x.PhoneNumber)
+            //     .NotEmpty()
+            //     .When(x => x.PhoneNumber != null)
+            //     .WithMessage("Phone number cannot be empty")
+            //     .MustAsync(
+            //         async (phoneNumber, cancellation) =>
+            //         {
+            //             if (phoneNumber == null)
+            //                 return true;
+            //             return await _UserRepository.GetByPhoneNumber(phoneNumber) == null;
+            //         }
+            //     )
+            //     .When(x => x.PhoneNumber != null)
+            //     .WithMessage("Phone number is already registered");
 
             RuleFor(x => x.Email)
                 .NotEmpty()

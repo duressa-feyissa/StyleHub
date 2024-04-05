@@ -6,6 +6,7 @@ namespace Application.Features.Product_Features.Product.Requests.Commands
 {
     public class UpdateProductRequest : IRequest<BaseResponse<ProductResponseDTO>>
     {
-        public UpdateProductDTO? Product { get; set; }
+        public required string Id { get; set; }
+        public required UpdateProductDTO Product { get; set; }
     }
 }

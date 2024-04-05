@@ -20,6 +20,7 @@ namespace Infrastructure.Configuration
             PhoneNumberOTPSettings phoneNumberOTPSettings = new PhoneNumberOTPSettings();
             ApiSettings apiSetting = new ApiSettings();
             JwtSettings jwtSettings = new JwtSettings();
+            CloudinarySettings cloudinarySettings = new CloudinarySettings();
 
             if (hostEnvironment.IsDevelopment())
             {
@@ -35,6 +36,9 @@ namespace Infrastructure.Configuration
                 services.Configure<JwtSettings>(options =>
                     configuration.GetSection("JwtSettings").Bind(options)
                 );
+                cloudinarySettings.CloudName = configuration["CloudinarySettings:CloudName"];
+                cloudinarySettings.APIKey = configuration["CloudinarySettings:APIKey"];
+                cloudinarySettings.APISecret = configuration["CloudinarySettings:APISecret"];
 
                 services
                     .AddAuthentication(
@@ -84,6 +88,11 @@ namespace Infrastructure.Configuration
                 jwtSettings.Audience = Environment.GetEnvironmentVariable("Audience");
                 services.AddSingleton(jwtSettings);
 
+                cloudinarySettings.CloudName = Environment.GetEnvironmentVariable("CloudName");
+                cloudinarySettings.APIKey = Environment.GetEnvironmentVariable("APIKey");
+                cloudinarySettings.APISecret = Environment.GetEnvironmentVariable("APISecret");
+                services.AddSingleton(cloudinarySettings);
+
                 services
                     .AddAuthentication(
                         Microsoft
@@ -109,14 +118,14 @@ namespace Infrastructure.Configuration
                         };
                     });
             }
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddSingleton(CloudinaryConfiguration.Configure(configuration));
+            services.AddSingleton(CloudinaryConfiguration.Configure(cloudinarySettings));
             services.AddHttpClient<PhoneNumberOTPManager>();
             services.AddHttpContextAccessor();
             services.AddSingleton<PhoneNumberOTPManager>();
             services.AddScoped<IOtpService, OtpService>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IImageUploadRepository, ImageUploadRepository>();
             services.AddScoped<ICurrentLoggedInService, CurrentLoggedInService>();
 
             services.AddAuthorization(options =>

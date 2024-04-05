@@ -6,5 +6,7 @@ namespace Application.Contracts.Persistence.Repositories.Product
     public interface IProductSizeRepository : IGenericRepository<ProductSize>
     {
         Task<ProductSize> GetById(string id);
+
+        Task<bool> DeleteByProductId(string productId);
     }
 }

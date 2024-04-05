@@ -15,17 +15,17 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+        private readonly IImageRepository _imageRepository;
 
         public CreateBrandHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadRepository imageUploadRepository
+            IImageRepository imageRepository
         )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<BaseResponse<BrandResponseDTO>> Handle(
@@ -39,7 +39,7 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
                 throw new BadRequestException(validationResult.Errors.First().ErrorMessage);
 
             var Brand = _mapper.Map<Domain.Entities.Product.Brand>(request.Brand);
-            Brand.Logo = await _imageUploadRepository.Upload(Brand.Logo, Brand.Id);
+            Brand.Logo = await _imageRepository.Upload(Brand.Logo, Brand.Id);
             await _unitOfWork.BrandRepository.Add(Brand);
 
             return new BaseResponse<BrandResponseDTO>

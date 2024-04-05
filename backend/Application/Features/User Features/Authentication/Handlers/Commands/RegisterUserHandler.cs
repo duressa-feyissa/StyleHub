@@ -43,7 +43,7 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
             CancellationToken cancellationToken
         )
         {
-            var user = _mapper.Map<User>(request.Registeration);
+            var user = _mapper.Map<Domain.Entities.User.User>(request.Registeration);
 
             var validator = new RegisterUserValidation(_unitOfWork.UserRepository);
 
@@ -72,20 +72,20 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
                     Data = _mapper.Map<RegisterationResponseDTO>(user)
                 };
             }
-            else if (request.Registeration.PhoneNumber != null)
-            {
-                user.Password = HashPassword(request.Registeration.PhoneNumber);
-                user.PhoneNumberVerificationCode = await _otpService.SendVerificationOtpAsync(user);
-                user.PhoneNumberVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
-                user.Email = null;
-                user = await _unitOfWork.UserRepository.Add(user);
-                return new BaseResponse<RegisterationResponseDTO>
-                {
-                    Message = "User Registered Successfully",
-                    Success = true,
-                    Data = _mapper.Map<RegisterationResponseDTO>(user)
-                };
-            }
+            // else if (request.Registeration.PhoneNumber != null)
+            // {
+            //     user.Password = HashPassword(request.Registeration.PhoneNumber);
+            //     user.PhoneNumberVerificationCode = await _otpService.SendVerificationOtpAsync(user);
+            //     user.PhoneNumberVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
+            //     user.Email = null;
+            //     user = await _unitOfWork.UserRepository.Add(user);
+            //     return new BaseResponse<RegisterationResponseDTO>
+            //     {
+            //         Message = "User Registered Successfully",
+            //         Success = true,
+            //         Data = _mapper.Map<RegisterationResponseDTO>(user)
+            //     };
+            // }
             else
             {
                 throw new BadRequestException("Either Email or Phone Number is required");

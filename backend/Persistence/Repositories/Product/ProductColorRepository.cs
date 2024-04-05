@@ -14,6 +14,14 @@ namespace Persistence.Repositories.Product
             _context = context;
         }
 
+        public async Task<bool> DeleteByProductId(string productId)
+        {
+            var productcolors = await _context.ProductColors.Where(u => u.ProductId == productId).ToListAsync();
+            _context.ProductColors.RemoveRange(productcolors);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<ProductColor> GetById(string id)
         {
             var productcolor = await _context.ProductColors.FirstOrDefaultAsync(u => u.Id == id);

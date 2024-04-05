@@ -20,12 +20,12 @@ namespace Persistence.Repositories
         private IProductColorRepository _productColorRepository;
         private IProductSizeRepository _productSizeRepository;
         private IProductMaterialRepository _productMaterialRepository;
-        private IProductImageRepository _productImageRepository;
         private ILocationRepository _locationRepository;
         private ICategoryRepository _categoryRepository;
         private IProductCategoryRepository _productCategoryRepository;
         private IRoleRepository _roleRepository;
         private IUserRepository _userRepository;
+        private IImageRepository _imageRepository;
 
         public UnitOfWork(
             StyleHubDBContext context,
@@ -37,12 +37,12 @@ namespace Persistence.Repositories
             IProductColorRepository productColorRepository,
             IProductSizeRepository productSizeRepository,
             IProductMaterialRepository productMaterialRepository,
-            IProductImageRepository productImageRepository,
             ILocationRepository locationRepository,
             ICategoryRepository categoryRepository,
             IProductCategoryRepository productCategoryRepository,
             IRoleRepository roleRepository,
-            IUserRepository userRepository
+            IUserRepository userRepository,
+            IImageRepository imageRepository
         )
         {
             _context = context;
@@ -54,12 +54,12 @@ namespace Persistence.Repositories
             _productColorRepository = productColorRepository;
             _productSizeRepository = productSizeRepository;
             _productMaterialRepository = productMaterialRepository;
-            _productImageRepository = productImageRepository;
             _locationRepository = locationRepository;
             _categoryRepository = categoryRepository;
             _productCategoryRepository = productCategoryRepository;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+            _imageRepository = imageRepository;
         }
 
         public IProductRepository ProductRepository
@@ -142,16 +142,6 @@ namespace Persistence.Repositories
             }
         }
 
-        public IProductImageRepository ProductImageRepository
-        {
-            get
-            {
-                if (_productImageRepository == null)
-                    _productImageRepository = new ProductImageRepository(_context);
-                return _productImageRepository;
-            }
-        }
-
         public ILocationRepository LocationRepository
         {
             get
@@ -199,6 +189,16 @@ namespace Persistence.Repositories
                 if (_userRepository == null)
                     _userRepository = new UserRepository(_context);
                 return _userRepository;
+            }
+        }
+
+        public IImageRepository ImageRepository
+        {
+            get
+            {
+                if (_imageRepository == null)
+                    _imageRepository = new ImageRepository(_context);
+                return _imageRepository;
             }
         }
 

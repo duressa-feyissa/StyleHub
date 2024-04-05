@@ -1,9 +1,8 @@
 ﻿using Application;
 using Infrastructure.Configuration;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.OpenApi.Models;
 using Persistence.Configuration;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);

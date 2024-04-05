@@ -10,8 +10,8 @@ namespace Domain.Entities.User
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Password { get; set; }
-        public string? latitude { get; set; }
-        public string? longitude { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
         public string? ProfilePicture { get; set; }
         public string? Email { get; set; }
         public DateTime? DateOfBirth { get; set; }
@@ -30,7 +30,7 @@ namespace Domain.Entities.User
         public string? PhoneNumberVerificationCode { get; set; }
         public DateTime? PhoneNumberVerificationCodeExpiration { get; set; }
         public string? ResetPasswordCode { get; set; }
-        public string? ResetPasswordCodeExpiration { get; set; }
+        public DateTime? ResetPasswordCodeExpiration { get; set; }
         public string? EmailVerificationCode { get; set; }
         public DateTime? EmailVerificationCodeExpiration { get; set; }
         public required Role Role { get; set; }

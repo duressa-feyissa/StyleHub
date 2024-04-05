@@ -14,17 +14,17 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+        private readonly IImageRepository _imageRepository;
 
         public DeleteBrandHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadRepository imageUploadRepository
+            IImageRepository imageRepository
         )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<BaseResponse<BrandResponseDTO>> Handle(
@@ -40,7 +40,7 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
             if (Brand == null)
                 throw new NotFoundException("Brand Not Found");
 
-            var isDeleted = await _imageUploadRepository.Delete(Brand.Id);
+            var isDeleted = await _imageRepository.Delete(Brand.Id);
             if (!isDeleted)
                 throw new BadRequestException("Failed to delete Brand");
 

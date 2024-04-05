@@ -10,14 +10,14 @@ namespace Application.DTO.User.UserDTO.Validations
         public LoginUserValidation()
         {
 
-            RuleFor(x => x.PhoneNumber)
-                .Cascade(CascadeMode.Stop)
-                .NotNull()
-                .WithMessage("Phone number is required")
-                .NotEmpty()
-                .WithMessage("Phone number cannot be empty");
-                //.Matches(@"^(\+251|0)[789][01]\d{8}$")
-                //.WithMessage("Invalid phone number");
+            // RuleFor(x => x.PhoneNumber)
+            //     .Cascade(CascadeMode.Stop)
+            //     .NotNull()
+            //     .WithMessage("Phone number is required")
+            //     .NotEmpty()
+            //     .WithMessage("Phone number cannot be empty");
+            //     //.Matches(@"^(\+251|0)[789][01]\d{8}$")
+            //     //.WithMessage("Invalid phone number");
 
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)

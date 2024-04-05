@@ -14,17 +14,17 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+        private readonly IImageRepository _imageRepository;
 
         public UpdateCategoryHandler(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IImageUploadRepository imageUploadRepository
+            IImageRepository imageRepository
         )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
+            _imageRepository = imageRepository;
         }
 
         public async Task<BaseResponse<CategoryResponseDTO>> Handle(
@@ -49,7 +49,7 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
             }
 
             if (request?.Category?.Image != null)
-                existingCategory.Image = await _imageUploadRepository.Update(
+                existingCategory.Image = await _imageRepository.Update(
                     request.Category.Image,
                     existingCategory.Id
                 );

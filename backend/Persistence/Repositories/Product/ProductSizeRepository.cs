@@ -16,6 +16,16 @@ namespace Persistence.Repositories
             _context = context;
         }
 
+        public async Task<bool> DeleteByProductId(string productId)
+        {
+            var productSizes = await _context
+                .ProductSizes.Where(u => u.ProductId == productId)
+                .ToListAsync();
+            _context.ProductSizes.RemoveRange(productSizes);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<ProductSize> GetById(string id)
         {
             var productsize = await _context.ProductSizes.FirstOrDefaultAsync(u => u.Id == id);

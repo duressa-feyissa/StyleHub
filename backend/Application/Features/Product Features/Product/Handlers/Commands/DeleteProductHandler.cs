@@ -9,48 +9,49 @@ using MediatR;
 
 namespace Application.Features.Product_Features.Product.Requests.Handlers.Commands
 {
-    public class DeleteProductHandler
-        : IRequestHandler<DeleteProductRequest, BaseResponse<ProductResponseDTO>>
-    {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IImageUploadRepository _imageUploadRepository;
+	public class DeleteProductHandler
+		: IRequestHandler<DeleteProductRequest, BaseResponse<ProductResponseDTO>>
+	{
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		private readonly IImageRepository _imageRepository;
+		
 
-        public DeleteProductHandler(
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IImageUploadRepository imageUploadRepository
-        )
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _imageUploadRepository = imageUploadRepository;
-        }
+		public DeleteProductHandler(
+			IUnitOfWork unitOfWork,
+			IMapper mapper,
+			IImageRepository imageRepository
+		)
+		{
+			_mapper = mapper;
+			_unitOfWork = unitOfWork;
+			_imageRepository = imageRepository;
+		}
 
-        public async Task<BaseResponse<ProductResponseDTO>> Handle(
-            DeleteProductRequest request,
-            CancellationToken cancellationToken
-        )
-        {
-            if (request.Id.Length == 0)
-                throw new BadRequestException("Invalid Product Id");
+		public async Task<BaseResponse<ProductResponseDTO>> Handle(
+			DeleteProductRequest request,
+			CancellationToken cancellationToken
+		)
+		{
+			if (request.Id.Length == 0)
+				throw new BadRequestException("Invalid Product Id");
 
-            var product = await _unitOfWork.ProductRepository.GetById(request.Id);
+			var product = await _unitOfWork.ProductRepository.GetById(request.Id);
 
-            if (product == null)
-                throw new NotFoundException("Product Not Found");
+			if (product == null)
+				throw new NotFoundException("Product Not Found");
 
-            foreach (var image in product.Images)
-                await _imageUploadRepository.Delete(image.Id);
+			foreach (var image in product.Images)
+				await _imageRepository.Delete(image.Id);
 
-            await _unitOfWork.ProductRepository.Delete(product);
+			await _unitOfWork.ProductRepository.Delete(product);
 
-            return new BaseResponse<ProductResponseDTO>
-            {
-                Message = "Product Deleted Successfully",
-                Success = true,
-                Data = _mapper.Map<ProductResponseDTO>(product)
-            };
-        }
-    }
+			return new BaseResponse<ProductResponseDTO>
+			{
+				Message = "Product Deleted Successfully",
+				Success = true,
+				Data = _mapper.Map<ProductResponseDTO>(product)
+			};
+		}
+	}
 }

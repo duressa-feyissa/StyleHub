@@ -37,11 +37,11 @@ namespace Infrastructure.Repository
             bool LoginAfterOtpVerification = false
         )
         {
-            if (!LoginAfterOtpVerification)
+            if (LoginAfterOtpVerification)
             {
                 if (userEntity.Password != HashPassword(user.Password ?? ""))
                 {
-                    Console.WriteLine("Invalid Password");
+                    throw new BadRequestException("Invalid password");
                 }
             }
 
