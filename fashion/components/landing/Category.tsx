@@ -1,4 +1,3 @@
-import { Flex, Text } from "@radix-ui/themes";
 import CategoryCard from "./CategoryCard";
 const image = "/products/2.png";
 

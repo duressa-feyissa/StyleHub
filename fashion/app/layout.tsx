@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import "@radix-ui/themes/styles.css";
 import "./globals.css";
-import { Theme } from "@radix-ui/themes";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/modetoggle";
 
 const inter = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -19,7 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Theme>{children}</Theme>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* <ModeToggle /> */}
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
