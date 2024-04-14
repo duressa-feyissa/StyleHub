@@ -9,7 +9,6 @@ export default function Home() {
   return (
     <>
       <div className="">
-        <Navbar />
         <Hero />
         <Category />
         <Product />

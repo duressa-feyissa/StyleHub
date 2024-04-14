@@ -2,7 +2,7 @@ import Link from "next/link";
 import Logo from "./Logo";
 import Search from "./Search";
 import { Button } from "../ui/button";
-
+import { ModeToggle } from "@/components/modetoggle";
 const Navbar = () => {
   return (
     <div className="bg-surfaceContainerLow">
@@ -16,6 +16,7 @@ const Navbar = () => {
           <Link href="/signup">
             <Button>Sign Up</Button>
           </Link>
+          <ModeToggle />
         </div>
       </div>
     </div>

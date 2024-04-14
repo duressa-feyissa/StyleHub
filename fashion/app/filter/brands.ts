@@ -1,0 +1,136 @@
+const brands = [
+  {
+    id: "043cf8ff-efc1-43f7-b2ee-24485c66bc39",
+    name: "dolce gabbana",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330648/043cf8ff-efc1-43f7-b2ee-24485c66bc39.png",
+    country: "italy",
+  },
+  {
+    id: "04b20ef7-a186-4b59-a841-624056913ded",
+    name: "alexander mcqueen",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331027/04b20ef7-a186-4b59-a841-624056913ded.png",
+    country: "united kingdom",
+  },
+  {
+    id: "1407d865-3646-47f2-a91e-7f764aee50b8",
+    name: "versace",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330529/1407d865-3646-47f2-a91e-7f764aee50b8.png",
+    country: "italy",
+  },
+  {
+    id: "26856b5d-9bd4-4345-bb60-7b218974f942",
+    name: "bulgari",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331122/26856b5d-9bd4-4345-bb60-7b218974f942.png",
+    country: "italy",
+  },
+  {
+    id: "3b5792b5-8b99-4f71-842b-5a2e5952639e",
+    name: "hermès",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330856/3b5792b5-8b99-4f71-842b-5a2e5952639e.png",
+    country: "france",
+  },
+  {
+    id: "3b983da1-6426-4765-8ef5-ebefd9d185ab",
+    name: "lacoste",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330197/3b983da1-6426-4765-8ef5-ebefd9d185ab.png",
+    country: "france",
+  },
+  {
+    id: "4242b132-17b0-4ebc-b0c5-1e5b6c9b43ee",
+    name: "givenchy",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330903/4242b132-17b0-4ebc-b0c5-1e5b6c9b43ee.png",
+    country: "france",
+  },
+  {
+    id: "549e807d-aefd-4f12-8182-37d184a9d80b",
+    name: "prada",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331353/549e807d-aefd-4f12-8182-37d184a9d80b.png",
+    country: "italy",
+  },
+  {
+    id: "5cf4457c-bd84-4926-b8f4-7643a3652bf8",
+    name: "calvin klein",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331251/5cf4457c-bd84-4926-b8f4-7643a3652bf8.png",
+    country: "united states",
+  },
+  {
+    id: "795c5a4b-760d-4ffb-af84-9d0e10184478",
+    name: "under armour",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331390/795c5a4b-760d-4ffb-af84-9d0e10184478.png",
+    country: "united states",
+  },
+  {
+    id: "83d32e1d-040c-4f45-b5cf-234ca8116a9e",
+    name: "zara",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330800/83d32e1d-040c-4f45-b5cf-234ca8116a9e.png",
+    country: "spain",
+  },
+  {
+    id: "899772dc-835e-4924-9526-fc52fadc62f4",
+    name: "adidas",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712329898/899772dc-835e-4924-9526-fc52fadc62f4.png",
+    country: "united states",
+  },
+  {
+    id: "9d2d94a9-2195-498f-a63a-adc0cea222d9",
+    name: "alexander mcqueen",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331027/9d2d94a9-2195-498f-a63a-adc0cea222d9.png",
+    country: "united kingdom",
+  },
+  {
+    id: "a66b2e89-f0c9-4550-b432-27a373886227",
+    name: "levi’s",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331164/a66b2e89-f0c9-4550-b432-27a373886227.png",
+    country: "united states",
+  },
+  {
+    id: "bb372939-b8a4-4bc2-8698-9cea8f2ac1af",
+    name: "fendi",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330354/bb372939-b8a4-4bc2-8698-9cea8f2ac1af.png",
+    country: "italy",
+  },
+  {
+    id: "bed5f377-c961-4b6a-93c0-77b17684d1e9",
+    name: "nike",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712329831/bed5f377-c961-4b6a-93c0-77b17684d1e9.png",
+    country: "united states",
+  },
+  {
+    id: "ce576a82-93d2-4326-86b0-aa7c772db72c",
+    name: "chanel",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330561/ce576a82-93d2-4326-86b0-aa7c772db72c.png",
+    country: "italy",
+  },
+  {
+    id: "d9d7c8cc-a5e2-4240-8a04-3c54cb65b6eb",
+    name: "burberry",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712329993/d9d7c8cc-a5e2-4240-8a04-3c54cb65b6eb.png",
+    country: "united kingdom",
+  },
+  {
+    id: "dbf0d826-731a-45a4-bf80-bc27b4a19d9c",
+    name: "balenciaga",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331202/dbf0d826-731a-45a4-bf80-bc27b4a19d9c.png",
+    country: "spain",
+  },
+  {
+    id: "e03f1175-4a41-4638-b7b8-4ff327d00150",
+    name: "gucci",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330053/e03f1175-4a41-4638-b7b8-4ff327d00150.png",
+    country: "italy",
+  },
+  {
+    id: "f56ddd3f-3a25-4e95-8673-29a969b3141c",
+    name: "louis vuitton",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712330751/f56ddd3f-3a25-4e95-8673-29a969b3141c.png",
+    country: "france",
+  },
+  {
+    id: "ff4a6c5b-a93a-40d6-9cf2-8e1d3bf9ecdb",
+    name: "gap",
+    logo: "https://res.cloudinary.com/dtghsmx0s/image/upload/v1712331317/ff4a6c5b-a93a-40d6-9cf2-8e1d3bf9ecdb.png",
+    country: "united states",
+  },
+];
+
+export default brands;
