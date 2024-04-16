@@ -19,34 +19,34 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import verifyAction from "./verifyAction";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { redirect, useSearchParams } from "next/navigation";
+import resetPasswordAction from "../resetPasswordAction";
 
 const FormSchema = z.object({
   pin: z.string().min(4, {
     message: "Your one-time password must be 4 characters.",
   }),
   email: z.string(),
+  password: z.string(),
+  confirmPassword: z.string(),
 });
 
 export default function InputOTPForm() {
-  const [errorMessage, dispatch] = useFormState(verifyAction, undefined);
+  const [errorMessage, dispatch] = useFormState(resetPasswordAction, undefined);
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
-
-  if (email === "" || !email) {
-    redirect("/auth/login");
-  }
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       pin: "",
       email,
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -71,8 +71,7 @@ export default function InputOTPForm() {
                   </InputOTP>
                 </FormControl>
                 <FormDescription>
-                  Please enter the one-time password sent to your email{" "}
-                  <span className="font-bold">{email}</span>
+                  Please enter the one-time password sent to your email <span className="font-bold">{email}</span>.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -86,6 +85,32 @@ export default function InputOTPForm() {
                 <FormLabel className="sr-only">One-Time Password</FormLabel>
                 <FormControl>
                   <Input className="hidden" maxLength={6} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

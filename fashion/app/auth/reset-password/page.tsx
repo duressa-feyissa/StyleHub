@@ -14,17 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import verifyAction from "./verifyAction";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { redirect, useSearchParams } from "next/navigation";
+import { sendResetPasswordCodeAction } from "./resetPasswordAction";
 
 const FormSchema = z.object({
   pin: z.string().min(4, {
@@ -34,18 +29,16 @@ const FormSchema = z.object({
 });
 
 export default function InputOTPForm() {
-  const [errorMessage, dispatch] = useFormState(verifyAction, undefined);
+  const [errorMessage, dispatch] = useFormState(
+    sendResetPasswordCodeAction,
+    undefined
+  );
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
-
-  if (email === "" || !email) {
-    redirect("/auth/login");
-  }
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      pin: "",
       email,
     },
   });
@@ -56,36 +49,12 @@ export default function InputOTPForm() {
         <form action={dispatch} className="space-y-6">
           <FormField
             control={form.control}
-            name="pin"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>One-Time Password</FormLabel>
-                <FormControl>
-                  <InputOTP maxLength={4} {...field}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </FormControl>
-                <FormDescription>
-                  Please enter the one-time password sent to your email{" "}
-                  <span className="font-bold">{email}</span>
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">One-Time Password</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input className="hidden" maxLength={6} {...field} />
+                  <Input {...field} className="w-full" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

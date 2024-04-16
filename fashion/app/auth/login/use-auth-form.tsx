@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useFormState, useFormStatus } from "react-dom";
 import loginAction from "./loginAction";
+import Link from "next/link";
 
 const loginFormSchema = z.object({
   email: z.string({
@@ -78,6 +79,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
             />
           </div>
+          <p className="text-sm text-muted-foreground flex justify-end gap-2">
+            <Link href="/auth/reset-password" className="text-primary hover:underline">
+              Forgot password?
+            </Link>
+          </p>
           <div>
             {errorMessage && (
               <p className="text-red-600 dark:text-blue-800">{errorMessage}</p>
