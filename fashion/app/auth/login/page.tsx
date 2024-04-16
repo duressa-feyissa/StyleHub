@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { UserAuthForm } from "./use-auth-form";
-import { getSession } from "@/app/lib/actions";
 
 export default async function Login() {
-  const session = await getSession();
   return (
     <>
       <div className="lg:p-8 h-screen  content-center">

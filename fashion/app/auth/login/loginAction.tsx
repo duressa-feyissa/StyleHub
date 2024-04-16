@@ -12,7 +12,7 @@ export default async function loginAction(
   const password = formData.get("password");
 
   //  Send to our api route
-  const res = await fetch(process.env.ROOT_URL + "/api/Authentication/Login", {
+  const res = await fetch(`${process.env.ROOT_URL}/api/Authentication/Login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export default async function loginAction(
 
   // Redirect to login if success
   if (res.ok) {
-    cookies().set("session",  JSON.stringify(json?.data), {
+    cookies().set("session", JSON.stringify(json?.data), {
       secure: true,
       httpOnly: true,
       expires: Date.now() + 24 * 60 * 60 * 1000 * 3,
@@ -37,11 +37,8 @@ export default async function loginAction(
       sameSite: "strict",
     });
 
-    console.log(json, "Logged in successfully");
-
     redirect("/filter");
   } else {
-    console.error(json.Message, "Error logging in");
     return json.Message;
   }
 }

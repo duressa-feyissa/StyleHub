@@ -6,11 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Github, Loader2 } from "lucide-react";
+import { useFormState, useFormStatus } from "react-dom";
+import signupAction from "./signupAction";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [errorMessage, dispatch] = useFormState(signupAction, undefined);
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -23,30 +26,29 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form action={dispatch}>
         <div className="grid gap-4">
           <div className="grid gap-4 grid-cols-2">
-            <Label className="sr-only" htmlFor="email">
-              Email
+            <Label className="sr-only" htmlFor="firstName">
+              First Name
             </Label>
             <Input
-              id="email"
+              id="firstName"
               placeholder="First Name"
-              type="email"
+              type="text"
+              name="firstName"
               autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
               disabled={isLoading}
             />
-            <Label className="sr-only" htmlFor="email">
-              Email
+            <Label className="sr-only" htmlFor="lastName">
+              Last Name
             </Label>
             <Input
-              id="email"
+              id="lastName"
               placeholder="Last Name"
-              type="email"
+              type="text"
+              name="lastName"
               autoCapitalize="none"
-              autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
             />
@@ -59,6 +61,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               id="email"
               placeholder="name@example.com"
               type="email"
+              name="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
@@ -66,23 +69,23 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
+            <Label className="sr-only" htmlFor="password">
+              Password
             </Label>
             <Input
-              id="email"
+              id="password"
               placeholder="Password"
-              type="email"
+              type="password"
+              name="password"
               autoCapitalize="none"
-              autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
             />
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Sign Up with Email
-          </Button>
+          {errorMessage && (
+              <p className="text-red-600 dark:text-blue-800">{errorMessage}</p>
+            )}
+          <SignupButton />
         </div>
       </form>
       <div className="relative">
@@ -104,5 +107,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         GitHub
       </Button>
     </div>
+  );
+}
+
+function SignupButton() {
+  const { pending } = useFormStatus();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (pending) {
+      event.preventDefault();
+    }
+  };
+
+  return (
+    <Button aria-disabled={pending} type="submit" onClick={handleClick}>
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      Login
+    </Button>
   );
 }

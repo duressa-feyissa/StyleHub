@@ -10,7 +10,6 @@ export async function logout() {
 export async function getSession() {
   const session = cookies().get("session")?.value;
   if (!session) return null;
-  console.log("Session", JSON.parse(session));
 
   return JSON.parse(session);
 }

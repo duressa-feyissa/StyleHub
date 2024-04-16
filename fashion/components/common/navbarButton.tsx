@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 
 export default async function NavbarButton() {
   const session = await getSession();
-  console.log(session);
   return (
     <>
       {session ? (
