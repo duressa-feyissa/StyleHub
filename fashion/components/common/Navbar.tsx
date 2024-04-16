@@ -3,6 +3,8 @@ import Logo from "./Logo";
 import Search from "./Search";
 import { Button } from "../ui/button";
 import { ModeToggle } from "@/components/modetoggle";
+import NavbarButton from "./navbarButton";
+
 const Navbar = () => {
   return (
     <div className="bg-surfaceContainerLow">
@@ -13,9 +15,7 @@ const Navbar = () => {
           <Link href="/shops">
             <Button variant="outline">Shops</Button>
           </Link>
-          <Link href="/signup">
-            <Button>Sign Up</Button>
-          </Link>
+          <NavbarButton />
           <ModeToggle />
         </div>
       </div>

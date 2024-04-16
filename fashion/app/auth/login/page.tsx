@@ -5,7 +5,7 @@ import { getSession } from "@/app/lib/actions";
 export default async function Login() {
   const session = await getSession();
   return (
-    <><pre>{JSON.stringify(session, null, 2)}</pre>
+    <>
       <div className="lg:p-8 h-screen  content-center">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] p-5">
           <div className="flex flex-col space-y-2 text-center">

@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { authenticate } from "@/app/lib/actions";
 import { useFormState, useFormStatus } from "react-dom";
+import loginAction from "./loginAction";
 
 const loginFormSchema = z.object({
   email: z.string({
@@ -34,7 +34,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const [errorMessage, dispatch] = useFormState(loginAction, undefined);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -52,7 +52,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      {/* onSubmit={onSubmit} */}
       <form action={dispatch}>
         <div className="grid gap-4">
           <div className="grid gap-2">
