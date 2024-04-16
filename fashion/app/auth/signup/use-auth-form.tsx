@@ -122,7 +122,7 @@ function SignupButton() {
   return (
     <Button aria-disabled={pending} type="submit" onClick={handleClick}>
       {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      Login
+      SignUp
     </Button>
   );
 }

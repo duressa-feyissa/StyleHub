@@ -1,5 +1,7 @@
 "use server";
+import { sendVerificationCode } from "@/app/lib/actions";
 import { redirect } from "next/navigation";
+import { send } from "process";
 
 export default async function signupAction(
   currentState: any,
@@ -34,8 +36,13 @@ export default async function signupAction(
 
   // Redirect to login if registration is success
   if (res.ok) {
-    redirect("/auth/login");
+    await sendVerificationCode(json.data.email);
+    redirect("/auth/verify-email?email=" + json.data.email);
   } else {
+    if (json.Message === "Email not verified") {
+      await sendVerificationCode(email as string);
+      redirect("/auth/verify-email?email=" + email);
+    }
     return json.Message;
   }
 }
