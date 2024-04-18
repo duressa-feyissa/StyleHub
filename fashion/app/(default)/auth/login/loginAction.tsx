@@ -1,6 +1,6 @@
 "use server";
 
-import { sendVerificationCode } from "@/app/lib/actions";
+import { sendVerificationCode } from "@/lib/actions";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -40,7 +40,7 @@ export default async function loginAction(
 
     redirect("/filter");
   } else {
-    if(json.Message === "Email not verified") {
+    if (json.Message === "Email not verified") {
       await sendVerificationCode(email as string);
       redirect("/auth/verify-email?email=" + email);
     }

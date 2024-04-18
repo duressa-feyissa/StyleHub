@@ -1,5 +1,5 @@
 "use server";
-import { sendVerificationCode } from "@/app/lib/actions";
+import { sendVerificationCode } from "@/lib/actions";
 import { redirect } from "next/navigation";
 
 export default async function verifyAction(
