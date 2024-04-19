@@ -260,7 +260,7 @@ export default function Dashboard() {
                 className="overflow-hidden rounded-full"
               >
                 <Image
-                  src="/placeholder-user.jpg"
+                  src="/next.svg"
                   width={36}
                   height={36}
                   alt="Avatar"
@@ -328,11 +328,11 @@ export default function Dashboard() {
                         />
                       </div>
                       <div className="grid gap-6 grid-cols-2">
-                        <div>
+                        <div className="grid gap-3">
                           <Label htmlFor="price">Price</Label>
                           <Input id="price" type="number" placeholder="99.99" />
                         </div>
-                        <div>
+                        <div className="grid gap-3">
                           <Label htmlFor="quantity">Quantity</Label>
                           <Input
                             id="quantity"
@@ -376,7 +376,39 @@ export default function Dashboard() {
                           </Select>
                         </div>
                       </div>
-                      <div className="grid gap-6 grid-cols-2">
+                      <div className="grid gap-6 md:grid-cols-3">
+                        <div className="grid gap-3">
+                          <Label htmlFor="location">Location</Label>
+                          <Select>
+                            <SelectTrigger
+                              id="location"
+                              aria-label="Select location"
+                            >
+                              <SelectValue placeholder="Select location" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="new">Addis Ababa</SelectItem>
+                              <SelectItem value="open">Adama</SelectItem>
+                              <SelectItem value="used">Bishoftu</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="grid gap-3">
+                          <Label htmlFor="location">Location</Label>
+                          <Select>
+                            <SelectTrigger
+                              id="location"
+                              aria-label="Select location"
+                            >
+                              <SelectValue placeholder="Select location" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="new">Addis Ababa</SelectItem>
+                              <SelectItem value="open">Adama</SelectItem>
+                              <SelectItem value="used">Bishoftu</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                         <div className="flex items-center space-x-2">
                           <Checkbox id="isNegotiable" />
                           <Label
@@ -386,15 +418,83 @@ export default function Dashboard() {
                             Negotiable
                           </Label>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox id="isPublished" />
-                          <Label
-                            htmlFor="isPublished"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card x-chunk="dashboard-07-chunk-2">
+                  <CardHeader>
+                    <CardTitle>Product Category</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div className="grid gap-3">
+                        <Label htmlFor="category">Category</Label>
+                        <Select>
+                          <SelectTrigger
+                            id="category"
+                            aria-label="Select category"
                           >
-                            Published
-                          </Label>
-                        </div>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="clothing">Clothing</SelectItem>
+                            <SelectItem value="electronics">
+                              Electronics
+                            </SelectItem>
+                            <SelectItem value="accessories">
+                              Accessories
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-3">
+                        <Label htmlFor="size">Size</Label>
+                        <Select>
+                          <SelectTrigger id="size" aria-label="Select size">
+                            <SelectValue placeholder="Select size" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="t-shirts">T-Shirts</SelectItem>
+                            <SelectItem value="hoodies">Hoodies</SelectItem>
+                            <SelectItem value="sweatshirts">
+                              Sweatshirts
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-3">
+                        <Label htmlFor="color">Color</Label>
+                        <Select>
+                          <SelectTrigger id="color" aria-label="Select color">
+                            <SelectValue placeholder="Select color" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="t-shirts">T-Shirts</SelectItem>
+                            <SelectItem value="hoodies">Hoodies</SelectItem>
+                            <SelectItem value="sweatshirts">
+                              Sweatshirts
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-3">
+                        <Label htmlFor="material">Material</Label>
+                        <Select>
+                          <SelectTrigger
+                            id="material"
+                            aria-label="Select material"
+                          >
+                            <SelectValue placeholder="Select material" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="t-shirts">T-Shirts</SelectItem>
+                            <SelectItem value="hoodies">Hoodies</SelectItem>
+                            <SelectItem value="sweatshirts">
+                              Sweatshirts
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </CardContent>
@@ -535,75 +635,6 @@ export default function Dashboard() {
                     </Button>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-07-chunk-2">
-                  <CardHeader>
-                    <CardTitle>Product Category</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-6 sm:grid-cols-3">
-                      <div className="grid gap-3">
-                        <Label htmlFor="category">Category</Label>
-                        <Select>
-                          <SelectTrigger
-                            id="category"
-                            aria-label="Select category"
-                          >
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="clothing">Clothing</SelectItem>
-                            <SelectItem value="electronics">
-                              Electronics
-                            </SelectItem>
-                            <SelectItem value="accessories">
-                              Accessories
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="grid gap-3">
-                        <Label htmlFor="subcategory">
-                          Subcategory (optional)
-                        </Label>
-                        <Select>
-                          <SelectTrigger
-                            id="subcategory"
-                            aria-label="Select subcategory"
-                          >
-                            <SelectValue placeholder="Select subcategory" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="t-shirts">T-Shirts</SelectItem>
-                            <SelectItem value="hoodies">Hoodies</SelectItem>
-                            <SelectItem value="sweatshirts">
-                              Sweatshirts
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="grid gap-3">
-                        <Label htmlFor="subcategory">
-                          Subcategory (optional)
-                        </Label>
-                        <Select>
-                          <SelectTrigger
-                            id="subcategory"
-                            aria-label="Select subcategory"
-                          >
-                            <SelectValue placeholder="Select subcategory" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="t-shirts">T-Shirts</SelectItem>
-                            <SelectItem value="hoodies">Hoodies</SelectItem>
-                            <SelectItem value="sweatshirts">
-                              Sweatshirts
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
               <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
                 <Card x-chunk="dashboard-07-chunk-3">
@@ -644,7 +675,7 @@ export default function Dashboard() {
                         alt="Product image"
                         className="aspect-square w-full rounded-md object-cover"
                         height="300"
-                        src="/placeholder.svg"
+                        src="/vercel.svg"
                         width="300"
                       />
                       <div className="grid grid-cols-3 gap-2">
@@ -653,7 +684,7 @@ export default function Dashboard() {
                             alt="Product image"
                             className="aspect-square w-full rounded-md object-cover"
                             height="84"
-                            src="/placeholder.svg"
+                            src="/vercel.svg"
                             width="84"
                           />
                         </button>
@@ -662,7 +693,7 @@ export default function Dashboard() {
                             alt="Product image"
                             className="aspect-square w-full rounded-md object-cover"
                             height="84"
-                            src="/placeholder.svg"
+                            src="/vercel.svg"
                             width="84"
                           />
                         </button>

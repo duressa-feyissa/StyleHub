@@ -15,7 +15,7 @@ export default async function signupAction(
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Register`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Register`,
     {
       method: "POST",
       headers: {

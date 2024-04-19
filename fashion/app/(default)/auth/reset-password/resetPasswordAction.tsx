@@ -19,7 +19,7 @@ export default async function resetPasswordAction(
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Reset-Password`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Reset-Password`,
     {
       method: "POST",
       headers: {
@@ -52,7 +52,7 @@ export async function sendResetPasswordCodeAction(
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Send-Reset-Password-Code`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Send-Reset-Password-Code`,
     {
       method: "POST",
       headers: {

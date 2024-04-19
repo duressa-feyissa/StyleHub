@@ -13,18 +13,21 @@ export default async function loginAction(
   const password = formData.get("password");
 
   //  Send to our api route
-  const res = await fetch(`${process.env.ROOT_URL}/api/Authentication/Login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      loginRequest: {
-        email: email,
-        password: password,
+  const res = await fetch(
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    }),
-  });
+      body: JSON.stringify({
+        loginRequest: {
+          email: email,
+          password: password,
+        },
+      }),
+    }
+  );
 
   const json = await res.json();
 
