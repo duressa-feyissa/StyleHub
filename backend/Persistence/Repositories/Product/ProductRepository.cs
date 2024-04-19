@@ -1,29 +1,21 @@
-using System.Reflection;
-using Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories.Product
+namespace backend.Persistence.Repositories.Product
 {
-    public class ProductRepository
-        : GenericRepository<Domain.Entities.Product.Product>,
+    public class ProductRepository(StyleHubDBContext context)
+        : GenericRepository<Domain.Entities.Product.Product>(context),
             IProductRepository
     {
-        private readonly StyleHubDBContext _context;
-
-        public ProductRepository(StyleHubDBContext context)
-            : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<Domain.Entities.Product.Product> GetById(string id)
         {
-            var product = await _context
+            var product = await context
                 .Products.Include(p => p.Brand)
                 .Include(p => p.User)
-                .Include(p => p.Images)
+                .Include(p => p.ProductImages)
+                .ThenInclude(pi => pi.Image)
                 .Include(p => p.ProductColors)
                 .ThenInclude(pc => pc.Color)
                 .Include(p => p.ProductMaterials)
@@ -63,8 +55,8 @@ namespace Persistence.Repositories.Product
             int limit = 10
         )
         {
-            IQueryable<Domain.Entities.Product.Product> query = _context
-                .Products.Include(p => p.Images)
+            IQueryable<Domain.Entities.Product.Product> query = context
+                .Products
                 .Include(p => p.Brand)
                 .Include(p => p.User)
                 .Include(p => p.ProductColors)
@@ -75,6 +67,8 @@ namespace Persistence.Repositories.Product
                 .ThenInclude(ps => ps.Size)
                 .Include(p => p.ProductCategories)
                 .ThenInclude(pc => pc.Category)
+                .Include(p => p.ProductImages)
+                .ThenInclude(pi => pi.Image)
                 .AsSplitQuery()
                 .AsNoTracking();
             query = query.Where(p => p.IsPublished);
@@ -249,9 +243,9 @@ namespace Persistence.Repositories.Product
         {
             Console.WriteLine($"Fetching products by user {userId}");
             Console.WriteLine($"Skip: {skip}, Limit: {limit}");
-            var products = await _context
+            var products = await context
                 .Products.Include(p => p.Brand)
-                .Include(p => p.Images)
+          
                 .Include(p => p.User)
                 .Include(p => p.ProductColors)
                 .ThenInclude(pc => pc.Color)
@@ -261,6 +255,8 @@ namespace Persistence.Repositories.Product
                 .ThenInclude(ps => ps.Size)
                 .Include(p => p.ProductCategories)
                 .ThenInclude(pc => pc.Category)
+                .Include(p => p.ProductImages)
+                .ThenInclude(pi => pi.Image)
                 .AsSplitQuery()
                 .AsNoTracking()
                 .Where(p => p.User.Id == userId)

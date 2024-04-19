@@ -1,29 +1,21 @@
 using System.Security.Claims;
-using Application.DTO.User.UserDTO.DTO;
-using Application.Features.User_Features.User.Requests.Command;
-using Application.Features.User_Features.User.Requests.Commands;
-using Application.Features.User_Features.User.Requests.Queries;
+using backend.Application.DTO.User.UserDTO.DTO;
+using backend.Application.Features.User_Features.User.Requests.Command;
+using backend.Application.Features.User_Features.User.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.User
+namespace backend.WebApi.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public UserController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetAllUserRequest request)
         {
-            var result = await _mediator.Send(request);
+            var result = await mediator.Send(request);
             return Ok(result);
         }
 
@@ -32,7 +24,7 @@ namespace WebApi.Controllers.User
         public async Task<IActionResult> GetById(string id)
         {
             var request = new GetUserByIdRequest { Id = id };
-            var result = await _mediator.Send(request);
+            var result = await mediator.Send(request);
             return Ok(result);
         }
 
@@ -42,7 +34,7 @@ namespace WebApi.Controllers.User
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             var request = new GetUserByIdRequest { Id = userId };
-            var result = await _mediator.Send(request);
+            var result = await mediator.Send(request);
             return Ok(result);
         }
 
@@ -52,7 +44,7 @@ namespace WebApi.Controllers.User
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             var request = new DeleteUserProfileRequest { Id = userId };
-            await _mediator.Send(request);
+            await mediator.Send(request);
             return NoContent();
         }
 
@@ -66,7 +58,7 @@ namespace WebApi.Controllers.User
                 Id = userId,
                 updateUserProfileDTO = request
             };
-            var result = await _mediator.Send(updateRequest);
+            var result = await mediator.Send(updateRequest);
             return Ok(result);
         }
     }

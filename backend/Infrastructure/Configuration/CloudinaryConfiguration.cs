@@ -1,7 +1,7 @@
+using backend.Infrastructure.Models;
 using CloudinaryDotNet;
-using Infrastructure.Models;
 
-namespace Infrastructure.Configuration
+namespace backend.Infrastructure.Configuration
 {
 	public static class CloudinaryConfiguration
 	{

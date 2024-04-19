@@ -1,6 +1,6 @@
-using Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.Contracts.Persistence.Repositories.Common;
 
-namespace Application.Contracts.Persistence.Repositories.Product
+namespace backend.Application.Contracts.Persistence.Repositories.Product
 {
 	public interface IProductRepository : IGenericRepository<Domain.Entities.Product.Product>
 	{

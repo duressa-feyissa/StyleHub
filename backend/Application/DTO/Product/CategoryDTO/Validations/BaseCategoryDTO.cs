@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.DTO.Product.CategoryDTO.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.DTO.Product.CategoryDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Product.CategoryDTO.Validations
+namespace backend.Application.DTO.Product.CategoryDTO.Validations
 {
     public class BaseCategoryValidation : AbstractValidator<CreateCategoryDTO>
     {

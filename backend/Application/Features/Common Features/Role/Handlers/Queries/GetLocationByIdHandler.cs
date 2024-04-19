@@ -1,24 +1,15 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Common.Role.DTO;
-using Application.Exceptions;
-using Application.Features.Common_Features.Role.Requests.Queries;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Common.Role.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Common_Features.Role.Requests.Queries;
 using MediatR;
 
-namespace Application.Features.Common_Features.Role.Handlers.Queries
+namespace backend.Application.Features.Common_Features.Role.Handlers.Queries
 {
-    public class GetRoleByIdHandler : IRequestHandler<GetRoleById, RoleResponseDTO>
+    public class GetRoleByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetRoleById, RoleResponseDTO>
     {
-        private readonly IMapper _mapper;
-
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetRoleByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<RoleResponseDTO> Handle(
             GetRoleById request,
             CancellationToken cancellationToken
@@ -29,12 +20,12 @@ namespace Application.Features.Common_Features.Role.Handlers.Queries
                 throw new BadRequestException("Id is required");
             }
 
-            var Role = await _unitOfWork.RoleRepository.GetById(request.Id);
+            var Role = await unitOfWork.RoleRepository.GetById(request.Id);
             if (Role == null)
             {
                 throw new NotFoundException("Role with that {request.Id} does not exist");
             }
-            var RoleResponse = _mapper.Map<RoleResponseDTO>(Role);
+            var RoleResponse = mapper.Map<RoleResponseDTO>(Role);
             return RoleResponse;
         }
     }

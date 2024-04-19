@@ -1,7 +1,7 @@
-using Application.DTO.Product.CategoryDTO.DTO;
+using backend.Application.DTO.Product.CategoryDTO.DTO;
 using MediatR;
 
-namespace Application.Features.Product_Features.Category.Requests.Queries
+namespace backend.Application.Features.Product_Features.Category.Requests.Queries
 {
     public class GetCategoryById : IRequest<CategoryResponseDTO>
     {

@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.DTO.Product.SizeDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Product.SizeDTO.Validations
+namespace backend.Application.DTO.Product.SizeDTO.Validations
 {
     public class CreateSizeValidation : AbstractValidator<CreateSizeDTO>
     {

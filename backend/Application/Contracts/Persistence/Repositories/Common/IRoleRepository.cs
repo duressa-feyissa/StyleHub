@@ -1,6 +1,6 @@
-using Domain.Entities.Common;
+using backend.Domain.Entities.Common;
 
-namespace Application.Contracts.Persistence.Repositories.Common
+namespace backend.Application.Contracts.Persistence.Repositories.Common
 {
 	public interface IRoleRepository : IGenericRepository<Role>
 	{

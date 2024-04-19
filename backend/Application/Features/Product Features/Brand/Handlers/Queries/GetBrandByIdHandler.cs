@@ -1,26 +1,15 @@
-using MediatR;
 using AutoMapper;
-using Application.Exceptions;
-using Application.DTO.Product.BrandDTO.DTO;
-using Application.Contracts.Persistance.Repositories;
-using Application.Features.Product_Features.Brand.Requests.Queries;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Brand.Requests.Queries;
+using MediatR;
 
-namespace Application.Features.Product_Features.Brand.Handlers.Queries
+namespace backend.Application.Features.Product_Features.Brand.Handlers.Queries
 {
-    public class GetBrandByIdHandler : IRequestHandler<GetBrandById, BrandResponseDTO>
+    public class GetBrandByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetBrandById, BrandResponseDTO>
     {
-
-        private readonly IMapper _mapper;
-
-
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetBrandByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<BrandResponseDTO> Handle(GetBrandById request, CancellationToken cancellationToken)
         {
             if (request.Id == null || request.Id.Length == 0)
@@ -28,12 +17,12 @@ namespace Application.Features.Product_Features.Brand.Handlers.Queries
                 throw new BadRequestException("Id is required");
             }
 
-            var Brand = await _unitOfWork.BrandRepository.GetById(request.Id);
+            var Brand = await unitOfWork.BrandRepository.GetById(request.Id);
             if (Brand == null)
             {
                 throw new NotFoundException("Brand with that {request.Id} does not exist");
             }
-            var BrandResponse = _mapper.Map<BrandResponseDTO>(Brand);
+            var BrandResponse = mapper.Map<BrandResponseDTO>(Brand);
             return BrandResponse;
         }
 

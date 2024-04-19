@@ -1,8 +1,7 @@
-using Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
 using MediatR;
-using Mysqlx.Session;
 
-namespace Application.Features.User_Features.Authentication.Requests.Commands
+namespace backend.Application.Features.User_Features.Authentication.Requests.Commands
 {
 	public class ResetPasswordRequest : IRequest< AuthenticationResponseDTO>
 	{

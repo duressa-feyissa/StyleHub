@@ -1,32 +1,20 @@
-using Application.Contracts.Infrastructure.Repositories;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.CategoryDTO.DTO;
-using Application.Exceptions;
-using Application.Features.Product_Features.Category.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Infrastructure.Repositories;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.CategoryDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Category.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Category.Handlers.Commands
+namespace backend.Application.Features.Product_Features.Category.Handlers.Commands
 {
-    public class DeleteCategoryHandler
+    public class DeleteCategoryHandler(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IImageRepository imageRepository)
         : IRequestHandler<DeleteCategoryRequest, BaseResponse<CategoryResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IImageRepository _imageRepository;
-
-        public DeleteCategoryHandler(
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IImageRepository imageRepository
-        )
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _imageRepository = imageRepository;
-        }
-
         public async Task<BaseResponse<CategoryResponseDTO>> Handle(
             DeleteCategoryRequest request,
             CancellationToken cancellationToken
@@ -35,22 +23,22 @@ namespace Application.Features.Product_Features.Category.Handlers.Commands
             if (request.Id.Length == 0)
                 throw new BadRequestException("Invalid Category Id");
 
-            var Category = await _unitOfWork.CategoryRepository.GetById(request.Id);
+            var Category = await unitOfWork.CategoryRepository.GetById(request.Id);
 
             if (Category == null)
                 throw new NotFoundException("Category Not Found");
 
-            var isDeleted = await _imageRepository.Delete(Category.Id);
+            var isDeleted = await imageRepository.Delete(Category.Id);
             if (!isDeleted)
                 throw new BadRequestException("Failed to delete Category");
 
-            await _unitOfWork.CategoryRepository.Delete(Category);
+            await unitOfWork.CategoryRepository.Delete(Category);
 
             return new BaseResponse<CategoryResponseDTO>
             {
                 Message = "Category Deleted Successfully",
                 Success = true,
-                Data = _mapper.Map<CategoryResponseDTO>(Category)
+                Data = mapper.Map<CategoryResponseDTO>(Category)
             };
         }
     }

@@ -1,4 +1,4 @@
-namespace Application.DTO.User.UserDTO.DTO
+namespace backend.Application.DTO.User.UserDTO.DTO
 {
     public class UpdateUserProfileDTO
     {

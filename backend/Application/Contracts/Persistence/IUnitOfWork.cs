@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.Contracts.Persistence.Repositories.User;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.User;
 
-namespace Application.Contracts.Persistance.Repositories
+namespace backend.Application.Contracts.Persistence
 {
 	public interface IUnitOfWork
 	{

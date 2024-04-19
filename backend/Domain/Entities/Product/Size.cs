@@ -1,7 +1,7 @@
 
-using Domain.Common;
+using backend.Domain.Common;
 
-namespace Domain.Entities.Product
+namespace backend.Domain.Entities.Product
 {
     public class Size : BaseEntity
     {

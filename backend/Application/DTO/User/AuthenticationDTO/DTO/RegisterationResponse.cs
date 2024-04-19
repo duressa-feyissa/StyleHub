@@ -1,4 +1,4 @@
-namespace Application.DTO.User.AuthenticationDTO.Validations
+namespace backend.Application.DTO.User.AuthenticationDTO.DTO
 {
     public class RegisterationResponseDTO
     {

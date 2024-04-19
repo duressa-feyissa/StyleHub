@@ -1,4 +1,4 @@
-namespace Application.DTO.Common.Image.DTO
+namespace backend.Application.DTO.Common.Image.DTO
 {
     public class ImageResponseDTO
     {

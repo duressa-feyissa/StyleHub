@@ -1,44 +1,32 @@
-using Application.Contracts.Infrastructure.Repositories;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.BrandDTO.DTO;
-using Application.Exceptions;
-using Application.Features.Product_Features.Brand.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Infrastructure.Repositories;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Brand.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Brand.Handlers.Commands
+namespace backend.Application.Features.Product_Features.Brand.Handlers.Commands
 {
-    public class UpdateBrandHandler
+    public class UpdateBrandHandler(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IImageRepository imageRepository)
         : IRequestHandler<UpdateBrandRequest, BaseResponse<BrandResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IImageRepository _imageRepository;
-
-        public UpdateBrandHandler(
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IImageRepository imageRepository
-        )
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _imageRepository = imageRepository;
-        }
-
         public async Task<BaseResponse<BrandResponseDTO>> Handle(
             UpdateBrandRequest request,
             CancellationToken cancellationToken
         )
         {
-            var existingBrand = await _unitOfWork.BrandRepository.GetById(request.Id);
+            var existingBrand = await unitOfWork.BrandRepository.GetById(request.Id);
             if (existingBrand == null)
                 throw new NotFoundException("Brand Not Found");
 
             if (request?.Brand?.Name != null)
             {
-                var existingBrandName = await _unitOfWork.BrandRepository.GetByName(
+                var existingBrandName = await unitOfWork.BrandRepository.GetByName(
                     request.Brand.Name
                 );
                 if (existingBrandName != null && existingBrandName.Id != existingBrand.Id)
@@ -49,7 +37,7 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
             }
 
             if (request?.Brand?.Logo != null)
-                existingBrand.Logo = await _imageRepository.Update(
+                existingBrand.Logo = await imageRepository.Update(
                     request.Brand.Logo,
                     existingBrand.Id
                 );
@@ -58,13 +46,13 @@ namespace Application.Features.Product_Features.Brand.Handlers.Commands
                 existingBrand.Country = request.Brand.Country.ToLower();
 
             existingBrand.UpdatedAt = DateTime.Now;
-            await _unitOfWork.BrandRepository.Update(existingBrand);
+            await unitOfWork.BrandRepository.Update(existingBrand);
 
             return new BaseResponse<BrandResponseDTO>
             {
                 Message = "Brand Updated Successfully",
                 Success = true,
-                Data = _mapper.Map<BrandResponseDTO>(existingBrand)
+                Data = mapper.Map<BrandResponseDTO>(existingBrand)
             };
         }
     }

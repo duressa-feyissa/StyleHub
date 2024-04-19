@@ -1,26 +1,15 @@
-using MediatR;
 using AutoMapper;
-using Application.Exceptions;
-using Application.DTO.Product.MaterialDTO.DTO;
-using Application.Contracts.Persistance.Repositories;
-using Application.Features.Product_Features.Material.Requests.Queries;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Material.Requests.Queries;
+using MediatR;
 
-namespace Application.Features.Product_Features.Material.Handlers.Queries
+namespace backend.Application.Features.Product_Features.Material.Handlers.Queries
 {
-    public class GetMaterialByIdHandler : IRequestHandler<GetMaterialById, MaterialResponseDTO>
+    public class GetMaterialByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetMaterialById, MaterialResponseDTO>
     {
-
-        private readonly IMapper _mapper;
-
-
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetMaterialByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<MaterialResponseDTO> Handle(GetMaterialById request, CancellationToken cancellationToken)
         {
             if (request.Id == null || request.Id.Length == 0)
@@ -28,12 +17,12 @@ namespace Application.Features.Product_Features.Material.Handlers.Queries
                 throw new BadRequestException("Id is required");
             }
 
-            var Material = await _unitOfWork.MaterialRepository.GetById(request.Id);
+            var Material = await unitOfWork.MaterialRepository.GetById(request.Id);
             if (Material == null)
             {
                 throw new NotFoundException("Material with that {request.Id} does not exist");
             }
-            var MaterialResponse = _mapper.Map<MaterialResponseDTO>(Material);
+            var MaterialResponse = mapper.Map<MaterialResponseDTO>(Material);
             return MaterialResponse;
         }
 

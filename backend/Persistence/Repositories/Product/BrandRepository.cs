@@ -1,33 +1,27 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Domain.Entities.Product;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories.Product
+namespace backend.Persistence.Repositories.Product
 {
-    public class BrandRepository : GenericRepository<Brand>, IBrandRepository
+    public class BrandRepository(StyleHubDBContext context) : GenericRepository<Brand>(context), IBrandRepository
     {
-        StyleHubDBContext _context;
-        public BrandRepository(StyleHubDBContext context) : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<IReadOnlyList<Brand>> GetAll()
         {
-            return await _context.Brands.ToListAsync();
+            return await context.Brands.ToListAsync();
         }
 
         public async Task<Brand> GetById(string id)
         {
-            var user = await _context.Brands.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await context.Brands.FirstOrDefaultAsync(u => u.Id == id);
             return user!;
         }
 
         public async Task<Brand> GetByName(string name)
         {
-            var brand = await _context.Brands.FirstOrDefaultAsync(u => u.Name == name);
+            var brand = await context.Brands.FirstOrDefaultAsync(u => u.Name == name);
             return brand!;
         }
 

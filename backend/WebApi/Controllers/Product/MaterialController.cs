@@ -1,27 +1,20 @@
-using Application.DTO.Product.MaterialDTO.DTO;
-using Application.Features.Product_Features.Material.Requests.Commands;
-using Application.Features.Product_Features.Material.Requests.Queries;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.Features.Product_Features.Material.Requests.Commands;
+using backend.Application.Features.Product_Features.Material.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace backend.WebApi.Controllers.Product
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MaterialController : ControllerBase
+    public class MaterialController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public MaterialController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<MaterialResponseDTO>>> fetchAllMaterials()
         {
-            var result = await _mediator.Send(new GetAllMaterial());
+            var result = await mediator.Send(new GetAllMaterial());
             return Ok(result);
         }
 
@@ -29,7 +22,7 @@ namespace WebApi.Controllers
         [Authorize]
         public async Task<ActionResult<MaterialResponseDTO>> fetchMaterialById(string id)
         {
-            var result = await _mediator.Send(new GetMaterialById { Id = id });
+            var result = await mediator.Send(new GetMaterialById { Id = id });
             return Ok(result);
         }
 
@@ -39,7 +32,7 @@ namespace WebApi.Controllers
             [FromBody] CreateMaterialRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
 
             return Ok(result);
         }
@@ -50,7 +43,7 @@ namespace WebApi.Controllers
             [FromBody] UpdateMaterialRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
             return Ok(result);
         }
 
@@ -58,7 +51,7 @@ namespace WebApi.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<MaterialResponseDTO>> DeleteMaterialRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteMaterialRequest { Id = id });
+            var result = await mediator.Send(new DeleteMaterialRequest { Id = id });
             return Ok(result);
         }
     }

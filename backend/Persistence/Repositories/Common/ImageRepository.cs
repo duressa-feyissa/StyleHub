@@ -1,41 +1,39 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Domain.Entities.Common;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Domain.Entities.Common;
+using backend.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
 
-namespace Persistence.Repositories.Common
+namespace backend.Persistence.Repositories.Common
 {
-	public class ImageRepository : IImageRepository
+	public class ImageRepository(StyleHubDBContext context) : IImageRepository
 	{
-		StyleHubDBContext _context;
-
-		public ImageRepository(StyleHubDBContext context)
-		{
-			_context = context;
-		}
-
 		public async Task<Image> Add(Image entity)
 		{
-			var result = await _context.Images.AddAsync(entity);
-			await _context.SaveChangesAsync();
+			var result = await context.Images.AddAsync(entity);
+			await context.SaveChangesAsync();
 			return result.Entity;
 		}
 
 		public async Task<Image> Delete(Image entity)
 		{
-			var result = _context.Images.Remove(entity);
-			await _context.SaveChangesAsync();
+			var result = context.Images.Remove(entity);
+			await context.SaveChangesAsync();
 			return result.Entity;
 		}
 
 		public async Task<IReadOnlyList<Image>> GetAll(string userId)
 		{
-			return await _context.Images.Where(i => i.User.Id == userId).ToListAsync();
+			return await context.Images.Where(i => i.User.Id == userId).ToListAsync();
+		}
+
+		public async Task<IReadOnlyList<Image>> GetByIds(List<string> ids)
+		{
+			return await context.Images.Where(i => ids.Contains(i.Id)).ToListAsync();
 		}
 
 		public async Task<Image> GetById(string id)
 		{
-			var result = await  _context.Images.FirstOrDefaultAsync(i => i.Id == id);
+			var result = await  context.Images.FirstOrDefaultAsync(i => i.Id == id);
 			return result!;
 		}
 	}

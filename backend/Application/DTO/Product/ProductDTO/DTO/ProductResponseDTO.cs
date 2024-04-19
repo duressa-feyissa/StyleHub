@@ -1,13 +1,12 @@
-using Application.DTO.Common.Image.DTO;
-using Application.DTO.Common.Location.DTO;
-using Application.DTO.Product.BrandDTO.DTO;
-using Application.DTO.Product.CategoryDTO.DTO;
-using Application.DTO.Product.ColorDTO.DTO;
-using Application.DTO.Product.MaterialDTO.DTO;
-using Application.DTO.Product.SizeDTO.DTO;
-using Application.DTO.User.UserDTO.DTO;
+using backend.Application.DTO.Common.Image.DTO;
+using backend.Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.DTO.Product.CategoryDTO.DTO;
+using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.DTO.User.UserDTO.DTO;
 
-namespace Application.DTO.Product.ProductDTO.DTO
+namespace backend.Application.DTO.Product.ProductDTO.DTO
 {
     public class ProductResponseDTO
     {

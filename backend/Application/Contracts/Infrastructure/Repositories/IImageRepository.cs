@@ -1,4 +1,4 @@
-namespace Application.Contracts.Infrastructure.Repositories
+namespace backend.Application.Contracts.Infrastructure.Repositories
 {
     public interface IImageRepository
     {

@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Application.DTO.Common.Role.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.DTO.Common.Role.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Common.Role.Validations
+namespace backend.Application.DTO.Common.Role.Validations
 {
     public class CreateRoleValidation : AbstractValidator<CreateRoleDTO>
     {

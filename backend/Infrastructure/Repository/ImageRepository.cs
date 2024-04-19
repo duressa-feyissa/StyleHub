@@ -1,26 +1,19 @@
-using Application.Contracts.Infrastructure.Repositories;
-using Application.Exceptions;
+using backend.Application.Contracts.Infrastructure.Repositories;
+using backend.Application.Exceptions;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
-namespace Infrastructure.Repository
+namespace backend.Infrastructure.Repository
 {
-    public class ImageRepository : IImageRepository
+    public class ImageRepository(Cloudinary cloudinary) : IImageRepository
     {
-        private readonly Cloudinary _cloudinary;
-
-        public ImageRepository(Cloudinary cloudinary)
-        {
-            _cloudinary = cloudinary;
-        }
-
         public async Task<bool> Delete(string publicId)
         {
             try
             {
                 var deletionParams = new DeletionParams(publicId);
 
-                var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+                var deletionResult = await cloudinary.DestroyAsync(deletionParams);
 
                 if (deletionResult != null)
                 {
@@ -50,7 +43,7 @@ namespace Infrastructure.Repository
                 BackgroundRemoval = backgroundRemoval ? "cloudinary_ai" : null,
             };
 
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await cloudinary.UploadAsync(uploadParams);
 
             if (uploadResult != null)
             {
@@ -85,7 +78,7 @@ namespace Infrastructure.Repository
                 BackgroundRemoval = backgroundRemoval ? "cloudinary_ai" : null,
             };
 
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await cloudinary.UploadAsync(uploadParams);
 
             if (uploadResult != null)
             {

@@ -1,4 +1,4 @@
-namespace Application.Common
+namespace backend.Application.Common
 {
     public class ApiSettings
     {

@@ -1,13 +1,12 @@
-using System;
 using System.Text;
-using Application.Common;
-using Application.Contracts.Infrastructure.Repositories;
-using Application.Contracts.Infrastructure.Services;
-using Infrastructure.Models;
-using Infrastructure.Repository;
+using backend.Application.Common;
+using backend.Application.Contracts.Infrastructure.Repositories;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Infrastructure.Models;
+using backend.Infrastructure.Repository;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure.Configuration
+namespace backend.Infrastructure.Configuration
 {
     public static class InfrastructureServiceRegistration
     {

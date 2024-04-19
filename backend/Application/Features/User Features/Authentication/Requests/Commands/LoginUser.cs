@@ -1,8 +1,8 @@
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Application.Response;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.User_Features.Authentication.Requests.Commands
+namespace backend.Application.Features.User_Features.Authentication.Requests.Commands
 {
     public class LoginUserRequest : IRequest<BaseResponse<AuthenticationResponseDTO>>
     {

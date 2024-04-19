@@ -1,41 +1,33 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Domain.Entities.Product;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories.Product
+namespace backend.Persistence.Repositories.Product
 {
-    public class SizeRepository : GenericRepository<Size>, ISizeRepository
+    public class SizeRepository(StyleHubDBContext context) : GenericRepository<Size>(context), ISizeRepository
     {
-        StyleHubDBContext _context;
-
-        public SizeRepository(StyleHubDBContext context)
-            : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<IReadOnlyList<Size>> GetAll()
         {
-            return await _context.Sizes.ToListAsync();
+            return await context.Sizes.ToListAsync();
         }
 
         public async Task<Size> GetById(string id)
         {
-            var size = await _context.Sizes.FirstOrDefaultAsync(u => u.Id == id);
+            var size = await context.Sizes.FirstOrDefaultAsync(u => u.Id == id);
             return size!;
         }
 
         public async Task<Size> GetByName(string name)
         {
-            var size = await _context.Sizes.FirstOrDefaultAsync(u => u.Name == name);
+            var size = await context.Sizes.FirstOrDefaultAsync(u => u.Name == name);
             return size!;
         }
 
         public async Task<Size> GetByAbbreviation(string abbreviation)
         {
-            var size = await _context.Sizes.FirstOrDefaultAsync(u =>
+            var size = await context.Sizes.FirstOrDefaultAsync(u =>
                 u.Abbreviation == abbreviation
             );
             return size!;
@@ -43,7 +35,7 @@ namespace Persistence.Repositories.Product
 
         public async Task<IReadOnlyList<Size>> GetByIds(List<string> ids)
         {
-            return await _context.Sizes.Where(c => ids.Contains(c.Id)).ToListAsync();
+            return await context.Sizes.Where(c => ids.Contains(c.Id)).ToListAsync();
         }
     }
 }

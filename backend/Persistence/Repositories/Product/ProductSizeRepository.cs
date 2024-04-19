@@ -1,34 +1,27 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Domain.Entities.Product;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories
+namespace backend.Persistence.Repositories.Product
 {
-    public class ProductSizeRepository : GenericRepository<ProductSize>, IProductSizeRepository
+    public class ProductSizeRepository(StyleHubDBContext context)
+        : GenericRepository<ProductSize>(context), IProductSizeRepository
     {
-        StyleHubDBContext _context;
-
-        public ProductSizeRepository(StyleHubDBContext context)
-            : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<bool> DeleteByProductId(string productId)
         {
-            var productSizes = await _context
+            var productSizes = await context
                 .ProductSizes.Where(u => u.ProductId == productId)
                 .ToListAsync();
-            _context.ProductSizes.RemoveRange(productSizes);
-            await _context.SaveChangesAsync();
+            context.ProductSizes.RemoveRange(productSizes);
+            await context.SaveChangesAsync();
             return true;
         }
 
         public async Task<ProductSize> GetById(string id)
         {
-            var productsize = await _context.ProductSizes.FirstOrDefaultAsync(u => u.Id == id);
+            var productsize = await context.ProductSizes.FirstOrDefaultAsync(u => u.Id == id);
             return productsize!;
         }
     }

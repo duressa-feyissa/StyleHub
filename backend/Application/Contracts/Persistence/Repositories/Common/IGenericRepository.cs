@@ -1,4 +1,4 @@
-namespace Application.Contracts.Persistence.Repositories.Common
+namespace backend.Application.Contracts.Persistence.Repositories.Common
 {
     public interface IGenericRepository<T>
         where T : class

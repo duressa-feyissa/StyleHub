@@ -1,30 +1,25 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Domain.Entities.Product;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories.Product
+namespace backend.Persistence.Repositories.Product
 {
-    public class ProductMaterialRepository : GenericRepository<ProductMaterial>, IProductMaterialRepository
+    public class ProductMaterialRepository(StyleHubDBContext context)
+        : GenericRepository<ProductMaterial>(context), IProductMaterialRepository
     {
-        StyleHubDBContext _context;
-        public ProductMaterialRepository(StyleHubDBContext context) : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<bool> DeleteByProductId(string productId)
         {
-            var productmaterials = await _context.ProductMaterials.Where(u => u.ProductId == productId).ToListAsync();
-            _context.ProductMaterials.RemoveRange(productmaterials);
-            await _context.SaveChangesAsync();
+            var productmaterials = await context.ProductMaterials.Where(u => u.ProductId == productId).ToListAsync();
+            context.ProductMaterials.RemoveRange(productmaterials);
+            await context.SaveChangesAsync();
             return true;
         }
 
         public async Task<ProductMaterial> GetById(string id)
         {
-            var productmaterial = await _context.ProductMaterials.FirstOrDefaultAsync(u => u.Id == id);
+            var productmaterial = await context.ProductMaterials.FirstOrDefaultAsync(u => u.Id == id);
             return productmaterial!;
         }
     }

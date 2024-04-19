@@ -1,28 +1,20 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.Features.Product_Features.Product.Requests.Queries;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Features.Product_Features.Product.Requests.Queries;
 using MediatR;
 
-namespace Application.Features.Product_Features.Product.Handlers.Queries
+namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
 {
-	public class GetAllProductHandler : IRequestHandler<GetAllProduct, List<ProductResponseDTO>>
+	public class GetAllProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
+		: IRequestHandler<GetAllProduct, List<ProductResponseDTO>>
 	{
-		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
-
-		public GetAllProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
-		{
-			_unitOfWork = unitOfWork;
-			_mapper = mapper;
-		}
-
 		public async Task<List<ProductResponseDTO>> Handle(
 			GetAllProduct request,
 			CancellationToken cancellationToken
 		)
 		{
-			var products = await _unitOfWork.ProductRepository.GetAll(
+			var products = await unitOfWork.ProductRepository.GetAll(
 				search: request.Search,
 				brandId: request.BrandId,
 				colorIds: request.ColorIds,
@@ -43,7 +35,7 @@ namespace Application.Features.Product_Features.Product.Handlers.Queries
 				skip: request.Skip,
 				limit: request.Limit
 			);
-			var productResponse = _mapper.Map<List<ProductResponseDTO>>(products);
+			var productResponse = mapper.Map<List<ProductResponseDTO>>(products);
 			return productResponse;
 		}
 	}

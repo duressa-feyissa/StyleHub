@@ -1,8 +1,8 @@
-using Application.DTO.Product.MaterialDTO.DTO;
-using Application.Response;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Material.Requests.Commands
+namespace backend.Application.Features.Product_Features.Material.Requests.Commands
 {
     public class CreateMaterialRequest : IRequest<BaseResponse<MaterialResponseDTO>>
     {

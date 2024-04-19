@@ -1,4 +1,4 @@
-namespace Application.DTO.Common.Role.DTO
+namespace backend.Application.DTO.Common.Role.DTO
 {
     public class CreateRoleDTO
     {

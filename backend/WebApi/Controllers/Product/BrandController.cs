@@ -1,27 +1,20 @@
-using Application.DTO.Product.BrandDTO.DTO;
-using Application.Features.Product_Features.Brand.Requests.Commands;
-using Application.Features.Product_Features.Brand.Requests.Queries;
+using backend.Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.Features.Product_Features.Brand.Requests.Commands;
+using backend.Application.Features.Product_Features.Brand.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace backend.WebApi.Controllers.Product
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BrandController : ControllerBase
+    public class BrandController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public BrandController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<BrandResponseDTO>>> fetchAllBrands()
         {
-            var result = await _mediator.Send(new GetAllBrand());
+            var result = await mediator.Send(new GetAllBrand());
             return Ok(result);
         }
 
@@ -29,7 +22,7 @@ namespace WebApi.Controllers
         [Authorize]
         public async Task<ActionResult<BrandResponseDTO>> fetchBrandById(string id)
         {
-            var result = await _mediator.Send(new GetBrandById { Id = id });
+            var result = await mediator.Send(new GetBrandById { Id = id });
             return Ok(result);
         }
 
@@ -39,7 +32,7 @@ namespace WebApi.Controllers
             [FromBody] CreateBrandRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
 
             return Ok(result);
         }
@@ -50,7 +43,7 @@ namespace WebApi.Controllers
             [FromBody] UpdateBrandRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
             return Ok(result);
         }
 
@@ -58,7 +51,7 @@ namespace WebApi.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<BrandResponseDTO>> DeleteBrandRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteBrandRequest { Id = id });
+            var result = await mediator.Send(new DeleteBrandRequest { Id = id });
             return Ok(result);
         }
     }

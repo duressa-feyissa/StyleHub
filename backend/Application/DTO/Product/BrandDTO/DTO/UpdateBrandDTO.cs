@@ -1,4 +1,4 @@
-namespace Application.DTO.Product.BrandDTO.DTO
+namespace backend.Application.DTO.Product.BrandDTO.DTO
 {
     public class UpdateBrandDTO
     {

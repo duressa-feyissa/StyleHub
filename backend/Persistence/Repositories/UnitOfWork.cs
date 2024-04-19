@@ -1,74 +1,39 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.Contracts.Persistence.Repositories.Common;
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.Contracts.Persistence.Repositories.User;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
-using Persistence.Repositories.Product;
-using Persistence.Repositories.User;
+using backend.Application.Contracts.Persistence;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.User;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
+using backend.Persistence.Repositories.Product;
+using backend.Persistence.Repositories.User;
 
-namespace Persistence.Repositories
+namespace backend.Persistence.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(
+        StyleHubDBContext context,
+        IProductRepository productRepository,
+        IColorRepository colorRepository,
+        ISizeRepository sizeRepository,
+        IBrandRepository brandRepository,
+        IMaterialRepository materialRepository,
+        IProductColorRepository productColorRepository,
+        IProductSizeRepository productSizeRepository,
+        IProductMaterialRepository productMaterialRepository,
+        ILocationRepository locationRepository,
+        ICategoryRepository categoryRepository,
+        IProductCategoryRepository productCategoryRepository,
+        IRoleRepository roleRepository,
+        IUserRepository userRepository,
+        IImageRepository imageRepository)
+        : IUnitOfWork
     {
-        private readonly StyleHubDBContext _context;
-        private IProductRepository _productRepository;
-        private IColorRepository _colorRepository;
-        private ISizeRepository _sizeRepository;
-        private IBrandRepository _brandRepository;
-        private IMaterialRepository _materialRepository;
-        private IProductColorRepository _productColorRepository;
-        private IProductSizeRepository _productSizeRepository;
-        private IProductMaterialRepository _productMaterialRepository;
-        private ILocationRepository _locationRepository;
-        private ICategoryRepository _categoryRepository;
-        private IProductCategoryRepository _productCategoryRepository;
-        private IRoleRepository _roleRepository;
-        private IUserRepository _userRepository;
-        private IImageRepository _imageRepository;
-
-        public UnitOfWork(
-            StyleHubDBContext context,
-            IProductRepository productRepository,
-            IColorRepository colorRepository,
-            ISizeRepository sizeRepository,
-            IBrandRepository brandRepository,
-            IMaterialRepository materialRepository,
-            IProductColorRepository productColorRepository,
-            IProductSizeRepository productSizeRepository,
-            IProductMaterialRepository productMaterialRepository,
-            ILocationRepository locationRepository,
-            ICategoryRepository categoryRepository,
-            IProductCategoryRepository productCategoryRepository,
-            IRoleRepository roleRepository,
-            IUserRepository userRepository,
-            IImageRepository imageRepository
-        )
-        {
-            _context = context;
-            _productRepository = productRepository;
-            _colorRepository = colorRepository;
-            _sizeRepository = sizeRepository;
-            _brandRepository = brandRepository;
-            _materialRepository = materialRepository;
-            _productColorRepository = productColorRepository;
-            _productSizeRepository = productSizeRepository;
-            _productMaterialRepository = productMaterialRepository;
-            _locationRepository = locationRepository;
-            _categoryRepository = categoryRepository;
-            _productCategoryRepository = productCategoryRepository;
-            _roleRepository = roleRepository;
-            _userRepository = userRepository;
-            _imageRepository = imageRepository;
-        }
-
         public IProductRepository ProductRepository
         {
             get
             {
-                if (_productRepository == null)
-                    _productRepository = new ProductRepository(_context);
-                return _productRepository;
+                if (productRepository == null)
+                    productRepository = new ProductRepository(context);
+                return productRepository;
             }
         }
 
@@ -76,9 +41,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_colorRepository == null)
-                    _colorRepository = new ColorRepository(_context);
-                return _colorRepository;
+                if (colorRepository == null)
+                    colorRepository = new ColorRepository(context);
+                return colorRepository;
             }
         }
 
@@ -86,9 +51,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_sizeRepository == null)
-                    _sizeRepository = new SizeRepository(_context);
-                return _sizeRepository;
+                if (sizeRepository == null)
+                    sizeRepository = new SizeRepository(context);
+                return sizeRepository;
             }
         }
 
@@ -96,9 +61,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_brandRepository == null)
-                    _brandRepository = new BrandRepository(_context);
-                return _brandRepository;
+                if (brandRepository == null)
+                    brandRepository = new BrandRepository(context);
+                return brandRepository;
             }
         }
 
@@ -106,9 +71,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_materialRepository == null)
-                    _materialRepository = new MaterialRepository(_context);
-                return _materialRepository;
+                if (materialRepository == null)
+                    materialRepository = new MaterialRepository(context);
+                return materialRepository;
             }
         }
 
@@ -116,9 +81,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_productColorRepository == null)
-                    _productColorRepository = new ProductColorRepository(_context);
-                return _productColorRepository;
+                if (productColorRepository == null)
+                    productColorRepository = new ProductColorRepository(context);
+                return productColorRepository;
             }
         }
 
@@ -126,9 +91,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_productSizeRepository == null)
-                    _productSizeRepository = new ProductSizeRepository(_context);
-                return _productSizeRepository;
+                if (productSizeRepository == null)
+                    productSizeRepository = new ProductSizeRepository(context);
+                return productSizeRepository;
             }
         }
 
@@ -136,9 +101,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_productMaterialRepository == null)
-                    _productMaterialRepository = new ProductMaterialRepository(_context);
-                return _productMaterialRepository;
+                if (productMaterialRepository == null)
+                    productMaterialRepository = new ProductMaterialRepository(context);
+                return productMaterialRepository;
             }
         }
 
@@ -146,9 +111,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_locationRepository == null)
-                    _locationRepository = new LocationRepository(_context);
-                return _locationRepository;
+                if (locationRepository == null)
+                    locationRepository = new LocationRepository(context);
+                return locationRepository;
             }
         }
 
@@ -156,9 +121,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_categoryRepository == null)
-                    _categoryRepository = new CategoryRepository(_context);
-                return _categoryRepository;
+                if (categoryRepository == null)
+                    categoryRepository = new CategoryRepository(context);
+                return categoryRepository;
             }
         }
 
@@ -166,9 +131,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_productCategoryRepository == null)
-                    _productCategoryRepository = new ProductCategoryRepository(_context);
-                return _productCategoryRepository;
+                if (productCategoryRepository == null)
+                    productCategoryRepository = new ProductCategoryRepository(context);
+                return productCategoryRepository;
             }
         }
 
@@ -176,9 +141,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_roleRepository == null)
-                    _roleRepository = new RoleRepository(_context);
-                return _roleRepository;
+                if (roleRepository == null)
+                    roleRepository = new RoleRepository(context);
+                return roleRepository;
             }
         }
 
@@ -186,9 +151,9 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_userRepository == null)
-                    _userRepository = new UserRepository(_context);
-                return _userRepository;
+                if (userRepository == null)
+                    userRepository = new UserRepository(context);
+                return userRepository;
             }
         }
 
@@ -196,21 +161,21 @@ namespace Persistence.Repositories
         {
             get
             {
-                if (_imageRepository == null)
-                    _imageRepository = new ImageRepository(_context);
-                return _imageRepository;
+                if (imageRepository == null)
+                    imageRepository = new ImageRepository(context);
+                return imageRepository;
             }
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            context.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public async Task<int> Save()
         {
-            return await _context.SaveChangesAsync();
+            return await context.SaveChangesAsync();
         }
     }
 }

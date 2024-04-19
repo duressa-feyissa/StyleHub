@@ -1,46 +1,34 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using Application.Common;
-using Application.Contracts.Infrastructure.Repositories;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.User.UserDTO.DTO;
-using Application.Exceptions;
-using Application.Features.User_Features.User.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Common;
+using backend.Application.Contracts.Infrastructure.Repositories;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.User.UserDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.User_Features.User.Requests.Command;
+using backend.Application.Response;
 using MediatR;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 
-namespace Application.Features.User_Features.User.Handlers.Command
+namespace backend.Application.Features.User_Features.User.Handlers.Command
 {
-    public class UpdateUserProfileHandler
+    public class UpdateUserProfileHandler(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IOptions<ApiSettings> apiSettings,
+        IImageRepository imageRepository)
         : IRequestHandler<UpdateUserProfileRequest, BaseResponse<UserResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ApiSettings _apiSettings;
-        private readonly IImageRepository _imageRepository;
-
-        public UpdateUserProfileHandler(
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IOptions<ApiSettings> apiSettings,
-            IImageRepository imageRepository
-        )
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _apiSettings = apiSettings.Value;
-            _imageRepository = imageRepository;
-        }
+        private readonly ApiSettings _apiSettings = apiSettings.Value;
 
         public async Task<BaseResponse<UserResponseDTO>> Handle(
             UpdateUserProfileRequest request,
             CancellationToken cancellationToken
         )
         {
-            var user = await _unitOfWork.UserRepository.GetById(request.Id);
+            var user = await unitOfWork.UserRepository.GetById(request.Id);
             if (user == null)
                 throw new NotFoundException("User not found");
 
@@ -122,12 +110,12 @@ namespace Application.Features.User_Features.User.Handlers.Command
                     throw new ValidationException("Profile picture must not be empty");
 
                 if (user.ProfilePicture != null)
-                    user.ProfilePicture = await _imageRepository.Update(
+                    user.ProfilePicture = await imageRepository.Update(
                         request.updateUserProfileDTO.ProfilePictureBase64,
                         user.Id
                     );
                 else
-                    user.ProfilePicture = await _imageRepository.Upload(
+                    user.ProfilePicture = await imageRepository.Upload(
                         request.updateUserProfileDTO.ProfilePictureBase64,
                         user.Id
                     );
@@ -135,7 +123,7 @@ namespace Application.Features.User_Features.User.Handlers.Command
 
             return new BaseResponse<UserResponseDTO>
             {
-                Data = _mapper.Map<UserResponseDTO>(user),
+                Data = mapper.Map<UserResponseDTO>(user),
                 Message = "User deleted successfully",
                 Success = true
             };

@@ -1,4 +1,4 @@
-namespace Application.DTO.User.AuthenticationDTO.DTO
+namespace backend.Application.DTO.User.AuthenticationDTO.DTO
 {
     public class EmailDTO
     {

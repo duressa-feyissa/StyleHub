@@ -1,4 +1,4 @@
-namespace Domain.Common
+namespace backend.Domain.Common
 {
     public class BaseEntity
     {

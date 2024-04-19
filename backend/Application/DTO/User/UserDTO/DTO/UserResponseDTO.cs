@@ -1,6 +1,6 @@
-using Application.DTO.Common.Role.DTO;
+using backend.Application.DTO.Common.Role.DTO;
 
-namespace Application.DTO.User.UserDTO.DTO
+namespace backend.Application.DTO.User.UserDTO.DTO
 {
 	public class UserResponseDTO
 	{

@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Product.MaterialDTO.Validations
+namespace backend.Application.DTO.Product.MaterialDTO.Validations
 {
     public class BaseMaterialValidation : AbstractValidator<BaseMaterialDTO>
     {

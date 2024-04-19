@@ -1,36 +1,27 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Common.Image.DTO;
-using Application.Exceptions;
-using Application.Features.Common_Features.Image.Requests.Queries;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Common.Image.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Common_Features.Image.Requests.Queries;
 using MediatR;
 
-namespace Application.Features.Common_Features.Image.Handlers.Queries
+namespace backend.Application.Features.Common_Features.Image.Handlers.Queries
 {
-    public class GetAllImageByUserIdHandler
+    public class GetAllImageByUserIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
         : IRequestHandler<GetAllImageByUserIdRequest, List<ImageResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GetAllImageByUserIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<List<ImageResponseDTO>> Handle(
             GetAllImageByUserIdRequest request,
             CancellationToken cancellationToken
         )
         {
-            var images = await _unitOfWork.ImageRepository.GetAll(request.UserId);
+            var images = await unitOfWork.ImageRepository.GetAll(request.UserId);
             if (images == null)
             {
                 throw new NotFoundException("No Images found");
             }
 
-            var imageResponse = _mapper.Map<List<ImageResponseDTO>>(images);
+            var imageResponse = mapper.Map<List<ImageResponseDTO>>(images);
             return imageResponse;
         }
     }

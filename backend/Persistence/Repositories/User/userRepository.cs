@@ -1,23 +1,16 @@
-using Application.Contracts.Persistence.Repositories.User;
+using backend.Application.Contracts.Persistence.Repositories.User;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories.User
+namespace backend.Persistence.Repositories.User
 {
-    public class UserRepository : GenericRepository<Domain.Entities.User.User>, IUserRepository
+    public class UserRepository(StyleHubDBContext context)
+        : GenericRepository<Domain.Entities.User.User>(context), IUserRepository
     {
-        private readonly StyleHubDBContext _context;
-
-        public UserRepository(StyleHubDBContext context)
-            : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<Domain.Entities.User.User> GetById(string id)
         {
-            var user = await _context
+            var user = await context
                 .Users.Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
@@ -26,7 +19,7 @@ namespace Persistence.Repositories.User
 
         public async Task<Domain.Entities.User.User> GetByPhoneNumber(string phoneNumber)
         {
-            var user = await _context
+            var user = await context
                 .Users.Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
             return user!;
@@ -34,7 +27,7 @@ namespace Persistence.Repositories.User
 
         public async Task<Domain.Entities.User.User> GetByEmail(string email)
         {
-            var user = await _context
+            var user = await context
                 .Users.Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == email);
             return user!;
@@ -42,7 +35,7 @@ namespace Persistence.Repositories.User
 
         public async Task<bool> IsPhoneNumberRegistered(string phoneNumber)
         {
-            return await _context
+            return await context
                 .Users.Include(u => u.Role)
                 .AnyAsync(u => u.PhoneNumber == phoneNumber);
         }
@@ -56,7 +49,7 @@ namespace Persistence.Repositories.User
             bool isVerified
         )
         {
-            var query = _context.Users.Include(u => u.Role).AsQueryable();
+            var query = context.Users.Include(u => u.Role).AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
             {

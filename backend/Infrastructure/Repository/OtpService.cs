@@ -1,21 +1,13 @@
-using Application.Contracts.Infrastructure.Services;
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Domain.Entities.User;
-using Infrastructure.Configuration;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Domain.Entities.User;
+using backend.Infrastructure.Configuration;
 
-namespace Infrastructure.Repository
+namespace backend.Infrastructure.Repository
 {
-    public class OtpService : IOtpService
+    public class OtpService(PhoneNumberOTPManager phoneOTPManager, IEmailSender emailSender)
+        : IOtpService
     {
-        private readonly PhoneNumberOTPManager _phoneOTPManager;
-        private readonly IEmailSender _emailSender;
-
-        public OtpService(PhoneNumberOTPManager phoneOTPManager, IEmailSender emailSender)
-        {
-            _phoneOTPManager = phoneOTPManager;
-            _emailSender = emailSender;
-        }
-
         public Task<int> GenerateOtpAsync()
         {
             return Task.FromResult(new Random().Next(1000, 9999));
@@ -40,14 +32,14 @@ namespace Infrastructure.Repository
                     otp
                 )
             };
-            await _emailSender.SendEmail(email);
+            await emailSender.SendEmail(email);
             return otp.ToString();
         }
 
         public async Task<string> SendVerificationOtpAsync(User user)
         {
             var otp = "1234"; //await GenerateOtpAsync();
-            await _phoneOTPManager.SendOTPAsync(user.PhoneNumber!, otp.ToString());
+            await phoneOTPManager.SendOTPAsync(user.PhoneNumber!, otp.ToString());
             return otp.ToString();
         }
 

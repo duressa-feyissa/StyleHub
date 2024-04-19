@@ -1,7 +1,7 @@
-using Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.DTO.Product.ProductDTO.DTO;
 using MediatR;
 
-namespace Application.Features.Product_Features.Product.Requests.Queries
+namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 {
     public class GetAllProductUserId : IRequest<List<ProductResponseDTO>>
     {

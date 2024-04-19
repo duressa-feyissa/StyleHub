@@ -1,40 +1,32 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Domain.Entities.Common;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Domain.Entities.Common;
+using backend.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
 
-namespace Persistence.Repositories.Common
+namespace backend.Persistence.Repositories.Common
 {
-    public class RoleRepository : GenericRepository<Role>, IRoleRepository
+    public class RoleRepository(StyleHubDBContext context) : GenericRepository<Role>(context), IRoleRepository
     {
-        StyleHubDBContext _context;
-
-        public RoleRepository(StyleHubDBContext context)
-            : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<IReadOnlyList<Role>> GetAll()
         {
-            return await _context.Roles.ToListAsync();
+            return await context.Roles.ToListAsync();
         }
 
         public async Task<Role> GetByCode(string code)
         {
-            var role = await _context.Roles.FirstOrDefaultAsync(u => u.Code == code);
+            var role = await context.Roles.FirstOrDefaultAsync(u => u.Code == code);
             return role!;
         }
 
         public async Task<Role> GetById(string id)
         {
-            var role = await _context.Roles.FirstOrDefaultAsync(u => u.Id == id);
+            var role = await context.Roles.FirstOrDefaultAsync(u => u.Id == id);
             return role!;
         }
 
         public async Task<Role> GetByName(string name)
         {
-            var role = await _context.Roles.FirstOrDefaultAsync(u => u.Name == name);
+            var role = await context.Roles.FirstOrDefaultAsync(u => u.Name == name);
             return role!;
         }
     }

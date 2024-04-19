@@ -1,15 +1,12 @@
-using Domain.Entities.Common;
-using Domain.Entities.Product;
-using Domain.Entities.User;
+using backend.Domain.Entities.Common;
+using backend.Domain.Entities.Product;
+using backend.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.Configuration
+namespace backend.Persistence.Configuration
 {
-	public class StyleHubDBContext : DbContext
+	public class StyleHubDBContext(DbContextOptions<StyleHubDBContext> options) : DbContext(options)
 	{
-		public StyleHubDBContext(DbContextOptions<StyleHubDBContext> options)
-			: base(options) { }
-
 		public virtual DbSet<Product> Products { get; set; }
 		public virtual DbSet<Color> Colors { get; set; }
 		public virtual DbSet<Size> Sizes { get; set; }
@@ -21,6 +18,8 @@ namespace Persistence.Configuration
 		public virtual DbSet<Location> Locations { get; set; }
 		public virtual DbSet<Category> Categories { get; set; }
 		public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+		
+		public virtual DbSet<ProductImage> ProductImages { get; set; }
 		public virtual DbSet<Role> Roles { get; set; }
 		public virtual DbSet<User> Users { get; set; }
 		public virtual DbSet<Image> Images { get; set; }
@@ -39,6 +38,7 @@ namespace Persistence.Configuration
 			modelBuilder.Entity<Location>().HasKey(l => l.Id);
 			modelBuilder.Entity<Category>().HasKey(c => c.Id);
 			modelBuilder.Entity<ProductCategory>().HasKey(pc => pc.Id);
+			modelBuilder.Entity<ProductImage>().HasKey(pi => pi.Id);
 			modelBuilder.Entity<User>().HasKey(u => u.Id);
 			modelBuilder.Entity<Role>().HasKey(r => r.Id);
 			modelBuilder.Entity<Image>().HasKey(i => i.Id);

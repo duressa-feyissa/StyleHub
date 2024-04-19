@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.DTO.Product.BrandDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Product.BrandDTO.Validations
+namespace backend.Application.DTO.Product.BrandDTO.Validations
 {
     public class CreateBrandValidation : AbstractValidator<CreateBrandDTO>
     {

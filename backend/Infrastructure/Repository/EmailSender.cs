@@ -1,20 +1,15 @@
 using System.Net;
 using System.Net.Mail;
-using Application.Contracts.Infrastructure.Services;
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Infrastructure.Models;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Infrastructure.Models;
 using Microsoft.Extensions.Options;
 
-namespace Infrastructure.Repository
+namespace backend.Infrastructure.Repository
 {
-    public class EmailSender : IEmailSender
+    public class EmailSender(IOptions<EmailSettings> emailSettings) : IEmailSender
     {
-        private readonly EmailSettings _emailSettings;
-
-        public EmailSender(IOptions<EmailSettings> emailSettings)
-        {
-            _emailSettings = emailSettings.Value;
-        }
+        private readonly EmailSettings _emailSettings = emailSettings.Value;
 
         private static async Task SendEmailAsync(SmtpClient client, MailMessage message)
         {

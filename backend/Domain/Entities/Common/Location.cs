@@ -1,6 +1,6 @@
-using Domain.Common;
+using backend.Domain.Common;
 
-namespace Domain.Entities.Common
+namespace backend.Domain.Entities.Common
 {
     public class Location : BaseEntity
     {

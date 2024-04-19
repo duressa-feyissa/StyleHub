@@ -1,4 +1,4 @@
-namespace Application.DTO.Product.ColorDTO.DTO
+namespace backend.Application.DTO.Product.ColorDTO.DTO
 {
     public class CreateColorDTO
     {

@@ -1,7 +1,7 @@
-using Application.DTO.Common.Image.DTO;
+using backend.Application.DTO.Common.Image.DTO;
 using MediatR;
 
-namespace Application.Features.Common_Features.Image.Requests.Queries
+namespace backend.Application.Features.Common_Features.Image.Requests.Queries
 {
     public class GetImageByIdRequest : IRequest<ImageResponseDTO>
     {

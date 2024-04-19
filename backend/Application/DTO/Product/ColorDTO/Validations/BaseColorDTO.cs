@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.DTO.Product.ColorDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Product.ColorDTO.Validations
+namespace backend.Application.DTO.Product.ColorDTO.Validations
 {
     public class CreateColorValidation : AbstractValidator<CreateColorDTO>
     {

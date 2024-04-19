@@ -1,26 +1,19 @@
 using System.Security.Claims;
-using Application.Contracts.Infrastructure.Services;
+using backend.Application.Contracts.Infrastructure.Services;
 
-namespace Infrastructure.Repository
+namespace backend.Infrastructure.Repository
 {
-    public class CurrentLoggedInService : ICurrentLoggedInService
+    public class CurrentLoggedInService(IHttpContextAccessor httpContextAccessor) : ICurrentLoggedInService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public CurrentLoggedInService(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         public string GetCurrentLoggedInEmail()
         {
-            var email = _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+            var email = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
             return email ?? string.Empty;
         }
 
         public Guid GetCurrentLoggedInId()
         {
-            var userId = _httpContextAccessor?.HttpContext?.User.FindFirstValue(
+            var userId = httpContextAccessor?.HttpContext?.User.FindFirstValue(
                 ClaimTypes.NameIdentifier
             );
             if (Guid.TryParse(userId, out var id))
@@ -32,7 +25,7 @@ namespace Infrastructure.Repository
 
         public string GetCurrentLoggedInPhoneNumber()
         {
-            var phoneNumber = _httpContextAccessor?.HttpContext?.User.FindFirstValue(
+            var phoneNumber = httpContextAccessor?.HttpContext?.User.FindFirstValue(
                 ClaimTypes.MobilePhone
             );
             return phoneNumber ?? string.Empty;
@@ -40,7 +33,7 @@ namespace Infrastructure.Repository
 
         public int GetCurrentLoggedInPriority()
         {
-            var priorityClaim = _httpContextAccessor?.HttpContext?.User.FindFirst(
+            var priorityClaim = httpContextAccessor?.HttpContext?.User.FindFirst(
                 "http://schemas.example.com/claims/priority"
             );
             if (priorityClaim != null && int.TryParse(priorityClaim.Value, out var priority))
@@ -52,13 +45,13 @@ namespace Infrastructure.Repository
 
         public string GetCurrentLoggedInRole()
         {
-            var role = _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Role);
+            var role = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Role);
             return role ?? string.Empty;
         }
 
         public string GetCurrentLoggedInUsername()
         {
-            var username = _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
+            var username = httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
             return username ?? string.Empty;
         }
     }

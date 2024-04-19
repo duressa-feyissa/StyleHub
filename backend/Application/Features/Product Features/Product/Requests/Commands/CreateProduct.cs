@@ -1,8 +1,8 @@
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.Response;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Product.Requests.Commands
+namespace backend.Application.Features.Product_Features.Product.Requests.Commands
 {
     public class CreateProductRequest : IRequest<BaseResponse<ProductResponseDTO>>
     {

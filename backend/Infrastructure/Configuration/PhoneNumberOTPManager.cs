@@ -1,22 +1,14 @@
-using Infrastructure.Models;
+using backend.Infrastructure.Models;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
-namespace Infrastructure.Configuration
+namespace backend.Infrastructure.Configuration
 {
-    public class PhoneNumberOTPManager
+    public class PhoneNumberOTPManager(
+        IOptions<PhoneNumberOTPSettings> phoneNumberOTPSettings,
+        HttpClient httpClient)
     {
-        private readonly PhoneNumberOTPSettings _phoneNumberOTPSettings;
-        private readonly HttpClient _httpClient;
-
-        public PhoneNumberOTPManager(
-            IOptions<PhoneNumberOTPSettings> phoneNumberOTPSettings,
-            HttpClient httpClient
-        )
-        {
-            _phoneNumberOTPSettings = phoneNumberOTPSettings.Value;
-            _httpClient = httpClient;
-        }
+        private readonly PhoneNumberOTPSettings _phoneNumberOTPSettings = phoneNumberOTPSettings.Value;
+        private readonly HttpClient _httpClient = httpClient;
 
         public async Task<string> SendOTPAsync(string phoneNumber, string code)
         {

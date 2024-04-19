@@ -1,27 +1,20 @@
-using Application.DTO.Common.Location.DTO;
-using Application.Features.Common_Features.Location.Requests.Commands;
-using Application.Features.Common_Features.Location.Requests.Queries;
+using backend.Application.DTO.Common.Location.DTO;
+using backend.Application.Features.Common_Features.Location.Requests.Commands;
+using backend.Application.Features.Common_Features.Location.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace backend.WebApi.Controllers.Common
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LocationController : ControllerBase
+    public class LocationController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public LocationController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<LocationResponseDTO>>> fetchAllLocations()
         {
-            var result = await _mediator.Send(new GetAllLocation());
+            var result = await mediator.Send(new GetAllLocation());
             return Ok(result);
         }
 
@@ -29,7 +22,7 @@ namespace WebApi.Controllers
         [Authorize]
         public async Task<ActionResult<LocationResponseDTO>> fetchLocationById(string id)
         {
-            var result = await _mediator.Send(new GetLocationById { Id = id });
+            var result = await mediator.Send(new GetLocationById { Id = id });
             return Ok(result);
         }
 
@@ -39,7 +32,7 @@ namespace WebApi.Controllers
             [FromBody] CreateLocationRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
 
             return Ok(result);
         }
@@ -50,7 +43,7 @@ namespace WebApi.Controllers
             [FromBody] UpdateLocationRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
             return Ok(result);
         }
 
@@ -58,7 +51,7 @@ namespace WebApi.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<LocationResponseDTO>> DeleteLocationRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteLocationRequest { Id = id });
+            var result = await mediator.Send(new DeleteLocationRequest { Id = id });
             return Ok(result);
         }
     }

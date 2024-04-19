@@ -1,38 +1,29 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Common.Location.DTO;
-using Application.Exceptions;
-using Application.Features.Common_Features.Location.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Common.Location.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Common_Features.Location.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Common_Features.Location.Handlers.Commands
+namespace backend.Application.Features.Common_Features.Location.Handlers.Commands
 {
-    public class UpdateLocationHandler
+    public class UpdateLocationHandler(IUnitOfWork unitOfWork, IMapper mapper)
         : IRequestHandler<UpdateLocationRequest, BaseResponse<LocationResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public UpdateLocationHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<BaseResponse<LocationResponseDTO>> Handle(
             UpdateLocationRequest request,
             CancellationToken cancellationToken
         )
         {
-            var existingLocation = await _unitOfWork.LocationRepository.GetById(request.Id);
+            var existingLocation = await unitOfWork.LocationRepository.GetById(request.Id);
 
             if (existingLocation == null)
                 throw new NotFoundException("Location Not Found");
 
             if (request?.Location?.Name != null)
             {
-                var existingLocationName = await _unitOfWork.LocationRepository.GetByName(
+                var existingLocationName = await unitOfWork.LocationRepository.GetByName(
                     request?.Location?.Name ?? ""
                 );
                 if (existingLocationName != null)
@@ -51,7 +42,7 @@ namespace Application.Features.Common_Features.Location.Handlers.Commands
             if (request?.Location?.Latitude != null && request?.Location?.Longitude != null)
             {
                 var existingLocationCoordinates =
-                    await _unitOfWork.LocationRepository.GetByCoordinates(
+                    await unitOfWork.LocationRepository.GetByCoordinates(
                         request.Location?.Latitude ?? 0,
                         request.Location?.Longitude ?? 0
                     );
@@ -65,12 +56,12 @@ namespace Application.Features.Common_Features.Location.Handlers.Commands
             }
 
             existingLocation.UpdatedAt = DateTime.Now;
-            await _unitOfWork.LocationRepository.Update(existingLocation);
+            await unitOfWork.LocationRepository.Update(existingLocation);
             return new BaseResponse<LocationResponseDTO>
             {
                 Message = "Location Updated Successfully",
                 Success = true,
-                Data = _mapper.Map<LocationResponseDTO>(existingLocation)
+                Data = mapper.Map<LocationResponseDTO>(existingLocation)
             };
         }
     }

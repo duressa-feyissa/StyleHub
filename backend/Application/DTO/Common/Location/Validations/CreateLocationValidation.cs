@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Application.DTO.Common.Location.DTO;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.DTO.Common.Location.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Common.Location.Validations
+namespace backend.Application.DTO.Common.Location.Validations
 {
 	public class CreateLocationValidation : AbstractValidator<CreateLocationDTO>
 	{

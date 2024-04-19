@@ -1,30 +1,25 @@
-using Application.Contracts.Persistence.Repositories.Product;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Domain.Entities.Product;
+using backend.Persistence.Configuration;
+using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
-using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories.Product
+namespace backend.Persistence.Repositories.Product
 {
-    public class ProductColorRepository : GenericRepository<ProductColor>, IProductColorRepository
+    public class ProductColorRepository(StyleHubDBContext context)
+        : GenericRepository<ProductColor>(context), IProductColorRepository
     {
-        StyleHubDBContext _context;
-        public ProductColorRepository(StyleHubDBContext context) : base(context)
-        {
-            _context = context;
-        }
-
         public async Task<bool> DeleteByProductId(string productId)
         {
-            var productcolors = await _context.ProductColors.Where(u => u.ProductId == productId).ToListAsync();
-            _context.ProductColors.RemoveRange(productcolors);
-            await _context.SaveChangesAsync();
+            var productcolors = await context.ProductColors.Where(u => u.ProductId == productId).ToListAsync();
+            context.ProductColors.RemoveRange(productcolors);
+            await context.SaveChangesAsync();
             return true;
         }
 
         public async Task<ProductColor> GetById(string id)
         {
-            var productcolor = await _context.ProductColors.FirstOrDefaultAsync(u => u.Id == id);
+            var productcolor = await context.ProductColors.FirstOrDefaultAsync(u => u.Id == id);
             return productcolor!;
         }
     }

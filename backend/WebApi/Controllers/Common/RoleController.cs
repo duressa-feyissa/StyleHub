@@ -1,27 +1,20 @@
-using Application.DTO.Common.Role.DTO;
-using Application.Features.Common_Features.Role.Requests.Commands;
-using Application.Features.Common_Features.Role.Requests.Queries;
+using backend.Application.DTO.Common.Role.DTO;
+using backend.Application.Features.Common_Features.Role.Requests.Commands;
+using backend.Application.Features.Common_Features.Role.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace backend.WebApi.Controllers.Common
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RoleController : ControllerBase
+    public class RoleController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public RoleController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<RoleResponseDTO>>> fetchAllRoles()
         {
-            var result = await _mediator.Send(new GetAllRole());
+            var result = await mediator.Send(new GetAllRole());
             return Ok(result);
         }
 
@@ -29,7 +22,7 @@ namespace WebApi.Controllers
         [Authorize]
         public async Task<ActionResult<RoleResponseDTO>> fetchRoleById(string id)
         {
-            var result = await _mediator.Send(new GetRoleById { Id = id });
+            var result = await mediator.Send(new GetRoleById { Id = id });
             return Ok(result);
         }
 
@@ -39,7 +32,7 @@ namespace WebApi.Controllers
             [FromBody] CreateRoleRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
 
             return Ok(result);
         }
@@ -50,7 +43,7 @@ namespace WebApi.Controllers
             [FromBody] UpdateRoleRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
             return Ok(result);
         }
 
@@ -58,7 +51,7 @@ namespace WebApi.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<RoleResponseDTO>> DeleteRoleRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteRoleRequest { Id = id });
+            var result = await mediator.Send(new DeleteRoleRequest { Id = id });
             return Ok(result);
         }
     }

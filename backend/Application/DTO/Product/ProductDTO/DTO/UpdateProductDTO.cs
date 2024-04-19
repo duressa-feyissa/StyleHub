@@ -1,4 +1,4 @@
-namespace Application.DTO.Product.ProductDTO.DTO
+namespace backend.Application.DTO.Product.ProductDTO.DTO
 {
     public class UpdateProductDTO
     {
@@ -14,6 +14,7 @@ namespace Application.DTO.Product.ProductDTO.DTO
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string? BrandId { get; set; }
+        public List<string>? ImageIds { get; set; }
         public List<string>? CategoryIds { get; set; }
         public List<string>? SizeIds { get; set; }
         public List<string>? ColorIds { get; set; }

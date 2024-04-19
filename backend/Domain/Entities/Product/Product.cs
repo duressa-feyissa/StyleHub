@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Domain.Common;
-using Domain.Entities.Common;
+using backend.Domain.Common;
+using backend.Domain.Entities.Common;
 
-namespace Domain.Entities.Product
+namespace backend.Domain.Entities.Product
 {
     public class Product : BaseEntity
     {
@@ -41,7 +41,7 @@ namespace Domain.Entities.Product
 
         [Required]
         public virtual required Brand Brand { get; set; }
-        public virtual HashSet<Image> Images { get; set; } = new HashSet<Image>();
+        public virtual HashSet<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
         public virtual HashSet<ProductSize> ProductSizes { get; set; } = new HashSet<ProductSize>();
         public virtual HashSet<ProductColor> ProductColors { get; set; } =
             new HashSet<ProductColor>();

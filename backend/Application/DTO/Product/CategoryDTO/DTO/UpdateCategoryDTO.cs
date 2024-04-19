@@ -1,4 +1,4 @@
-namespace Application.DTO.Product.CategoryDTO.DTO
+namespace backend.Application.DTO.Product.CategoryDTO.DTO
 {
     public class UpdateCategoryDTO
     {

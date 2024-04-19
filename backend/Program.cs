@@ -1,9 +1,8 @@
-﻿using Application;
-using Infrastructure.Configuration;
-
+﻿using backend.Application;
+using backend.Infrastructure.Configuration;
+using backend.Persistence.Configuration;
+using backend.WebApi.Middlewares;
 using Microsoft.OpenApi.Models;
-using Persistence.Configuration;
-using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

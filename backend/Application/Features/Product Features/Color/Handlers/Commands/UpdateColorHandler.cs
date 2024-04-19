@@ -1,31 +1,22 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ColorDTO.DTO;
-using Application.Exceptions;
-using Application.Features.Product_Features.Color.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Color.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Color.Handlers.Commands
+namespace backend.Application.Features.Product_Features.Color.Handlers.Commands
 {
-	public class UpdateColorHandler
+	public class UpdateColorHandler(IUnitOfWork unitOfWork, IMapper mapper)
 		: IRequestHandler<UpdateColorRequest, BaseResponse<ColorResponseDTO>>
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IMapper _mapper;
-
-		public UpdateColorHandler(IUnitOfWork unitOfWork, IMapper mapper)
-		{
-			_mapper = mapper;
-			_unitOfWork = unitOfWork;
-		}
-
 		public async Task<BaseResponse<ColorResponseDTO>> Handle(
 			UpdateColorRequest request,
 			CancellationToken cancellationToken
 		)
 		{
-			var existingColor = await _unitOfWork.ColorRepository.GetById(request.Id);
+			var existingColor = await unitOfWork.ColorRepository.GetById(request.Id);
 
 			if (existingColor == null)
 			{
@@ -34,7 +25,7 @@ namespace Application.Features.Product_Features.Color.Handlers.Commands
 			
 			if (request?.Color?.Name != null)
 			{
-				var existingColorName = await _unitOfWork.ColorRepository.GetByName(
+				var existingColorName = await unitOfWork.ColorRepository.GetByName(
 					request.Color.Name
 				);
 				if (existingColorName != null && existingColorName.Id != request.Id)
@@ -50,7 +41,7 @@ namespace Application.Features.Product_Features.Color.Handlers.Commands
 			
 			if (request?.Color?.HexCode != null)
 			{
-				var existingColorHexCode = await _unitOfWork.ColorRepository.GetByHexCode(
+				var existingColorHexCode = await unitOfWork.ColorRepository.GetByHexCode(
 					request.Color.HexCode
 				);
 				if (existingColorHexCode != null && existingColorHexCode.Id != request.Id)
@@ -66,12 +57,12 @@ namespace Application.Features.Product_Features.Color.Handlers.Commands
 
 			existingColor.UpdatedAt = DateTime.Now;
 
-			await _unitOfWork.ColorRepository.Update(existingColor);
+			await unitOfWork.ColorRepository.Update(existingColor);
 			return new BaseResponse<ColorResponseDTO>
 			{
 				Message = "Color Updated Successfully",
 				Success = true,
-				Data = _mapper.Map<ColorResponseDTO>(existingColor)
+				Data = mapper.Map<ColorResponseDTO>(existingColor)
 			};
 		}
 	}

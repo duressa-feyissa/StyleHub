@@ -1,7 +1,7 @@
-using Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.DTO.Product.ColorDTO.DTO;
 using MediatR;
 
-namespace Application.Features.Product_Features.Color.Requests.Queries
+namespace backend.Application.Features.Product_Features.Color.Requests.Queries
 {
     public class GetColorById : IRequest<ColorResponseDTO>
     {

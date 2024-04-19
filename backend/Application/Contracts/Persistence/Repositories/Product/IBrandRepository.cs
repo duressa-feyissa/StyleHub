@@ -1,7 +1,7 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Domain.Entities.Product;
 
-namespace Application.Contracts.Persistence.Repositories.Product
+namespace backend.Application.Contracts.Persistence.Repositories.Product
 {
     public interface IBrandRepository : IGenericRepository<Brand>
     {

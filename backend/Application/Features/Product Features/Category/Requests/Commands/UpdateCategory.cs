@@ -1,8 +1,8 @@
-using Application.DTO.Product.CategoryDTO.DTO;
-using Application.Response;
+using backend.Application.DTO.Product.CategoryDTO.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Category.Requests.Commands
+namespace backend.Application.Features.Product_Features.Category.Requests.Commands
 {
     public class UpdateCategoryRequest : IRequest<BaseResponse<CategoryResponseDTO>>
     {

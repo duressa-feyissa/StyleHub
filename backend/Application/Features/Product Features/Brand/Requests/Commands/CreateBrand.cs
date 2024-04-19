@@ -1,8 +1,8 @@
-using Application.DTO.Product.BrandDTO.DTO;
-using Application.Response;
+using backend.Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Brand.Requests.Commands
+namespace backend.Application.Features.Product_Features.Brand.Requests.Commands
 {
     public class CreateBrandRequest : IRequest<BaseResponse<BrandResponseDTO>>
     {

@@ -1,6 +1,6 @@
-using Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
 
-namespace Application.Contracts.Infrastructure.Services
+namespace backend.Application.Contracts.Infrastructure.Services
 {
    public interface IEmailSender
 {

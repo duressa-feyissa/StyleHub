@@ -1,7 +1,7 @@
-using Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
 using MediatR;
 
-namespace Application.Features.Product_Features.Material.Requests.Queries
+namespace backend.Application.Features.Product_Features.Material.Requests.Queries
 {
     public class GetMaterialById : IRequest<MaterialResponseDTO>
     {

@@ -1,27 +1,20 @@
-using Application.DTO.Product.ColorDTO.DTO;
-using Application.Features.Product_Features.Color.Requests.Commands;
-using Application.Features.Product_Features.Color.Requests.Queries;
+using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.Features.Product_Features.Color.Requests.Commands;
+using backend.Application.Features.Product_Features.Color.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace backend.WebApi.Controllers.Product
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ColorController : ControllerBase
+    public class ColorController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public ColorController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<ColorResponseDTO>>> fetchAllColors()
         {
-            var result = await _mediator.Send(new GetAllColor());
+            var result = await mediator.Send(new GetAllColor());
             return Ok(result);
         }
 
@@ -29,7 +22,7 @@ namespace WebApi.Controllers
         [Authorize]
         public async Task<ActionResult<ColorResponseDTO>> fetchColorById(string id)
         {
-            var result = await _mediator.Send(new GetColorById { Id = id });
+            var result = await mediator.Send(new GetColorById { Id = id });
             return Ok(result);
         }
 
@@ -39,7 +32,7 @@ namespace WebApi.Controllers
             [FromBody] CreateColorRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
 
             return Ok(result);
         }
@@ -50,7 +43,7 @@ namespace WebApi.Controllers
             [FromBody] UpdateColorRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
             return Ok(result);
         }
 
@@ -58,7 +51,7 @@ namespace WebApi.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<ColorResponseDTO>> DeleteColorRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteColorRequest { Id = id });
+            var result = await mediator.Send(new DeleteColorRequest { Id = id });
             return Ok(result);
         }
     }

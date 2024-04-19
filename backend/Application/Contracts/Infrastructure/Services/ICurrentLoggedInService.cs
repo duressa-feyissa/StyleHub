@@ -1,4 +1,4 @@
-namespace Application.Contracts.Infrastructure.Services
+namespace backend.Application.Contracts.Infrastructure.Services
 {
     public interface ICurrentLoggedInService
     {

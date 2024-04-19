@@ -1,7 +1,7 @@
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Domain.Entities.User;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Domain.Entities.User;
 
-namespace Application.Contracts.Infrastructure.Services
+namespace backend.Application.Contracts.Infrastructure.Services
 {
     public interface IAuthenticationService
     {

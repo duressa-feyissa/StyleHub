@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Persistence.Configuration
+namespace backend.Persistence.Configuration
 {
     public class StyleHubDBContextFactory : IDesignTimeDbContextFactory<StyleHubDBContext>
     {

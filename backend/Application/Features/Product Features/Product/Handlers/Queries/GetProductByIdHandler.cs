@@ -1,24 +1,15 @@
-using MediatR;
 using AutoMapper;
-using Application.Exceptions;
-using Application.Features.Product_Features.Product.Requests.Queries;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Product.Requests.Queries;
+using MediatR;
 
-namespace Application.Features.Product_Features.Product.Handlers.Queries
+namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
 {
-    public class GetProductByIdHandler : IRequestHandler<GetProductById, ProductResponseDTO>
+    public class GetProductByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetProductById, ProductResponseDTO>
     {
-
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetProductByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<ProductResponseDTO> Handle(GetProductById request, CancellationToken cancellationToken)
         {
             if (request.Id == null || request.Id.Length == 0)
@@ -26,8 +17,8 @@ namespace Application.Features.Product_Features.Product.Handlers.Queries
                 throw new BadRequestException("Id is required");
             }
 
-            var product = await _unitOfWork.ProductRepository.GetById(request.Id);
-            var productResponse = _mapper.Map<ProductResponseDTO>(product);
+            var product = await unitOfWork.ProductRepository.GetById(request.Id);
+            var productResponse = mapper.Map<ProductResponseDTO>(product);
             return productResponse;
         }
 

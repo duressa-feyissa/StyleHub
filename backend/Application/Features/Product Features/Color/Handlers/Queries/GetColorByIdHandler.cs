@@ -1,26 +1,15 @@
-using MediatR;
 using AutoMapper;
-using Application.Exceptions;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ColorDTO.DTO;
-using Application.Features.Product_Features.Color.Requests.Queries;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Color.Requests.Queries;
+using MediatR;
 
-namespace Application.Features.Product_Features.Color.Handlers.Queries
+namespace backend.Application.Features.Product_Features.Color.Handlers.Queries
 {
-    public class GetColorByIdHandler : IRequestHandler<GetColorById, ColorResponseDTO>
+    public class GetColorByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetColorById, ColorResponseDTO>
     {
-
-        private readonly IMapper _mapper;
-
-
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetColorByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<ColorResponseDTO> Handle(GetColorById request, CancellationToken cancellationToken)
         {
             if (request.Id == null || request.Id.Length == 0)
@@ -28,12 +17,12 @@ namespace Application.Features.Product_Features.Color.Handlers.Queries
                 throw new BadRequestException("Id is required");
             }
 
-            var Color = await _unitOfWork.ColorRepository.GetById(request.Id);
+            var Color = await unitOfWork.ColorRepository.GetById(request.Id);
             if (Color == null)
             {
                 throw new NotFoundException("Color with that {request.Id} does not exist");
             }
-            var ColorResponse = _mapper.Map<ColorResponseDTO>(Color);
+            var ColorResponse = mapper.Map<ColorResponseDTO>(Color);
             return ColorResponse;
         }
 

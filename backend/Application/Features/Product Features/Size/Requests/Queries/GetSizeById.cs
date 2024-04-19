@@ -1,7 +1,7 @@
-using Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.DTO.Product.SizeDTO.DTO;
 using MediatR;
 
-namespace Application.Features.Product_Features.Size.Requests.Queries
+namespace backend.Application.Features.Product_Features.Size.Requests.Queries
 {
     public class GetSizeById : IRequest<SizeResponseDTO>
     {

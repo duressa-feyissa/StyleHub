@@ -1,4 +1,4 @@
-namespace Infrastructure.Models
+namespace backend.Infrastructure.Models
 {
     public class CloudinarySettings
     {

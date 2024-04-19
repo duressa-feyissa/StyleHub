@@ -1,8 +1,8 @@
-using Application.DTO.Common.Image.DTO;
-using Application.Response;
+using backend.Application.DTO.Common.Image.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Common_Features.Image.Requests.Commands
+namespace backend.Application.Features.Common_Features.Image.Requests.Commands
 {
     public class UploadImageRequest : IRequest<BaseResponse<ImageResponseDTO>>
     {

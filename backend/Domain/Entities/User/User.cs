@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using Domain.Common;
-using Domain.Entities.Common;
+using backend.Domain.Common;
+using backend.Domain.Entities.Common;
 
-namespace Domain.Entities.User
+namespace backend.Domain.Entities.User
 {
     public class User : BaseEntity
     {

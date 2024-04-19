@@ -1,6 +1,7 @@
+using backend.Application.DTO.Product.ProductDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.Product.ProductDTO.DTO
+namespace backend.Application.DTO.Product.ProductDTO.Validations
 {
     public class CreateProductValidation : AbstractValidator<CreateProductDTO>
     {

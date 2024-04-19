@@ -1,14 +1,14 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.Contracts.Persistence.Repositories.Common;
-using Application.Contracts.Persistence.Repositories.Product;
-using Application.Contracts.Persistence.Repositories.User;
+using backend.Application.Contracts.Persistence;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.User;
+using backend.Persistence.Repositories;
+using backend.Persistence.Repositories.Common;
+using backend.Persistence.Repositories.Product;
+using backend.Persistence.Repositories.User;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Repositories;
-using Persistence.Repositories.Common;
-using Persistence.Repositories.Product;
-using Persistence.Repositories.User;
 
-namespace Persistence.Configuration
+namespace backend.Persistence.Configuration
 {
     public static class PersistenceServiceRegistration
     {

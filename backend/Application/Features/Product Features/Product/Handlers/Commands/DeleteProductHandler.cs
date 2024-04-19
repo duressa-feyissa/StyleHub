@@ -1,33 +1,20 @@
-using Application.Contracts.Infrastructure.Repositories;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.Exceptions;
-using Application.Features.Product_Features.Product.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Infrastructure.Repositories;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Product.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Product.Requests.Handlers.Commands
+namespace backend.Application.Features.Product_Features.Product.Handlers.Commands
 {
-	public class DeleteProductHandler
+	public class DeleteProductHandler(
+		IUnitOfWork unitOfWork,
+		IMapper mapper,
+		IImageRepository imageRepository)
 		: IRequestHandler<DeleteProductRequest, BaseResponse<ProductResponseDTO>>
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IMapper _mapper;
-		private readonly IImageRepository _imageRepository;
-		
-
-		public DeleteProductHandler(
-			IUnitOfWork unitOfWork,
-			IMapper mapper,
-			IImageRepository imageRepository
-		)
-		{
-			_mapper = mapper;
-			_unitOfWork = unitOfWork;
-			_imageRepository = imageRepository;
-		}
-
 		public async Task<BaseResponse<ProductResponseDTO>> Handle(
 			DeleteProductRequest request,
 			CancellationToken cancellationToken
@@ -36,21 +23,21 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 			if (request.Id.Length == 0)
 				throw new BadRequestException("Invalid Product Id");
 
-			var product = await _unitOfWork.ProductRepository.GetById(request.Id);
+			var product = await unitOfWork.ProductRepository.GetById(request.Id);
 
 			if (product == null)
 				throw new NotFoundException("Product Not Found");
 
-			foreach (var image in product.Images)
-				await _imageRepository.Delete(image.Id);
+			foreach (var image in product.ProductImages)
+				await imageRepository.Delete(image.Id);
 
-			await _unitOfWork.ProductRepository.Delete(product);
+			await unitOfWork.ProductRepository.Delete(product);
 
 			return new BaseResponse<ProductResponseDTO>
 			{
 				Message = "Product Deleted Successfully",
 				Success = true,
-				Data = _mapper.Map<ProductResponseDTO>(product)
+				Data = mapper.Map<ProductResponseDTO>(product)
 			};
 		}
 	}

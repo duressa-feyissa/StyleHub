@@ -1,35 +1,27 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application.Common;
-using Application.Contracts.Infrastructure.Services;
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Application.Exceptions;
 using AutoMapper;
-using Domain.Entities.User;
-using Infrastructure.Models;
+using backend.Application.Common;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Domain.Entities.User;
+using backend.Infrastructure.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure.Repository
+namespace backend.Infrastructure.Repository
 {
-	public class AuthenticationService : IAuthenticationService
+	public class AuthenticationService(
+		IOptions<JwtSettings> jwtSettings,
+		IMapper mapper,
+		IOptions<ApiSettings> apiSettings)
+		: IAuthenticationService
 	{
-		private readonly JwtSettings _jwtSettings;
-		private readonly ApiSettings _apiSettings;
-		private readonly IMapper _mapper;
-
-		public AuthenticationService(
-			IOptions<JwtSettings> jwtSettings,
-			IMapper mapper,
-			IOptions<ApiSettings> apiSettings
-		)
-		{
-			_mapper = mapper;
-			_jwtSettings = jwtSettings.Value;
-			_apiSettings = apiSettings.Value;
-		}
+		private readonly JwtSettings _jwtSettings = jwtSettings.Value;
+		private readonly ApiSettings _apiSettings = apiSettings.Value;
 
 		public AuthenticationResponseDTO Login(
 			LoginRequestDTO user,
@@ -46,7 +38,7 @@ namespace Infrastructure.Repository
 			}
 
 			var token = GenerateTokenAsync(userEntity);
-			var response = _mapper.Map<AuthenticationResponseDTO>(userEntity);
+			var response = mapper.Map<AuthenticationResponseDTO>(userEntity);
 			response.Token = token;
 			return response;
 		}

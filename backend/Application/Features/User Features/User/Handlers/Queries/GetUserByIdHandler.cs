@@ -1,35 +1,25 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.User.UserDTO.DTO;
-using Application.Exceptions;
-using Application.Features.User_Features.User.Requests.Command;
-using Application.Features.User_Features.User.Requests.Queries;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.User.UserDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.User_Features.User.Requests.Queries;
 using MediatR;
 
-namespace Application.Features.User_Features.User.Handlers.Queries
+namespace backend.Application.Features.User_Features.User.Handlers.Queries
 {
-    public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, UserResponseDTO>
+    public class GetUserByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetUserByIdRequest, UserResponseDTO>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GetUserByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<UserResponseDTO> Handle(
             GetUserByIdRequest request,
             CancellationToken cancellationToken
         )
         {
-            var user = await _unitOfWork.UserRepository.GetById(request.Id);
+            var user = await unitOfWork.UserRepository.GetById(request.Id);
             if (user == null)
                 throw new NotFoundException("User not found");
 
-            return _mapper.Map<UserResponseDTO>(user);
+            return mapper.Map<UserResponseDTO>(user);
         }
     }
 }

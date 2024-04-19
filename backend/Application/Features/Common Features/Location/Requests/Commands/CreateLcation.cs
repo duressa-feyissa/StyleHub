@@ -1,8 +1,8 @@
-using Application.DTO.Common.Location.DTO;
-using Application.Response;
+using backend.Application.DTO.Common.Location.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Common_Features.Location.Requests.Commands
+namespace backend.Application.Features.Common_Features.Location.Requests.Commands
 {
     public class CreateLocationRequest : IRequest<BaseResponse<LocationResponseDTO>>
     {

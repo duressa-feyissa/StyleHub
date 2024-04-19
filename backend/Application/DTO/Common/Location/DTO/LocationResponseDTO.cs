@@ -1,4 +1,4 @@
-namespace Application.DTO.Common.Location.DTO
+namespace backend.Application.DTO.Common.Location.DTO
 {
     public class LocationResponseDTO
     {

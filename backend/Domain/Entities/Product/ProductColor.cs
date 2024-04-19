@@ -1,8 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Product
+namespace backend.Domain.Entities.Product
 {
     public class ProductColor
     {

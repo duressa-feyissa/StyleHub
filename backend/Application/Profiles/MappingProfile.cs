@@ -1,22 +1,21 @@
-using Application.DTO.Common.Image.DTO;
-using Application.DTO.Common.Location.DTO;
-using Application.DTO.Common.Role.DTO;
-using Application.DTO.Product.BrandDTO.DTO;
-using Application.DTO.Product.CategoryDTO.DTO;
-using Application.DTO.Product.ColorDTO.DTO;
-using Application.DTO.Product.MaterialDTO.DTO;
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.DTO.Product.SizeDTO.DTO;
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Application.DTO.User.AuthenticationDTO.Validations;
-using Application.DTO.User.UserDTO.DTO;
 using AutoMapper;
-using Domain.Entities.Common;
-using Domain.Entities.Product;
-using Domain.Entities.User;
-using Infrastructure.Repository;
+using backend.Application.DTO.Common.Image.DTO;
+using backend.Application.DTO.Common.Location.DTO;
+using backend.Application.DTO.Common.Role.DTO;
+using backend.Application.DTO.Product.BrandDTO.DTO;
+using backend.Application.DTO.Product.CategoryDTO.DTO;
+using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.DTO.Product.MaterialDTO.DTO;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.DTO.User.UserDTO.DTO;
+using backend.Domain.Entities.Common;
+using backend.Domain.Entities.Product;
+using backend.Domain.Entities.User;
+using backend.Infrastructure.Repository;
 
-namespace Application.Profiles
+namespace backend.Application.Profiles
 {
 	public class MappingProfile : Profile
 	{
@@ -103,16 +102,15 @@ namespace Application.Profiles
 							})
 								.ToList()
 						)
-				)
-				.ForMember(
+				).ForMember(
 					dest => dest.Images,
 					opt =>
 						opt.MapFrom(src =>
-							src.Images.Select(pi => new ImageResponseDTO
-							{
-								Id = pi.Id,
-								ImageUrl = pi.ImageUrl
-							})
+							src.ProductImages.Select(pm => new ImageResponseDTO
+								{
+									Id = pm.Image.Id,
+									ImageUrl = pm.Image.ImageUrl
+								})
 								.ToList()
 						)
 				)

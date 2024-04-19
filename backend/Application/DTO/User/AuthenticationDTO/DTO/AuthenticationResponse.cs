@@ -1,6 +1,6 @@
-using Domain.Entities.Common;
+using backend.Domain.Entities.Common;
 
-namespace Application.DTO.User.AuthenticationDTO.DTO
+namespace backend.Application.DTO.User.AuthenticationDTO.DTO
 {
     public class AuthenticationResponseDTO
     {

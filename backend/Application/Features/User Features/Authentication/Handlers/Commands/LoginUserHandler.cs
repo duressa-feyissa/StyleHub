@@ -1,34 +1,20 @@
-using System.ComponentModel.DataAnnotations;
-using Application.Contracts.Infrastructure.Services;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Application.DTO.User.UserDTO.Validations;
-using Application.Exceptions;
-using Application.Features.User_Features.Authentication.Requests.Commands;
-using Application.Response;
-using AutoMapper;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.DTO.User.AuthenticationDTO.Validations;
+using backend.Application.Exceptions;
+using backend.Application.Features.User_Features.Authentication.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.User_Features.Authentication.Handlers.Commands
+namespace backend.Application.Features.User_Features.Authentication.Handlers.Commands
 {
-    public class LoginUserHandler
+    public class LoginUserHandler(
+        IUnitOfWork unitOfWork,
+        IOtpService otpService,
+        IAuthenticationService authenticationService)
         : IRequestHandler<LoginUserRequest, BaseResponse<AuthenticationResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IOtpService _otpService;
-        private readonly IAuthenticationService _authenticationService;
-
-        public LoginUserHandler(
-            IUnitOfWork unitOfWork,
-            IOtpService otpService,
-            IAuthenticationService authenticationService
-        )
-        {
-            _unitOfWork = unitOfWork;
-            _otpService = otpService;
-            _authenticationService = authenticationService;
-        }
-
         public async Task<BaseResponse<AuthenticationResponseDTO>> Handle(
             LoginUserRequest request,
             CancellationToken cancellationToken
@@ -42,22 +28,22 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
             }
             if (request.LoginRequest.Email != null)
             {
-                var user = await _unitOfWork.UserRepository.GetByEmail(request.LoginRequest.Email);
+                var user = await unitOfWork.UserRepository.GetByEmail(request.LoginRequest.Email);
                 if (user == null)
                     throw new NotFoundException("User not found");
 
                 if (user.IsEmailVerified == false)
                 {
-                    user.EmailVerificationCode = await _otpService.SendVerificationEmailAsync(
+                    user.EmailVerificationCode = await otpService.SendVerificationEmailAsync(
                         user,
                         5
                     );
                     user.EmailVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
-                    await _unitOfWork.UserRepository.Update(user);
+                    await unitOfWork.UserRepository.Update(user);
                     throw new BadRequestException("Email not verified");
                 }
 
-                var token = _authenticationService.Login(request.LoginRequest, user, true);
+                var token = authenticationService.Login(request.LoginRequest, user, true);
 
                 return new BaseResponse<AuthenticationResponseDTO>
                 {

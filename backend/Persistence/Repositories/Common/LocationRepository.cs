@@ -1,38 +1,33 @@
-using Application.Contracts.Persistence.Repositories.Common;
-using Domain.Entities.Common;
+using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Domain.Entities.Common;
+using backend.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configuration;
 
-namespace Persistence.Repositories.Common
+namespace backend.Persistence.Repositories.Common
 {
-	public class LocationRepository : GenericRepository<Location>, ILocationRepository
+	public class LocationRepository(StyleHubDBContext context)
+		: GenericRepository<Location>(context), ILocationRepository
 	{
-		StyleHubDBContext _context;
-		public LocationRepository(StyleHubDBContext context) : base(context)
-		{
-			_context = context;
-		}
-
 		public async Task<IReadOnlyList<Location>> GetAll()
 		{
-			return await _context.Locations.ToListAsync();
+			return await context.Locations.ToListAsync();
 		}
 
 		public async Task<Location> GetById(string id)
 		{
-			var location = await _context.Locations.FirstOrDefaultAsync(u => u.Id == id);
+			var location = await context.Locations.FirstOrDefaultAsync(u => u.Id == id);
 			return location!;
 		}
 
 		public async Task<Location> GetByName(string name)
 		{
-			var location = await _context.Locations.FirstOrDefaultAsync(u => u.Name == name);
+			var location = await context.Locations.FirstOrDefaultAsync(u => u.Name == name);
 			return location!;
 		}
 		
 		public async Task<Location> GetByCoordinates(double latitude, double longitude)
 		{
-			var location = await _context.Locations.FirstOrDefaultAsync(u => u.Latitude == latitude && u.Longitude == longitude);
+			var location = await context.Locations.FirstOrDefaultAsync(u => u.Latitude == latitude && u.Longitude == longitude);
 			return location!;
 		}
 

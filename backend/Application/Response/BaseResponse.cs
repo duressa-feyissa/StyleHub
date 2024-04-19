@@ -1,4 +1,4 @@
-namespace Application.Response
+namespace backend.Application.Response
 {
     public class BaseResponse<T>
     {

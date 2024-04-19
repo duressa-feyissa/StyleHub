@@ -1,24 +1,17 @@
 using System.Security.Claims;
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.Features.Product_Features.Product.Requests.Commands;
-using Application.Features.Product_Features.Product.Requests.Queries;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Features.Product_Features.Product.Requests.Commands;
+using backend.Application.Features.Product_Features.Product.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace backend.WebApi.Controllers.Product
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController(IMediator mediator) : ControllerBase
     {
-        private IMediator _mediator;
-
-        public ProductController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<ProductResponseDTO>>> FetchAllProducts(
             [FromQuery] string search = "",
@@ -42,7 +35,7 @@ namespace WebApi.Controllers
             [FromQuery] int limit = 15
         )
         {
-            var result = await _mediator.Send(
+            var result = await mediator.Send(
                 new GetAllProduct
                 {
                     Search = search,
@@ -73,7 +66,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponseDTO>> fetchProductById(string id)
         {
-            var result = await _mediator.Send(new GetProductById { Id = id });
+            var result = await mediator.Send(new GetProductById { Id = id });
             return Ok(result);
         }
 
@@ -85,7 +78,7 @@ namespace WebApi.Controllers
         )
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            var result = await _mediator.Send(
+            var result = await mediator.Send(
                 new GetAllProductUserId
                 {
                     UserId = userId,
@@ -103,7 +96,7 @@ namespace WebApi.Controllers
         )
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            var result = await _mediator.Send(
+            var result = await mediator.Send(
                 new CreateProductRequest { Product = product, UserId = userId }
             );
 
@@ -114,7 +107,7 @@ namespace WebApi.Controllers
         [Authorize]
         public async Task<ActionResult<ProductResponseDTO>> DeleteProductRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteProductRequest { Id = id });
+            var result = await mediator.Send(new DeleteProductRequest { Id = id });
             return Ok(result);
         }
 
@@ -125,7 +118,7 @@ namespace WebApi.Controllers
             [FromBody] UpdateProductDTO product
         )
         {
-            var result = await _mediator.Send(
+            var result = await mediator.Send(
                 new UpdateProductRequest { Id = id, Product = product }
             );
             return Ok(result);

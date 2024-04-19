@@ -1,37 +1,24 @@
 using System.Text;
-using Application.Common;
-using Application.Contracts.Infrastructure.Services;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.User.AuthenticationDTO.DTO;
-using Application.Exceptions;
-using Application.Features.User_Features.Authentication.Requests.Commands;
+using backend.Application.Common;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.User_Features.Authentication.Requests.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 
-namespace Application.Features.User_Features.Authentication.Handlers.Commands
+namespace backend.Application.Features.User_Features.Authentication.Handlers.Commands
 {
-	public class ResetPasswordHandler
+	public class ResetPasswordHandler(
+		IUnitOfWork unitOfWork,
+		IOtpService otpService,
+		IAuthenticationService authenticationService,
+		IOptions<ApiSettings> apiSettings)
 		: IRequestHandler<ResetPasswordRequest, AuthenticationResponseDTO>
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IOtpService _otpService;
-		private readonly IAuthenticationService _authenticationService;
-
-		private readonly ApiSettings _apiSettings;
-
-		public ResetPasswordHandler(
-			IUnitOfWork unitOfWork,
-			IOtpService otpService,
-			IAuthenticationService authenticationService,
-			IOptions<ApiSettings> apiSettings
-		)
-		{
-			_unitOfWork = unitOfWork;
-			_otpService = otpService;
-			_authenticationService = authenticationService;
-			_apiSettings = apiSettings.Value;
-		}
+		private readonly ApiSettings _apiSettings = apiSettings.Value;
 
 		public async Task<AuthenticationResponseDTO> Handle(
 			ResetPasswordRequest request,
@@ -41,15 +28,15 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
 			if (request.Email == null)
 				throw new BadRequestException("Email is required");
 
-			var user = await _unitOfWork.UserRepository.GetByEmail(request.Email!);
+			var user = await unitOfWork.UserRepository.GetByEmail(request.Email!);
 			if (user == null)
 				throw new NotFoundException("User not found");
 
 			if (user.IsEmailVerified == false)
 			{
-				user.EmailVerificationCode = await _otpService.SendVerificationEmailAsync(user, 5);
+				user.EmailVerificationCode = await otpService.SendVerificationEmailAsync(user, 5);
 				user.EmailVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
-				await _unitOfWork.UserRepository.Update(user);
+				await unitOfWork.UserRepository.Update(user);
 				throw new BadRequestException("Email not verified");
 			}
 
@@ -61,14 +48,14 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
 
 			user.Password = HashPassword(request.Password);
 
-			var token = _authenticationService.Login(
+			var token = authenticationService.Login(
 				new LoginRequestDTO { Email = user.Email, Password = user.Password },
 				user,
 				false
 			);
 			user.ResetPasswordCode = null;
 			user.ResetPasswordCodeExpiration = null;
-			await _unitOfWork.UserRepository.Update(user);
+			await unitOfWork.UserRepository.Update(user);
 
 			return new AuthenticationResponseDTO
 			{

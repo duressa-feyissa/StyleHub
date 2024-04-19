@@ -1,8 +1,8 @@
-using Application.Contracts.Persistence.Repositories.User;
-using Application.DTO.User.AuthenticationDTO.Validations;
+using backend.Application.Contracts.Persistence.Repositories.User;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
 using FluentValidation;
 
-namespace Application.DTO.User.UserDTO.Validations
+namespace backend.Application.DTO.User.AuthenticationDTO.Validations
 {
     public class RegisterUserValidation : AbstractValidator<RegisterationRequestDTO>
     {

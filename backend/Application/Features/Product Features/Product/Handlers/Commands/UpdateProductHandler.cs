@@ -1,32 +1,23 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.Exceptions;
-using Application.Features.Product_Features.Product.Requests.Commands;
-using Application.Response;
 using AutoMapper;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Product.Requests.Commands;
+using backend.Application.Response;
+using backend.Domain.Entities.Product;
 using MediatR;
 
-namespace Application.Features.Product_Features.Product.Requests.Handlers.Commands
+namespace backend.Application.Features.Product_Features.Product.Handlers.Commands
 {
-    public class UpdateProductHandler
+    public class UpdateProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
         : IRequestHandler<UpdateProductRequest, BaseResponse<ProductResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public UpdateProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<BaseResponse<ProductResponseDTO>> Handle(
             UpdateProductRequest request,
             CancellationToken cancellationToken
         )
         {
-            var product = await _unitOfWork.ProductRepository.GetById(request.Id);
+            var product = await unitOfWork.ProductRepository.GetById(request.Id);
 
             if (request.Product.Title != null)
                 product.Title = request.Product.Title;
@@ -60,7 +51,7 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
                 product.City = request.Product.City;
             if (request.Product.BrandId != null)
             {
-                var brand = await _unitOfWork.BrandRepository.GetById(request.Product.BrandId);
+                var brand = await unitOfWork.BrandRepository.GetById(request.Product.BrandId);
                 if (brand == null)
                     throw new NotFoundException("Brand Not Found");
                 product.Brand = brand;
@@ -68,14 +59,14 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 
             if (request.Product.CategoryIds != null && request.Product.CategoryIds.Count > 0)
             {
-                var categories = await _unitOfWork.CategoryRepository.GetByIds(
+                var categories = await unitOfWork.CategoryRepository.GetByIds(
                     request.Product.CategoryIds
                 );
 
                 if (categories == null || categories.Count != request.Product.CategoryIds.Count)
                     throw new NotFoundException("category Not Found");
 
-                await _unitOfWork.ProductCategoryRepository.DeleteByProductId(product.Id);
+                await unitOfWork.ProductCategoryRepository.DeleteByProductId(product.Id);
 
                 for (int i = 0; i < categories.Count; i++)
                 {
@@ -90,12 +81,12 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 
             if (request.Product.ColorIds != null && request.Product.ColorIds.Count > 0)
             {
-                var colors = await _unitOfWork.ColorRepository.GetByIds(request.Product.ColorIds);
+                var colors = await unitOfWork.ColorRepository.GetByIds(request.Product.ColorIds);
 
                 if (colors == null || colors.Count != request.Product.ColorIds.Count)
                     throw new NotFoundException("color Not Found");
 
-                await _unitOfWork.ProductColorRepository.DeleteByProductId(product.Id);
+                await unitOfWork.ProductColorRepository.DeleteByProductId(product.Id);
 
                 for (int i = 0; i < colors.Count; i++)
                 {
@@ -110,12 +101,12 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 
             if (request.Product.SizeIds != null && request.Product.SizeIds.Count > 0)
             {
-                var sizes = await _unitOfWork.SizeRepository.GetByIds(request.Product.SizeIds);
+                var sizes = await unitOfWork.SizeRepository.GetByIds(request.Product.SizeIds);
 
                 if (sizes == null || sizes.Count != request.Product.SizeIds.Count)
                     throw new NotFoundException("sizes Not Found");
 
-                await _unitOfWork.ProductSizeRepository.DeleteByProductId(product.Id);
+                await unitOfWork.ProductSizeRepository.DeleteByProductId(product.Id);
 
                 for (int i = 0; i < sizes.Count; i++)
                 {
@@ -126,14 +117,14 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 
             if (request.Product.MaterialIds != null && request.Product.MaterialIds.Count > 0)
             {
-                var materialIds = await _unitOfWork.MaterialRepository.GetByIds(
+                var materialIds = await unitOfWork.MaterialRepository.GetByIds(
                     request.Product.MaterialIds
                 );
 
                 if (materialIds == null || materialIds.Count != request.Product.MaterialIds.Count)
                     throw new NotFoundException("materialIds Not Found");
 
-                await _unitOfWork.ProductMaterialRepository.DeleteByProductId(product.Id);
+                await unitOfWork.ProductMaterialRepository.DeleteByProductId(product.Id);
 
                 for (int i = 0; i < materialIds.Count; i++)
                 {
@@ -146,13 +137,13 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
                 }
             }
 
-            product = await _unitOfWork.ProductRepository.Update(product);
+            product = await unitOfWork.ProductRepository.Update(product);
 
             return new BaseResponse<ProductResponseDTO>
             {
                 Message = "Product Created Successfully",
                 Success = true,
-                Data = _mapper.Map<ProductResponseDTO>(product)
+                Data = mapper.Map<ProductResponseDTO>(product)
             };
         }
     }

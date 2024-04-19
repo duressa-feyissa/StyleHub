@@ -1,24 +1,15 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Common.Location.DTO;
-using Application.Exceptions;
-using Application.Features.Common_Features.Location.Requests.Queries;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Common.Location.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Common_Features.Location.Requests.Queries;
 using MediatR;
 
-namespace Application.Features.Common_Features.Location.Handlers.Queries
+namespace backend.Application.Features.Common_Features.Location.Handlers.Queries
 {
-    public class GetLocationByIdHandler : IRequestHandler<GetLocationById, LocationResponseDTO>
+    public class GetLocationByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        : IRequestHandler<GetLocationById, LocationResponseDTO>
     {
-        private readonly IMapper _mapper;
-
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetLocationByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<LocationResponseDTO> Handle(
             GetLocationById request,
             CancellationToken cancellationToken
@@ -29,12 +20,12 @@ namespace Application.Features.Common_Features.Location.Handlers.Queries
                 throw new BadRequestException("Id is required");
             }
 
-            var Location = await _unitOfWork.LocationRepository.GetById(request.Id);
+            var Location = await unitOfWork.LocationRepository.GetById(request.Id);
             if (Location == null)
             {
                 throw new NotFoundException("Location with that {request.Id} does not exist");
             }
-            var LocationResponse = _mapper.Map<LocationResponseDTO>(Location);
+            var LocationResponse = mapper.Map<LocationResponseDTO>(Location);
             return LocationResponse;
         }
     }

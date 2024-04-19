@@ -1,6 +1,6 @@
-using Application.Contracts.Persistence.Repositories.Common;
+using backend.Application.Contracts.Persistence.Repositories.Common;
 
-namespace Application.Contracts.Persistence.Repositories.User
+namespace backend.Application.Contracts.Persistence.Repositories.User
 {
 	public interface IUserRepository : IGenericRepository<Domain.Entities.User.User>
 	{

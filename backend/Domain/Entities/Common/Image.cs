@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Domain.Common;
+using backend.Domain.Common;
 
-namespace Domain.Entities.Common
+namespace backend.Domain.Entities.Common
 {
     public class Image : BaseEntity
     {
@@ -10,7 +10,5 @@ namespace Domain.Entities.Common
 
         [Required]
         public required User.User User { get; set; }
-
-        public Product.Product? Product { get; set; }
     }
 }

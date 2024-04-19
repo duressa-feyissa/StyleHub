@@ -1,4 +1,4 @@
-namespace Application.DTO.Product.SizeDTO.DTO
+namespace backend.Application.DTO.Product.SizeDTO.DTO
 {
     public class SizeResponseDTO
     {

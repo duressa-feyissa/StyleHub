@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 
-namespace Application.Exceptions
+namespace backend.Application.Exceptions
 {
     public class ValidationErrorException : ApplicationException
     {

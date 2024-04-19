@@ -1,8 +1,8 @@
-using Application.DTO.Product.ColorDTO.DTO;
-using Application.Response;
+using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Product_Features.Color.Requests.Commands
+namespace backend.Application.Features.Product_Features.Color.Requests.Commands
 {
     public class CreateColorRequest : IRequest<BaseResponse<ColorResponseDTO>>
     {

@@ -1,4 +1,4 @@
-namespace Application.Exception.Response
+namespace backend.Application.Response
 {
     public class ExceptionResponse
     {

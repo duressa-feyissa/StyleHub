@@ -1,27 +1,20 @@
-using Application.DTO.Product.SizeDTO.DTO;
-using Application.Features.Product_Features.Size.Requests.Commands;
-using Application.Features.Product_Features.Size.Requests.Queries;
+using backend.Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.Features.Product_Features.Size.Requests.Commands;
+using backend.Application.Features.Product_Features.Size.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.Product
+namespace backend.WebApi.Controllers.Product
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SizeController : ControllerBase
+    public class SizeController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public SizeController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<SizeResponseDTO>>> fetchAllSizes()
         {
-            var result = await _mediator.Send(new GetAllSize());
+            var result = await mediator.Send(new GetAllSize());
             return Ok(result);
         }
 
@@ -29,7 +22,7 @@ namespace WebApi.Controllers.Product
         [Authorize]
         public async Task<ActionResult<SizeResponseDTO>> fetchSizeById(string id)
         {
-            var result = await _mediator.Send(new GetSizeById { Id = id });
+            var result = await mediator.Send(new GetSizeById { Id = id });
             return Ok(result);
         }
 
@@ -39,7 +32,7 @@ namespace WebApi.Controllers.Product
             [FromBody] CreateSizeRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
 
             return Ok(result);
         }
@@ -50,7 +43,7 @@ namespace WebApi.Controllers.Product
             [FromBody] UpdateSizeRequest command
         )
         {
-            var result = await _mediator.Send(command);
+            var result = await mediator.Send(command);
             return Ok(result);
         }
 
@@ -58,7 +51,7 @@ namespace WebApi.Controllers.Product
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<SizeResponseDTO>> DeleteSizeRequest(string id)
         {
-            var result = await _mediator.Send(new DeleteSizeRequest { Id = id });
+            var result = await mediator.Send(new DeleteSizeRequest { Id = id });
             return Ok(result);
         }
     }

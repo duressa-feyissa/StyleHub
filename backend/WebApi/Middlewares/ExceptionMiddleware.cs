@@ -1,21 +1,13 @@
-using System;
 using System.Net;
-using System.Threading.Tasks;
-using Application.Exceptions;
-using Application.Response;
-using Microsoft.AspNetCore.Http;
+using backend.Application.Exceptions;
+using backend.Application.Response;
 using Newtonsoft.Json;
 
-namespace WebApi.Middlewares
+namespace backend.WebApi.Middlewares
 {
-	public class ExceptionMiddleware
+	public class ExceptionMiddleware(RequestDelegate next)
 	{
-		private readonly RequestDelegate _next;
-
-		public ExceptionMiddleware(RequestDelegate next)
-		{
-			_next = next ?? throw new ArgumentNullException(nameof(next));
-		}
+		private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
 		public async Task InvokeAsync(HttpContext httpContext)
 		{

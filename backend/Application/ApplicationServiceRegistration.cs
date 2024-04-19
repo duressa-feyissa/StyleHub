@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Application
+namespace backend.Application
 {
     public static class ApplicationServiceRegistration
     {

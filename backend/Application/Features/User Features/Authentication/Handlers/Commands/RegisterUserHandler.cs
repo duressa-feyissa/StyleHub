@@ -1,51 +1,36 @@
 using System.Text;
-using Application.Common;
-using Application.Contracts.Infrastructure.Services;
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.User.AuthenticationDTO.Validations;
-using Application.DTO.User.UserDTO.Validations;
-using Application.Exceptions;
-using Application.Features.User_Features.Authentication.Requests.Commands;
-using Application.Response;
 using AutoMapper;
-using Domain.Entities.User;
+using backend.Application.Common;
+using backend.Application.Contracts.Infrastructure.Services;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.User.AuthenticationDTO.DTO;
+using backend.Application.DTO.User.AuthenticationDTO.Validations;
+using backend.Application.Exceptions;
+using backend.Application.Features.User_Features.Authentication.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 
-namespace Application.Features.User_Features.Authentication.Handlers.Commands
+namespace backend.Application.Features.User_Features.Authentication.Handlers.Commands
 {
-    public class RegisterUserHandler
+    public class RegisterUserHandler(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IOtpService otpService,
+        IOptions<ApiSettings> apiSettings)
         : IRequestHandler<RegisterUserRequest, BaseResponse<RegisterationResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        private readonly ApiSettings _apiSettings;
-
-        private readonly IOtpService _otpService;
-
-        public RegisterUserHandler(
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IOtpService otpService,
-            IOptions<ApiSettings> apiSettings
-        )
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _otpService = otpService;
-            _apiSettings = apiSettings.Value;
-        }
+        private readonly ApiSettings _apiSettings = apiSettings.Value;
 
         public async Task<BaseResponse<RegisterationResponseDTO>> Handle(
             RegisterUserRequest request,
             CancellationToken cancellationToken
         )
         {
-            var user = _mapper.Map<Domain.Entities.User.User>(request.Registeration);
+            var user = mapper.Map<Domain.Entities.User.User>(request.Registeration);
 
-            var validator = new RegisterUserValidation(_unitOfWork.UserRepository);
+            var validator = new RegisterUserValidation(unitOfWork.UserRepository);
 
             var validationResult = await validator.ValidateAsync(request.Registeration!);
             if (!validationResult.IsValid)
@@ -53,7 +38,7 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
                 throw new BadRequestException(validationResult.Errors.First().ErrorMessage);
             }
 
-            var role = await _unitOfWork.RoleRepository.GetByName("user");
+            var role = await unitOfWork.RoleRepository.GetByName("user");
             if (role == null)
                 throw new NotFoundException("Role Not Found");
             user.Role = role;
@@ -61,15 +46,15 @@ namespace Application.Features.User_Features.Authentication.Handlers.Commands
             {
                 user.Password = HashPassword(request.Registeration.Password!);
                 user.Email = request.Registeration.Email;
-                user.EmailVerificationCode = await _otpService.SendVerificationEmailAsync(user);
+                user.EmailVerificationCode = await otpService.SendVerificationEmailAsync(user);
                 user.EmailVerificationCodeExpiration = DateTime.Now.AddMinutes(5);
                 user.PhoneNumberVerificationCode = null;
-                user = await _unitOfWork.UserRepository.Add(user);
+                user = await unitOfWork.UserRepository.Add(user);
                 return new BaseResponse<RegisterationResponseDTO>
                 {
                     Message = "User Registered Successfully",
                     Success = true,
-                    Data = _mapper.Map<RegisterationResponseDTO>(user)
+                    Data = mapper.Map<RegisterationResponseDTO>(user)
                 };
             }
             // else if (request.Registeration.PhoneNumber != null)

@@ -1,6 +1,6 @@
-using Domain.Entities.User;
+using backend.Domain.Entities.User;
 
-namespace Application.Contracts.Infrastructure.Services
+namespace backend.Application.Contracts.Infrastructure.Services
 {
     public interface IOtpService
     {

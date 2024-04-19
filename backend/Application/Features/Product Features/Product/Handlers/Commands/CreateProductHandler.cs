@@ -1,26 +1,18 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Product.ProductDTO.DTO;
-using Application.Exceptions;
-using Application.Features.Product_Features.Product.Requests.Commands;
-using Application.Response;
 using AutoMapper;
-using Domain.Entities.Product;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Product.ProductDTO.DTO;
+using backend.Application.DTO.Product.ProductDTO.Validations;
+using backend.Application.Exceptions;
+using backend.Application.Features.Product_Features.Product.Requests.Commands;
+using backend.Application.Response;
+using backend.Domain.Entities.Product;
 using MediatR;
 
-namespace Application.Features.Product_Features.Product.Requests.Handlers.Commands
+namespace backend.Application.Features.Product_Features.Product.Handlers.Commands
 {
-    public class CreateProductHandler
+    public class CreateProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
         : IRequestHandler<CreateProductRequest, BaseResponse<ProductResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public CreateProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
         public async Task<BaseResponse<ProductResponseDTO>> Handle(
             CreateProductRequest request,
             CancellationToken cancellationToken
@@ -33,13 +25,13 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
                     validationResult.Errors.FirstOrDefault()?.ErrorMessage!
                 );
 
-            var product = _mapper.Map<Domain.Entities.Product.Product>(request?.Product);
-            var user = await _unitOfWork.UserRepository.GetById(request?.UserId ?? "");
+            var product = mapper.Map<Domain.Entities.Product.Product>(request?.Product);
+            var user = await unitOfWork.UserRepository.GetById(request?.UserId ?? "");
             product.User = user;
 
             if (request?.Product.BrandId != null)
             {
-                var brand = await _unitOfWork.BrandRepository.GetById(request.Product.BrandId);
+                var brand = await unitOfWork.BrandRepository.GetById(request.Product.BrandId);
                 if (brand == null)
                     throw new NotFoundException("Brand Not Found");
                 product.Brand = brand;
@@ -48,10 +40,12 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
             {
                 throw new BadRequestException("Brand Id is Required");
             }
+            
+           
 
             if (request?.Product.CategoryIds.Count > 0)
             {
-                var categories = await _unitOfWork.CategoryRepository.GetByIds(
+                var categories = await unitOfWork.CategoryRepository.GetByIds(
                     request.Product.CategoryIds
                 );
 
@@ -68,10 +62,28 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
                     product.ProductCategories.Add(productCategory);
                 }
             }
+            
+            if (request?.Product.ImageIds.Count > 0)
+            {
+                var images = await unitOfWork.ImageRepository.GetByIds(request.Product.ImageIds);
+
+                if (images == null || images.Count != request.Product.ImageIds.Count)
+                    throw new NotFoundException("image Not Found");
+
+                for (int i = 0; i < images.Count; i++)
+                {
+                    var productImage = new ProductImage
+                    {
+                        ProductId = product.Id,
+                        Image = images[i]
+                    };
+                    product.ProductImages.Add(productImage);
+                }
+            }
 
             if (request?.Product.ColorIds.Count > 0)
             {
-                var colors = await _unitOfWork.ColorRepository.GetByIds(request.Product.ColorIds);
+                var colors = await unitOfWork.ColorRepository.GetByIds(request.Product.ColorIds);
 
                 if (colors == null || colors.Count != request.Product.ColorIds.Count)
                     throw new NotFoundException("color Not Found");
@@ -89,7 +101,7 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 
             if (request?.Product.SizeIds.Count > 0)
             {
-                var sizes = await _unitOfWork.SizeRepository.GetByIds(request.Product.SizeIds);
+                var sizes = await unitOfWork.SizeRepository.GetByIds(request.Product.SizeIds);
 
                 if (sizes == null || sizes.Count != request.Product.SizeIds.Count)
                     throw new NotFoundException("sizes Not Found");
@@ -103,7 +115,7 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
 
             if (request?.Product.MaterialIds.Count > 0)
             {
-                var materialIds = await _unitOfWork.MaterialRepository.GetByIds(
+                var materialIds = await unitOfWork.MaterialRepository.GetByIds(
                     request.Product.MaterialIds
                 );
 
@@ -121,13 +133,13 @@ namespace Application.Features.Product_Features.Product.Requests.Handlers.Comman
                 }
             }
 
-            product = await _unitOfWork.ProductRepository.Add(product);
+            product = await unitOfWork.ProductRepository.Add(product);
 
             return new BaseResponse<ProductResponseDTO>
             {
                 Message = "Product Created Successfully",
                 Success = true,
-                Data = _mapper.Map<ProductResponseDTO>(product)
+                Data = mapper.Map<ProductResponseDTO>(product)
             };
         }
     }

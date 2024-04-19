@@ -1,4 +1,4 @@
-namespace Application.DTO.Product.MaterialDTO.DTO
+namespace backend.Application.DTO.Product.MaterialDTO.DTO
 {
     public class MaterialResponseDTO : IBaseMaterialDTO
     {

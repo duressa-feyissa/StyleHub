@@ -1,40 +1,33 @@
-using Application.Features.User_Features.Authentication.Requests.Commands;
+using backend.Application.Features.User_Features.Authentication.Requests.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.User
+namespace backend.WebApi.Controllers.User
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class AuthenticationController : ControllerBase
+	public class AuthenticationController(IMediator mediator) : ControllerBase
 	{
-		private readonly IMediator _mediator;
-
-		public AuthenticationController(IMediator mediator)
-		{
-			_mediator = mediator;
-		}
-
 		[HttpPost("Register")]
 		public async Task<IActionResult> Register(
 			[FromBody] RegisterUserRequest registerUserCommand
 		)
 		{
-			var result = await _mediator.Send(registerUserCommand);
+			var result = await mediator.Send(registerUserCommand);
 			return Ok(result);
 		}
 
 		[HttpPost("Login")]
 		public async Task<IActionResult> Login([FromBody] LoginUserRequest loginUserCommand)
 		{
-			var result = await _mediator.Send(loginUserCommand);
+			var result = await mediator.Send(loginUserCommand);
 			return Ok(result);
 		}
 
 		[HttpPost("Send-Verfication-Email-Code")]
 		public async Task<IActionResult> SendOTPForEmail([FromBody] EmailOTPSenderRequest email)
 		{
-			var result = await _mediator.Send(email);
+			var result = await mediator.Send(email);
 			return Ok(result);
 		}
 
@@ -43,7 +36,7 @@ namespace WebApi.Controllers.User
 			[FromBody] VerifyEmailRequest verifyEmailCommand
 		)
 		{
-			var result = await _mediator.Send(verifyEmailCommand);
+			var result = await mediator.Send(verifyEmailCommand);
 			return Ok(result);
 		}
 		
@@ -52,7 +45,7 @@ namespace WebApi.Controllers.User
 			[FromBody] ForgetPasswordRequest sendResetPasswordCodeCommand
 		)
 		{
-			var result = await _mediator.Send(sendResetPasswordCodeCommand);
+			var result = await mediator.Send(sendResetPasswordCodeCommand);
 			return Ok(result);
 		}
 		
@@ -61,7 +54,7 @@ namespace WebApi.Controllers.User
 			[FromBody] ResetPasswordRequest resetPasswordCommand
 		)
 		{
-			var result = await _mediator.Send(resetPasswordCommand);
+			var result = await mediator.Send(resetPasswordCommand);
 			return Ok(result);
 		}
 	}

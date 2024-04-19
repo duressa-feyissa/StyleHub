@@ -1,38 +1,29 @@
-using Application.Contracts.Persistance.Repositories;
-using Application.DTO.Common.Role.DTO;
-using Application.Exceptions;
-using Application.Features.Common_Features.Role.Requests.Commands;
-using Application.Response;
 using AutoMapper;
+using backend.Application.Contracts.Persistence;
+using backend.Application.DTO.Common.Role.DTO;
+using backend.Application.Exceptions;
+using backend.Application.Features.Common_Features.Role.Requests.Commands;
+using backend.Application.Response;
 using MediatR;
 
-namespace Application.Features.Common_Features.Role.Handlers.Commands
+namespace backend.Application.Features.Common_Features.Role.Handlers.Commands
 {
-    public class UpdateRoleHandler
+    public class UpdateRoleHandler(IUnitOfWork unitOfWork, IMapper mapper)
         : IRequestHandler<UpdateRoleRequest, BaseResponse<RoleResponseDTO>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public UpdateRoleHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<BaseResponse<RoleResponseDTO>> Handle(
             UpdateRoleRequest request,
             CancellationToken cancellationToken
         )
         {
-            var existingRole = await _unitOfWork.RoleRepository.GetById(request.Id);
+            var existingRole = await unitOfWork.RoleRepository.GetById(request.Id);
 
             if (existingRole == null)
                 throw new NotFoundException("Role Not Found");
 
             if (request?.Role?.Name != null)
             {
-                var existingRoleName = await _unitOfWork.RoleRepository.GetByName(
+                var existingRoleName = await unitOfWork.RoleRepository.GetByName(
                     request?.Role?.Name ?? ""
                 );
                 if (existingRoleName != null)
@@ -57,12 +48,12 @@ namespace Application.Features.Common_Features.Role.Handlers.Commands
             }
 
             existingRole.UpdatedAt = DateTime.Now;
-            await _unitOfWork.RoleRepository.Update(existingRole);
+            await unitOfWork.RoleRepository.Update(existingRole);
             return new BaseResponse<RoleResponseDTO>
             {
                 Message = "Role Updated Successfully",
                 Success = true,
-                Data = _mapper.Map<RoleResponseDTO>(existingRole)
+                Data = mapper.Map<RoleResponseDTO>(existingRole)
             };
         }
     }
