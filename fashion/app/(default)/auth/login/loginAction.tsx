@@ -1,6 +1,6 @@
 "use server";
 
-import { sendVerificationCode } from "@/app/lib/actions";
+import { sendVerificationCode } from "@/lib/actions";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -13,18 +13,21 @@ export default async function loginAction(
   const password = formData.get("password");
 
   //  Send to our api route
-  const res = await fetch(`${process.env.ROOT_URL}/api/Authentication/Login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      loginRequest: {
-        email: email,
-        password: password,
+  const res = await fetch(
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    }),
-  });
+      body: JSON.stringify({
+        loginRequest: {
+          email: email,
+          password: password,
+        },
+      }),
+    }
+  );
 
   const json = await res.json();
 
@@ -40,7 +43,7 @@ export default async function loginAction(
 
     redirect("/filter");
   } else {
-    if(json.Message === "Email not verified") {
+    if (json.Message === "Email not verified") {
       await sendVerificationCode(email as string);
       redirect("/auth/verify-email?email=" + email);
     }

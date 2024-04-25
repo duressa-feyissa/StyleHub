@@ -1,5 +1,5 @@
 "use server";
-import { sendVerificationCode } from "@/app/lib/actions";
+import { sendVerificationCode } from "@/lib/actions";
 import { redirect } from "next/navigation";
 
 export default async function resetPasswordAction(
@@ -19,7 +19,7 @@ export default async function resetPasswordAction(
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Reset-Password`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Reset-Password`,
     {
       method: "POST",
       headers: {
@@ -28,7 +28,7 @@ export default async function resetPasswordAction(
       body: JSON.stringify({
         email,
         code,
-        password
+        password,
       }),
     }
   );
@@ -52,7 +52,7 @@ export async function sendResetPasswordCodeAction(
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Send-Reset-Password-Code`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Send-Reset-Password-Code`,
     {
       method: "POST",
       headers: {

@@ -1,5 +1,5 @@
 "use server";
-import { sendVerificationCode } from "@/app/lib/actions";
+import { sendVerificationCode } from "@/lib/actions";
 import { redirect } from "next/navigation";
 
 export default async function verifyAction(
@@ -13,7 +13,7 @@ export default async function verifyAction(
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Verify-Email`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Verify-Email`,
     {
       method: "POST",
       headers: {

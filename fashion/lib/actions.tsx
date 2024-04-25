@@ -16,7 +16,7 @@ export async function getSession() {
 
 export async function sendVerificationCode(email: string) {
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Send-Verification-Email-Code`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Send-Verification-Email-Code`,
     {
       method: "POST",
       headers: {
@@ -33,7 +33,7 @@ export async function sendVerificationCode(email: string) {
 
 export async function verifyEmail(email: string, code: string) {
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Verify-Email`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Verify-Email`,
     {
       method: "POST",
       headers: {
@@ -56,7 +56,7 @@ export async function verifyEmail(email: string, code: string) {
 
 export async function sendPasswordResetCode(email: string) {
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Send-Reset-Password-Code`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Send-Reset-Password-Code`,
     {
       method: "POST",
       headers: {
@@ -77,7 +77,7 @@ export async function resetPassword(
   password: string
 ) {
   const res = await fetch(
-    `${process.env.ROOT_URL}/api/Authentication/Reset-Password`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Reset-Password`,
     {
       method: "POST",
       headers: {
