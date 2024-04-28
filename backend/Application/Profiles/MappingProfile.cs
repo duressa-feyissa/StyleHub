@@ -140,7 +140,7 @@ namespace backend.Application.Profiles
 			CreateMap<AuthenticationResponseDTO, User>().ReverseMap();
 			CreateMap<LoginRequestDTO, User>().ReverseMap();
 			CreateMap<RegisterationResponseDTO, User>().ReverseMap();
-			CreateMap<ImageRepository, Image>().ReverseMap();
+			CreateMap<ImageResponseDTO, Image>().ReverseMap();
 			CreateMap<UserSharedResponseDTO, User>().ReverseMap();
 			CreateMap<UserResponseDTO, User>().ReverseMap()
 				.ForMember(

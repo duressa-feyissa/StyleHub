@@ -44,10 +44,9 @@ namespace backend.WebApi.Controllers.Common
         public async Task<ActionResult<ImageResponseDTO>> UploadImage([FromBody] ImageUploadDTO dTO)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var command = await mediator.Send(
+            var result = await mediator.Send(
                 new UploadImageRequest { UserId = userId!, Image = dTO }
             );
-            var result = await mediator.Send(command);
 
             return Ok(result);
         }
