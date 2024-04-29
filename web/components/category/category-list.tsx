@@ -57,7 +57,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function CategoriesView() {
   return (
-    <NavigationMenu className="p-4">
+    <NavigationMenu className="py-4">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
@@ -79,11 +79,15 @@ export function CategoriesView() {
               </li>
               <li className="row-span-3">
                 <ScrollArea className="h-[300px]">
-                <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-2 lg:w-full ">
-                  {components.map((component, index) => (
-                    <CategoryCard image={`/products/${index + 1}.png`} key={index} title={component.title} />
-                  ))}
-                </ul>
+                  <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-2 lg:w-full ">
+                    {components.map((component, index) => (
+                      <CategoryCard
+                        image={`/products/${index + 1}.png`}
+                        key={index}
+                        title={component.title}
+                      />
+                    ))}
+                  </ul>
                 </ScrollArea>
               </li>
             </ul>
