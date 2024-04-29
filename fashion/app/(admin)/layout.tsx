@@ -1,3 +1,4 @@
+import Providers from "@/lib/query-provider";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,5 +11,5 @@ export default function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return <Providers>{children}</Providers>;
 }
