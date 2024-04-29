@@ -24,7 +24,7 @@ export const addProduct = action(productAddformSchema, async (content) => {
 });
 
 export const fetchProducts = async () => {
-  const response = await fetch("http://localhost:3000/api/products");
+  const response = await fetch("/api/products");
   return response.json();
 };
 
