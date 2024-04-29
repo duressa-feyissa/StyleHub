@@ -116,7 +116,8 @@ const MultiSelectFormField = React.forwardRef<
         selectedValuesSet.current.add(value);
         setSelectedValues([...selectedValues, value]);
       }
-      onValueChange([...selectedValuesSet?.current]);
+      const selectedValuesArray = Array.from(selectedValuesSet.current);
+      onValueChange(selectedValuesArray);
     };
 
     return (
@@ -206,9 +207,7 @@ const MultiSelectFormField = React.forwardRef<
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => {
-                  const isSelected = selectedValuesSet.current.has(
-                    option.id
-                  );
+                  const isSelected = selectedValuesSet.current.has(option.id);
                   return (
                     <CommandItem
                       key={option.id}

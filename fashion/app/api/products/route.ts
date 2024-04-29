@@ -3,16 +3,12 @@ import { redirect } from "next/navigation";
 import { type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const session = request.cookies.get("token")?.value || "{}";
-  const token = JSON.parse(session).token;
-
   const response = await fetch(
     `${process.env.BACKEND_SERVER_URL}/api/Product`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
       },
     }
   );
@@ -27,6 +23,8 @@ export async function POST(request: Request) {
   const session = cookiesStore.get("session")?.value || "{}";
   const token = JSON.parse(session).token;
 
+  console.log(body);
+
   const response = await fetch(
     `${process.env.BACKEND_SERVER_URL}/api/Product`,
     {
@@ -39,10 +37,11 @@ export async function POST(request: Request) {
     }
   );
 
-  if (response.status === 401) {
-    return redirect("/login");
-  }
+  console.log(response);
 
   const result = await response.json();
+
+  console.log(result);
+
   return Response.json(result);
 }

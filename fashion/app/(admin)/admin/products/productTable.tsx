@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Table,
   TableBody,
@@ -20,31 +22,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-interface Product {
-  id: string;
-  title: string;
-  price: string;
-  quantity: number;
-  target: string;
-  createdAt: string;
-}
+import { ProductType } from "@/lib/type";
+import { useGetProducts } from "@/lib/data/get-products";
 
 async function getData() {
-  const res = await fetch("http://localhost:3001" + "/api/products");
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+  const res = await fetch("/api/products", { cache: "no-store" });
 
   if (!res.ok) {
-    return [1, 2, 3];
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
   }
 
   return res.json();
 }
 
-export default async function ProductsTable() {
-  const products = await getData();
-  console.log(products);
+export default function ProductsTable() {
+  const { data: products, error: postError, fetchStatus } = useGetProducts()
+  if (postError || !products) return postError?.message
   return (
     <Table>
       <TableHeader>
@@ -63,7 +57,7 @@ export default async function ProductsTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map((product: Product) => (
+        {products.map((product: ProductType) => (
           <TableRow key={product.id}>
             <TableCell className="hidden sm:table-cell">
               <Image

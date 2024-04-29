@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "tailwindui.com",
+        hostname: "res.cloudinary.com",
         port: "",
         pathname: "/**",
       },

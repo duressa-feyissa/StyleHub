@@ -1,20 +1,21 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import {
+  BrandType,
+  CategoryType,
+  ColorType,
+  MaterialType,
+  SizeType,
+} from "@/lib/type";
 import { type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const session = request.cookies.get("token")?.value || "{}";
-  const token = JSON.parse(session).token;
-
   const response0 = await fetch(`${process.env.BACKEND_SERVER_URL}/api/Brand`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
     },
   });
 
-  const brands = await response0.json();
+  const brands: BrandType[] = await response0.json();
 
   const response1 = await fetch(
     `${process.env.BACKEND_SERVER_URL}/api/Category`,
@@ -22,22 +23,20 @@ export async function GET(request: NextRequest) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
       },
     }
   );
 
-  const categories = await response1.json();
+  const categories: CategoryType[] = await response1.json();
 
   const response2 = await fetch(`${process.env.BACKEND_SERVER_URL}/api/Color`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
     },
   });
 
-  const colors = await response2.json();
+  const colors: ColorType[] = await response2.json();
 
   const response3 = await fetch(
     `${process.env.BACKEND_SERVER_URL}/api/Location`,
@@ -45,12 +44,11 @@ export async function GET(request: NextRequest) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
       },
     }
   );
 
-  const locations = await response3.json();
+  const locations: Location[] = await response3.json();
 
   const response4 = await fetch(
     `${process.env.BACKEND_SERVER_URL}/api/Material`,
@@ -58,25 +56,27 @@ export async function GET(request: NextRequest) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
       },
     }
   );
 
-  const materials = await response4.json();
+  const materials: MaterialType[] = await response4.json();
 
-  const response5 = await fetch(
-    `${process.env.BACKEND_SERVER_URL}/api/Size`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
+  const response5 = await fetch(`${process.env.BACKEND_SERVER_URL}/api/Size`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-  const sizes = await response5.json();
+  const sizes: SizeType[] = await response5.json();
 
-  return Response.json({ brands, categories, colors, locations, materials, sizes });
+  return Response.json({
+    brands,
+    categories,
+    colors,
+    locations,
+    materials,
+    sizes,
+  });
 }
