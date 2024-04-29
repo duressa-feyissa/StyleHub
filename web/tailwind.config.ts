@@ -1,172 +1,94 @@
 import type { Config } from "tailwindcss";
 
-const config: Config = {
+const config = {
+  darkMode: ["class"],
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
+  prefix: "",
   theme: {
-    extend: {
-      fontFamily: {
-        Roboto: ["Roboto", "sans-serif"],
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
       },
-
+    },
+    extend: {
       colors: {
-        primary: "#EE1E80",
+        // primary: "#EE1E80",
+        black: "#1A1B21",
         primaryContainer: "#F7FBFD",
         onPrimary: "#FFFFFF",
-        secondary: "#5A5D72",
+        // secondary: "#5A5D72",
         onSurface: "#1A1B21",
         onPrimaryContainer: "#06164B",
         onSurfaceVariant: "#45464F",
         surfaceContainerLow: "#F4F2FA",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
-      spacing: {
-        "xxx-small": "0px",
-        "xx-small": "4px",
-        "x-small": "8px",
-        small: "16px",
-        medium: "24px",
-        large: "32px",
-        "x-large": "40px",
-        "xx-large": "48px",
-        "xxx-large": "56px",
-        "v-large": "64px",
-        "vv-large": "128px",
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
-      typography: {
-        "title-large-bold": {
-          css: {
-            fontSize: "22px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "28px",
-          },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
-        "title-large": {
-          css: {
-            fontSize: "22px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "28px",
-          },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
-        "title-medium": {
-          css: {
-            fontSize: "16px",
-            fontStyle: "normal",
-            fontWeight: "500",
-            lineHeight: "24px",
-            letterSpacing: "0.15px",
-          },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
         },
-        "title-small": {
-          css: {
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: "500",
-            lineHeight: "20px",
-            letterSpacing: "0.1px",
-          },
-        },
-        "body-large": {
-          css: {
-            fontSize: "16px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "24px",
-            letterSpacing: "0.5px",
-          },
-        },
-        "body-medium": {
-          css: {
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "20px",
-            letterSpacing: "0.25px",
-          },
-        },
-        "body-small": {
-          css: {
-            fontSize: "12px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "16px",
-            letterSpacing: "0.4px",
-          },
-        },
-        "headline-large": {
-          css: {
-            fontSize: "32px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "40px",
-          },
-        },
-        "headline-medium": {
-          css: {
-            fontSize: "28px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "36px",
-          },
-        },
-        "headline-small": {
-          css: {
-            fontSize: "24px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "32px",
-          },
-        },
-        "display-large": {
-          css: {
-            fontSize: "57px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "64px",
-            letterSpacing: "-0.25px",
-          },
-        },
-        "display-large-bold": {
-          css: {
-            fontSize: "57px",
-            fontStyle: "normal",
-            fontWeight: "600",
-            lineHeight: "64px",
-            letterSpacing: "-0.25px",
-          },
-        },
-        "display-medium": {
-          css: {
-            fontSize: "45px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "52px",
-          },
-        },
-        "display-medium-bold": {
-          css: {
-            fontSize: "45px",
-            fontStyle: "normal",
-            fontWeight: "600",
-            lineHeight: "52px",
-          },
-        },
-        "display-small": {
-          css: {
-            fontSize: "36px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "44px",
-          },
-        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
-};
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config;
 
 export default config;
