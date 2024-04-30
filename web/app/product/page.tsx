@@ -1,83 +1,124 @@
-import React from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import Image from "next/image";
-import Product from "../../components/landing/Product";
+import image from "../../public/hero/Image-2.png";
+import ProductCard from "../../components/landing/ProductCard";
+import { AtSign, Facebook, MapPin, SendIcon, Twitter } from "lucide-react";
 
-const page = () => {
+const product = {
+  id: 1,
+  name: "Basic Tee",
+  href: "#",
+  imageSrc: "/products/5.png",
+  imageAlt: "Front of men's Basic Tee in black.",
+  price: "35",
+  location: "Addis Ababa, 4 kilo",
+};
+
+export default function Page() {
   return (
-    <div className="flex flex-col p-16 text-black gap-10">
-      <div className="flex justify-between items-center py-16">
-        <div>
-          <p className="font-Poppins">
-            Home {">>"} <span className="text-[#EE1E80]">Product</span>
-          </p>
+    <div className="w-full flex flex-col items-center justify-center gap-y-24 pt-10 lg:container">
+      <div className="flex justify-center items-center gap-x-24">
+        <div className="flex gap-x-10">
+          <div className="flex flex-col gap-y-4 justify-center items-center">
+            <Image src={image} alt="image" width={233} height={233} />
+            <Image src={image} alt="image" width={233} height={233} />
+            <Image src={image} alt="image" width={233} height={233} />
+          </div>
+          <Image src={image} alt="image" width={500} height={500} />
         </div>
-        <div className="flex items-center justify-center gap-2 ">
-          <p>find anything in </p>
-          <div className="bg-black text-white px-5 py-2">
-            <p>Ethiopia</p>
+        <div className="flex flex-col items-start justify-start gap-y-5 w-1/2">
+          <div className="flex flex-col justify-start items-start gap-y-4 pr-44">
+            <p className="text-2xl font-semibold">White Hoodle Cutout</p>
+            <p className="text-md text-Outline">
+              The White Hoodie Cutout is a modern twist on a classic wardrobe
+              staple, featuring unique cutout details that add an edgy and
+              contemporary flair to your casual look.
+            </p>
+          </div>
+          <div>
+            <p className="text-3xl text-pink-600">ETB 34</p>
+          </div>
+          <div className="flex flex-col gap-y-6 text-sm">
+            <div className="flex gap-x-5">
+              <p>brand</p>
+              <p className="font-semibold">Adidas</p>
+            </div>
+            <div className="flex gap-x-4">
+              <p>Color</p>
+              {["black", "green", "red"].map((color) => (
+                <div
+                  key={color}
+                  className={`w-5 h-5 rounded-full border border-opacity-25 border-onSurface`}
+                  style={{ backgroundColor: color }}
+                ></div>
+              ))}
+            </div>
+            <div className="flex gap-x-5">
+              <p>Category</p>
+              <p className="font-semibold">Apparel, Tops, Sweaters</p>
+            </div>
+            <div className="flex gap-x-5">
+              <p>Size</p>
+              <div className="flex gap-x-5 items-center w-full">
+                {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
+                  <div
+                    key={size}
+                    className="bg-surfaceContainerLow w-10 h-10 flex justify-center items-center rounded-full"
+                  >
+                    <p>{size}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-3 text-sm">
+            <div className="flex justify-center items-center gap-x-5">
+              <p>Share Link</p>
+              <div className="flex gap-x-5">
+                {[
+                  { social: "Twitter", icon: Twitter },
+                  { social: "Facebook", icon: Facebook },
+                  { social: "Telegram", icon: SendIcon },
+                  { social: "Mail", icon: AtSign },
+                ].map(({ social, icon: IconComponent }) => (
+                  <button
+                    key={social}
+                    className="flex justify-center items-center rounded-full"
+                  >
+                    <IconComponent className="opacity-75 w-5 h-5" />
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-x-1 justify-start items-center">
+              <MapPin className="w-5 h-5 opacity-75" />
+              <p>Addis Ababa, Ethiopia</p>
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center p-5 bg-[#FFF4EC]">
-        <p>Filter</p>
-        <p>Sort by</p>
-      </div>
-      <div className="grid grid-cols-4 grid-rows-3 gap-10 mb-8">
-        <Product
-          Name="Elegant Beige Blazar For Women"
-          Price={128}
-          image="/images/Elegant.png"
-        />
-        <Product
-          Name="Men Fashion Clothing Set"
-          Price={248}
-          image="/images/Men.png"
-        />
-        <Product
-          Name="Yellow Summer Dress"
-          Price={61}
-          image="/images/Yellow.png"
-        />
-        <Product
-          Name="White Hoodle Cutout"
-          Price={64}
-          image="/images/White.png"
-        />
-        <Product
-          Name="Women Dress Shoes"
-          Price={44}
-          image="/images/Women.png"
-        />
-        <Product
-          Name="Stylish Bespoke Jacket"
-          Price={44}
-          image="/images/Stylish.png"
-        />
-        <Product Name="Black T-Shirt" Price={34} image="/images/Black.png" />
-        <Product
-          Name="Gold glittery sequin party top"
-          Price={74}
-          image="/images/Gold.png"
-        />
-        <Product
-          Name="White Pullover Cutout"
-          Price={64}
-          image="/images/Pullover.png"
-        />
-        <Product
-          Name="Style Dress for Girls"
-          Price={140}
-          image="/images/Style.png"
-        />
-        <Product
-          Name="Men's Classic Blue Folded Cotton Shirt"
-          Price={56}
-          image="/images/Classic.png"
-        />
-        <Product Name="Women Dress" Price={49} image="/images/Dress.png" />
+      <div className="w-full pb-24 lg:container">
+        <Carousel>
+          <CarouselContent className="w-full gap-x-2">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
+                <ProductCard
+                  {...product}
+                  imageSrc={`/products/${index + 4}.png`}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </div>
   );
-};
-
-export default page;
+}
