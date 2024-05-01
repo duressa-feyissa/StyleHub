@@ -1,6 +1,7 @@
 "use client";
 
 import Product from "@/components/landing/Product";
+import ProductList from "@/components/landing/ProductList";
 import { useState } from "react";
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -225,7 +226,7 @@ export default function Filter() {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
-          <Product />
+          {isToggled ? <ProductList /> : <Product />}
         </div>
       </div>
     </div>
