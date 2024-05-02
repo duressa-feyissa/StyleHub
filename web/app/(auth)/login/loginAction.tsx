@@ -1,30 +1,27 @@
 "use server";
-import { sendVerificationCode } from "@/lib/actions";
-import { redirect } from "next/navigation";
-import { send } from "process";
 
-export default async function signupAction(
+import { sendVerificationCode } from "@/lib/actions";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+export default async function loginAction(
   currentState: any,
   formData: FormData
 ): Promise<string> {
   // Get the data off the form
-  const firstName = formData.get("firstName");
-  const lastName = formData.get("lastName");
   const email = formData.get("email");
   const password = formData.get("password");
 
   //  Send to our api route
   const res = await fetch(
-    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Register`,
+    `${process.env.BACKEND_SERVER_URL}/api/Authentication/Login`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        registeration: {
-          firstName: firstName,
-          lastName: lastName,
+        loginRequest: {
           email: email,
           password: password,
         },
@@ -34,14 +31,21 @@ export default async function signupAction(
 
   const json = await res.json();
 
-  // Redirect to login if registration is success
+  // Redirect to login if success
   if (res.ok) {
-    await sendVerificationCode(json.data.email);
-    redirect("/auth/verify-email?email=" + json.data.email);
+    cookies().set("session", JSON.stringify(json?.data), {
+      secure: true,
+      httpOnly: true,
+      expires: Date.now() + 24 * 60 * 60 * 1000 * 3,
+      path: "/",
+      sameSite: "strict",
+    });
+
+    redirect("/filter");
   } else {
     if (json.Message === "Email not verified") {
       await sendVerificationCode(email as string);
-      redirect("/auth/verify-email?email=" + email);
+      redirect("/verify-email?email=" + email);
     }
     return json.Message;
   }

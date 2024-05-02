@@ -29,7 +29,7 @@ export default async function verifyAction(
   const json = await res.json();
   console.log(json);
   if (res.ok) {
-    redirect("/auth/login");
+    redirect("/login");
   } else {
     return "Invalid code. Please try again.";
   }

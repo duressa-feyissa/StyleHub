@@ -80,7 +80,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <p className="text-sm text-muted-foreground flex justify-end gap-2">
-            <Link href="/auth/reset-password" className="text-primary hover:underline">
+            <Link
+              href="/reset-password"
+              className="text-primary hover:underline"
+            >
               Forgot password?
             </Link>
           </p>

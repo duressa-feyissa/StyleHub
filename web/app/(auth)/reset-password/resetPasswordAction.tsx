@@ -36,7 +36,7 @@ export default async function resetPasswordAction(
   const json = await res.json();
   console.log(json);
   if (res.ok) {
-    redirect("/auth/login");
+    redirect("/login");
   } else {
     return "Invalid code. Please try again.";
   }
@@ -67,7 +67,7 @@ export async function sendResetPasswordCodeAction(
   const json = await res.json();
   console.log(json);
   if (res.ok) {
-    redirect("/auth/reset-password/verify?email=" + email);
+    redirect("/reset-password/verify?email=" + email);
   } else {
     return "Invalid code. Please try again.";
   }

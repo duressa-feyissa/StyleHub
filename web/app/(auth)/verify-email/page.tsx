@@ -39,7 +39,7 @@ export default function InputOTPForm() {
   const email = searchParams.get("email") || "";
 
   if (email === "" || !email) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   const form = useForm<z.infer<typeof FormSchema>>({
