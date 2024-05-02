@@ -20,7 +20,7 @@ export default async function NavbarButton() {
           </Button>
         </form>
       ) : (
-        <Link href="/auth/login">
+        <Link href="/login">
           <Button>Login</Button>
         </Link>
       )}

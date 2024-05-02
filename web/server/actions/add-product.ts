@@ -32,3 +32,14 @@ export const fetchFilters = async () => {
   const response = await fetch("/api/filters");
   return response.json();
 };
+
+export const deleteProduct = async (id: string) => {
+  const response = await fetch(`/api/products`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id }),
+  });
+  const result = await response.json();
+  console.log(result);
+  return result;
+};

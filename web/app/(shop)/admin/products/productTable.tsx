@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Table,
@@ -24,6 +24,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ProductType } from "@/lib/type";
 import { useGetProducts } from "@/lib/data/get-products";
+import { deleteProduct } from "@/server/actions/add-product";
 
 async function getData() {
   const res = await fetch("/api/products", { cache: "no-store" });
@@ -37,8 +38,13 @@ async function getData() {
 }
 
 export default function ProductsTable() {
-  const { data: products, error: postError, fetchStatus } = useGetProducts()
-  if (postError || !products) return postError?.message
+  async function handleDelete(id: string) {
+    const res = await deleteProduct(id);
+    console.log(res);
+  }
+
+  const { data: products, error: postError, fetchStatus } = useGetProducts();
+  if (postError || !products) return postError?.message;
   return (
     <Table>
       <TableHeader>
@@ -47,10 +53,14 @@ export default function ProductsTable() {
             <span className="sr-only">Image</span>
           </TableHead>
           <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead>Condition</TableHead>
           <TableHead className="hidden md:table-cell">Price</TableHead>
-          <TableHead className="hidden md:table-cell">Total Sales</TableHead>
-          <TableHead className="hidden md:table-cell">Created at</TableHead>
+          <TableHead className="hidden md:table-cell">Quantity</TableHead>
+          <TableHead className="hidden md:table-cell">Target</TableHead>
+          <TableHead className="hidden md:table-cell">City</TableHead>
+          <TableHead className="hidden md:table-cell">Brand</TableHead>
+          <TableHead className="hidden md:table-cell">Colors</TableHead>
+          <TableHead className="hidden md:table-cell">Materials</TableHead>
           <TableHead>
             <span className="sr-only">Actions</span>
           </TableHead>
@@ -61,25 +71,49 @@ export default function ProductsTable() {
           <TableRow key={product.id}>
             <TableCell className="hidden sm:table-cell">
               <Image
-                alt="Product image"
+                alt={product.title}
                 className="aspect-square rounded-md"
                 height="64"
-                src="/vercel.svg"
+                src={product?.images[0]?.imageUrl}
                 width="64"
               />
             </TableCell>
             <TableCell className="font-medium">{product.title}</TableCell>
             <TableCell>
-              <Badge variant="outline">{product.target}</Badge>
+              <Badge variant="outline">{product.condition}</Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              ${product.price}
+              {product.price} ETB
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              {product.quantity}
+              <Badge variant="outline">{product.quantity}</Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              {new Date(product.createdAt).toLocaleDateString()}
+              {product.target}
+            </TableCell>
+            <TableCell className="hidden md:table-cell">
+              {product.city}
+            </TableCell>
+            <TableCell className="hidden md:table-cell">
+              {product.brand.name}
+            </TableCell>
+            <TableCell className="hidden md:table-cell">
+              <div className="flex">
+                {product.colors.map((color) => (
+                  <div
+                    key={color.id}
+                    className="w-4 h-4 border border-opacity-25 border-onSurface rounded-full"
+                    style={{ backgroundColor: color.hexCode }}
+                  />
+                ))}
+              </div>
+            </TableCell>
+            <TableCell className="hidden md:table-cell">
+              {product.materials.map((material) => (
+                <Badge key={material.id} variant="outline">
+                  {material.name}
+                </Badge>
+              ))}
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -92,7 +126,15 @@ export default function ProductsTable() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Delete</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      confirm(
+                        "Are you sure you want to delete this product?"
+                      ) && handleDelete(product.id)
+                    }
+                  >
+                    Delete
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>

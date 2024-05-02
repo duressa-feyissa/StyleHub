@@ -48,7 +48,7 @@ export async function verifyEmail(email: string, code: string) {
 
   if (res.ok) {
     const json = await res.json();
-    redirect("/auth/login?email=" + json.data.email);
+    redirect("/login?email=" + json.data.email);
   } else {
     return "Invalid code. Please try again.";
   }
