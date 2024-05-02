@@ -1,3 +1,4 @@
+"use client";
 import {
   Carousel,
   CarouselContent,
@@ -5,10 +6,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useState } from "react";
 import Image from "next/image";
-import image from "../../public/hero/Image-2.png";
-import ProductCard from "../../components/landing/ProductCard";
+import ProductCard from "../../../components/landing/ProductCard";
 import { AtSign, Facebook, MapPin, SendIcon, Twitter } from "lucide-react";
+import { images } from "./product";
 
 const product = {
   id: 1,
@@ -20,21 +22,44 @@ const product = {
   location: "Addis Ababa, 4 kilo",
 };
 
+const initialMainImage = images[0];
+
 export default function Page() {
+  const [mainImage, setMainImage] = useState(initialMainImage);
+
+  const handleImageClick = (image: any) => {
+    setMainImage(image);
+  };
+
+  const filteredImages = images.filter((img) => img.id !== mainImage.id);
+
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-y-24 pt-10 lg:container">
-      <div className="flex justify-center items-center gap-x-24">
+    <div className="w-full flex flex-col items-center justify-center gap-y-24 pt-24 lg:container">
+      <div className="flex justify-center items-center gap-x-24 lg:container">
         <div className="flex gap-x-10">
-          <div className="flex flex-col gap-y-4 justify-center items-center">
-            <Image src={image} alt="image" width={233} height={233} />
-            <Image src={image} alt="image" width={233} height={233} />
-            <Image src={image} alt="image" width={233} height={233} />
+          <div className=" flex flex-col gap-y-10">
+            {filteredImages.map((img) => (
+              <Image
+                key={img.id}
+                src={img.src}
+                alt={img.alt}
+                width={130}
+                height={130}
+                onClick={() => handleImageClick(img)}
+              />
+            ))}
           </div>
-          <Image src={image} alt="image" width={500} height={500} />
+          <Image
+            className="fill"
+            src={mainImage.src}
+            alt={mainImage.alt}
+            width={400}
+            height={400}
+          />
         </div>
         <div className="flex flex-col items-start justify-start gap-y-5 w-1/2">
-          <div className="flex flex-col justify-start items-start gap-y-4 pr-44">
-            <p className="text-2xl font-semibold">White Hoodle Cutout</p>
+          <div className="flex flex-col justify-start items-start gap-y-4">
+            <p className="text-4xl font-semibold">White Hoodle Cutout</p>
             <p className="text-md text-Outline">
               The White Hoodie Cutout is a modern twist on a classic wardrobe
               staple, featuring unique cutout details that add an edgy and
@@ -49,7 +74,7 @@ export default function Page() {
               <p>brand</p>
               <p className="font-semibold">Adidas</p>
             </div>
-            <div className="flex gap-x-4">
+            <div className="flex gap-x-4 justify-center items-center">
               <p>Color</p>
               {["black", "green", "red"].map((color) => (
                 <div
@@ -63,7 +88,7 @@ export default function Page() {
               <p>Category</p>
               <p className="font-semibold">Apparel, Tops, Sweaters</p>
             </div>
-            <div className="flex gap-x-5">
+            <div className="flex gap-x-5 justify-center items-center">
               <p>Size</p>
               <div className="flex gap-x-5 items-center w-full">
                 {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
