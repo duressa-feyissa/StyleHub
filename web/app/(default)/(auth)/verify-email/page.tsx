@@ -24,7 +24,7 @@ import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const FormSchema = z.object({
   pin: z.string().min(4, {
@@ -37,9 +37,10 @@ export default function InputOTPForm() {
   const [errorMessage, dispatch] = useFormState(verifyAction, undefined);
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
+  const router = useRouter();
 
   if (email === "" || !email) {
-    redirect("/login");
+    router.push("/login");
   }
 
   const form = useForm<z.infer<typeof FormSchema>>({

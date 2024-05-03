@@ -1,6 +1,6 @@
 "use server";
 
-import { sendVerificationCode } from "@/lib/actions";
+import { sendVerificationCode } from "@/lib/actions/user.actions";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

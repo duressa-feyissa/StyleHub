@@ -1,5 +1,5 @@
 "use server";
-import { sendVerificationCode } from "@/lib/actions";
+import { sendVerificationCode } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { send } from "process";
 
@@ -36,7 +36,7 @@ export default async function signupAction(
 
   // Redirect to login if registration is success
   if (res.ok) {
-    await sendVerificationCode(json.data.email);
+    await sendVerificationCode(json.data.email as string);
     redirect("/verify-email?email=" + json.data.email);
   } else {
     if (json.Message === "Email not verified") {
