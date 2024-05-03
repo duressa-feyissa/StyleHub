@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { getSession, logout } from "@/lib/actions";
+import { getSession, logout } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 
 export default async function NavbarButton() {
