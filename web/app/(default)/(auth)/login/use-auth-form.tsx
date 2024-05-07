@@ -89,7 +89,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </p>
           <div>
             {errorMessage && (
-              <p className="text-red-600 dark:text-blue-800">{errorMessage}</p>
+              <p className="text-red-600 dark:text-blue-800">{
+                errorMessage ? "Invalid email or password. Please try again." : ""
+                }</p>
             )}
           </div>
           <LoginButton />
@@ -129,7 +131,7 @@ function LoginButton() {
   return (
     <Button aria-disabled={pending} type="submit" onClick={handleClick}>
       {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      Login
+      {pending ? "Logging in..." : "Log in"}
     </Button>
   );
 }

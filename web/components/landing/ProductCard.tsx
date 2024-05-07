@@ -1,7 +1,6 @@
 import { ProductType } from "@/lib/type";
 import Image from "next/image";
 import Link from "next/link";
-import { DirectionAwareHover } from "../ui/direction-aware-hover";
 const defaultProduct = {
   title: "Product Name",
   images: [{ id: "1", imageUrl: "/products/9.png" }],
@@ -47,7 +46,6 @@ export function ProductCard1({ product }: { product?: ProductType }) {
   return (
     <div className="group relative">
       <div className="relative  flex items-center justify-center">
-        <DirectionAwareHover imageUrl="/products/7.png">
           <div className="mt-4 flex justify-between">
             <div>
               <h3 className="text-lg font-medium text-gray-700 dark:text-white">
@@ -62,7 +60,6 @@ export function ProductCard1({ product }: { product?: ProductType }) {
               </p>
             </div>
           </div>
-        </DirectionAwareHover>
       </div>
     </div>
   );
