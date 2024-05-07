@@ -1,4 +1,4 @@
-import { productAddformSchema } from "@/lib/formSchema";
+import { productAddformSchema, shopCreateformSchema } from "@/lib/formSchema";
 import { revalidatePath } from "next/cache";
 import { createSafeActionClient } from "next-safe-action";
 
@@ -19,6 +19,25 @@ export const addProduct = action(productAddformSchema, async (content) => {
   }
 
   revalidatePath("/products");
+  const result = await response.json();
+  return { success: result };
+});
+
+export const createShop = action(shopCreateformSchema, async (content) => {
+  
+  const response = await fetch("/api/shop", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(content),
+  });
+  const re = await response.json();
+  console.log(re);
+
+  if (!response.ok) {
+    return { error: "Could not create product" };
+  }
+
+  revalidatePath("/shops");
   const result = await response.json();
   return { success: result };
 });

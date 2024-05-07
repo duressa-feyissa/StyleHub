@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+
 export const metadata: Metadata = {
   title: "Stylehub Admin Dashboard",
   description: "Stylehub Admin Dashboard",
@@ -9,5 +12,11 @@ export default function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
 }
