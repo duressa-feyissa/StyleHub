@@ -5,6 +5,8 @@ export const productAddformSchema = z.object({
   description: z.string().min(3, "Description is too short"),
   price: z.coerce.number(),
   target: z.string(),
+  shopId: z.string(),
+  address: z.string(),
   quantity: z.coerce.number(),
   condition: z.string(),
   isNegotiable: z.boolean(),
@@ -19,3 +21,4 @@ export const productAddformSchema = z.object({
   colorIds: z.array(z.string()),
   materialIds: z.array(z.string()),
 });
+

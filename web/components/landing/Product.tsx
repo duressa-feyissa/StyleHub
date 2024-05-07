@@ -1,33 +1,15 @@
-import ProductCard from "./ProductCard";
+"use client";
 
-const product = {
-  id: 1,
-  name: "Basic Tee",
-  href: "#",
-  imageSrc: "/products/5.png",
-  imageAlt: "Front of men's Basic Tee in black.",
-  price: "35",
-  location: "Addis Ababa, 4 kilo",
-};
-// More products...
+import Products from "./Products";
 
-export default function Product() {
+export default function Product({ list = false, cols = 3 }) {
   return (
-    <div className="bg-white">
+    <div className="">
       <div className="mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:container lg:px-8">
-        <h2 className="text-4xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-4xl font-bold tracking-tight">
           POPULAR
         </h2>
-
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-            <ProductCard
-              {...product}
-              imageSrc={`/products/${index + 4}.png`}
-              key={index}
-            />
-          ))}
-        </div>
+        <Products list={list} cols={cols} />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Carousel,
   CarouselContent,
@@ -11,20 +12,14 @@ import Image from "next/image";
 import ProductCard from "../../../components/landing/ProductCard";
 import { AtSign, Facebook, MapPin, SendIcon, Twitter } from "lucide-react";
 import { images } from "./product";
-
-const product = {
-  id: 1,
-  name: "Basic Tee",
-  href: "#",
-  imageSrc: "/products/5.png",
-  imageAlt: "Front of men's Basic Tee in black.",
-  price: "35",
-  location: "Addis Ababa, 4 kilo",
-};
+import { Badge } from "@/components/ui/badge";
+import { useGetProducts } from "@/lib/data/get-products";
+import { ProductType } from "@/lib/type";
 
 const initialMainImage = images[0];
 
 export default function Page() {
+  const { data: products, error: postError, fetchStatus } = useGetProducts();
   const [mainImage, setMainImage] = useState(initialMainImage);
 
   const handleImageClick = (image: any) => {
@@ -32,6 +27,7 @@ export default function Page() {
   };
 
   const filteredImages = images.filter((img) => img.id !== mainImage.id);
+  if (postError || !products) return postError?.message;
 
   return (
     <div className="w-full flex flex-col items-center justify-center gap-y-24 pt-24 lg:container">
@@ -69,12 +65,12 @@ export default function Page() {
           <div>
             <p className="text-3xl text-pink-600">ETB 34</p>
           </div>
-          <div className="flex flex-col gap-y-6 text-sm">
+          <div className="flex flex-col gap-y-4 text-sm">
             <div className="flex gap-x-5">
-              <p>brand</p>
+              <p>Brand</p>
               <p className="font-semibold">Adidas</p>
             </div>
-            <div className="flex gap-x-4 justify-center items-center">
+            <div className="flex gap-x-5">
               <p>Color</p>
               {["black", "green", "red"].map((color) => (
                 <div
@@ -92,12 +88,9 @@ export default function Page() {
               <p>Size</p>
               <div className="flex gap-x-5 items-center w-full">
                 {["S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
-                  <div
-                    key={size}
-                    className="bg-surfaceContainerLow w-10 h-10 flex justify-center items-center rounded-full"
-                  >
-                    <p>{size}</p>
-                  </div>
+                  <Badge key={size} variant="outline">
+                    {size}
+                  </Badge>
                 ))}
               </div>
             </div>
@@ -131,12 +124,12 @@ export default function Page() {
       <div className="w-full pb-24 lg:container">
         <Carousel>
           <CarouselContent className="w-full gap-x-2">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
-                <ProductCard
-                  {...product}
-                  imageSrc={`/products/${index + 4}.png`}
-                />
+            {[1,2,3,4,5,6,7].map((product) => (
+              <CarouselItem
+                key={product}
+                className="md:basis-1/2 lg:basis-1/4"
+              >
+                <ProductCard key={product} />
               </CarouselItem>
             ))}
           </CarouselContent>

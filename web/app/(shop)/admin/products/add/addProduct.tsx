@@ -94,6 +94,8 @@ export default function AddProduct() {
       description: "",
       price: 0,
       target: "",
+      address: "",
+      shopId: "b27e70b1-833e-4929-b669-3f2db48dd590",
       quantity: 0,
       condition: "",
       isNegotiable: true,

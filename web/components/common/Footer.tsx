@@ -6,9 +6,9 @@ import FooterLinkGrid from "./component/FooterLinkGrid";
 
 export default function Footer() {
   return (
-    <div className=" bg-onSurfaceVariant">
+    <footer className=" bg-onSurfaceVariant">
       <div className=" flex flex-col max-w-7xl lg:mx-auto">
-        <div className=" flex flex-row justify-between py-24">
+        <div className=" flex flex-col lg:flex-row  items-center gap-y-8 lg:justify-between py-8 lg:py-24 ">
           <div className="flex flex-col gap-y-6 w-[300px] ">
             <div className="flex flex-col gap-y-3">
               <p className="prose-display-medium text-onPrimary text-2xl font-bold">
@@ -55,14 +55,16 @@ export default function Footer() {
           <FooterLinkGrid />
         </div>
         <div className=" h-[1px] w-full bg-onPrimary opacity-10 " />
-        <div className="flex flex-row justify-between py-16 ">
+        <div className="flex flex-col text-center items-center gap-2 lg:flex-row justify-around py-8 md:py-16 ">
           <p className="text-md text-primaryContainer">
-            ©2024 Innovate Fusion. All rights reserved
+            ©2024 Innovate Fusion. All rights reserved.
           </p>
-          <p className="text-md text-primaryContainer ">Privacy & Policy</p>
-          <p className="text-md text-primaryContainer ">Terms & Condition</p>
+          <div className="flex justify- gap-10 items-center">
+            <p className="text-md text-primaryContainer ">Privacy & Policy</p>
+            <p className="text-md text-primaryContainer ">Terms & Condition</p>
+          </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }
