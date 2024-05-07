@@ -8,7 +8,7 @@ export default function Home() {
       <div className="">
         <Hero />
         <Category />
-        <Product />
+        <Product cols={4} />
       </div>
     </>
   );

@@ -7,7 +7,7 @@ import NavbarButton from "./navbarButton";
 
 const Navbar = () => {
   return (
-    <div className="bg-surfaceContainerLow">
+    <div className="">
       <div className="lg:container flex p-2 justify-between">
         <Logo />
         <Search />

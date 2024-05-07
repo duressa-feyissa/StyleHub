@@ -8,8 +8,8 @@ interface CategoryCardProps {
 
 export default function CategoryCard({ image, title }: CategoryCardProps) {
   return (
-    <div className="w-56 h-48 rounded-2xl border-2 border-slate-100 flex-col justify-center items-center gap-2 inline-flex">
-      <div className="w-28 h-28 p-2 bg-purple-50 rounded-full justify-center items-center gap-2.5 inline-flex">
+    <div className="w-56 h-48 rounded-2xl border-2  flex-col justify-center items-center gap-2 inline-flex">
+      <div className="w-28 h-28 p-2 bg-purple-50 dark:bg-slate-800 rounded-full justify-center items-center gap-2.5 inline-flex">
         <div className="grow shrink basis-0 self-stretch justify-start items-start gap-2.5 flex">
           <Image
             className="grow shrink basis-0 self-stretch"
@@ -20,7 +20,7 @@ export default function CategoryCard({ image, title }: CategoryCardProps) {
           />
         </div>
       </div>
-      <div className="text-zinc-900 text-base font-normal font-Roboto leading-normal tracking-wide">
+      <div className="dark:text-slate-100 text-zinc-900 text-base font-normal font-Roboto leading-normal tracking-wide">
         Accessories
       </div>
     </div>

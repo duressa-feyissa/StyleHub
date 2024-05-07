@@ -75,7 +75,7 @@ export type UserType = {
   country?: string;
   city?: string;
   address?: string;
-  role: RoleType[];
+  role?: RoleType[];
 };
 
 export type RoleType = {

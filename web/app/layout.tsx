@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import Providers from "@/lib/query-provider";
 
 const inter = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Providers>
+            {children}
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
