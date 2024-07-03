@@ -1,0 +1,10 @@
+namespace backend.Application.DTO.User.AuthenticationDTO.DTO
+{
+	public class PasswordResetCodeVerificationResponseDTO
+	{
+		public required string Email { get; set; }
+		public required bool IsVerified { get; set; }
+		public required string Message { get; set; }
+		public required DateTime VerificationDate { get; set; }
+	}
+}

@@ -57,5 +57,14 @@ namespace backend.WebApi.Controllers.User
 			var result = await mediator.Send(resetPasswordCommand);
 			return Ok(result);
 		}
+
+		[HttpPost("Verify-Password-Reset-Code")]
+		public async Task<IActionResult> VerifyPasswordResetCode(
+			[FromBody] PasswordResetCodeVerificationRequest verifyPasswordResetCodeCommand
+		)
+		{
+			var result = await mediator.Send(verifyPasswordResetCodeCommand);
+			return Ok(result);
+		}
 	}
 }
