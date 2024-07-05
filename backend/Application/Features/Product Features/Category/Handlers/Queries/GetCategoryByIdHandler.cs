@@ -4,6 +4,7 @@ using backend.Application.DTO.Product.CategoryDTO.DTO;
 using backend.Application.Exceptions;
 using backend.Application.Features.Product_Features.Category.Requests.Queries;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace backend.Application.Features.Product_Features.Category.Handlers.Queries
 {
@@ -17,13 +18,18 @@ namespace backend.Application.Features.Product_Features.Category.Handlers.Querie
                 throw new BadRequestException("Id is required");
             }
 
-            var Category = await unitOfWork.CategoryRepository.GetById(request.Id);
-            if (Category == null)
+            var category = await unitOfWork.CategoryRepository.GetById(request.Id);
+            if (category == null)
             {
                 throw new NotFoundException("Category with that {request.Id} does not exist");
             }
-            var CategoryResponse = mapper.Map<CategoryResponseDTO>(Category);
-            return CategoryResponse;
+            return new CategoryResponseDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Image = category.Image,
+                Domain = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(category.Domain)
+            };
         }
 
     }

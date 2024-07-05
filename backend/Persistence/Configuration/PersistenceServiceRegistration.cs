@@ -50,6 +50,7 @@ namespace backend.Persistence.Configuration
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IDesignRepository, DesignRepository>();
 
             return services;
         }

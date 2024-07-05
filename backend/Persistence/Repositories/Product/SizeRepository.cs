@@ -10,7 +10,7 @@ namespace backend.Persistence.Repositories.Product
     {
         public async Task<IReadOnlyList<Size>> GetAll()
         {
-            return await context.Sizes.ToListAsync();
+            return await context.Sizes.OrderBy(u => u.Name).ToListAsync();
         }
 
         public async Task<Size> GetById(string id)

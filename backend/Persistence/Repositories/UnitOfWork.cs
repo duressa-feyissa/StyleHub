@@ -24,6 +24,7 @@ namespace backend.Persistence.Repositories
         IProductCategoryRepository productCategoryRepository,
         IRoleRepository roleRepository,
         IUserRepository userRepository,
+        IDesignRepository designRepository,
         IImageRepository imageRepository)
         : IUnitOfWork
     {
@@ -164,6 +165,16 @@ namespace backend.Persistence.Repositories
                 if (imageRepository == null)
                     imageRepository = new ImageRepository(context);
                 return imageRepository;
+            }
+        }
+        
+        public IDesignRepository DesignRepository
+        {
+            get
+            {
+                if (designRepository == null)
+                    designRepository = new DesignRepository(context);
+                return designRepository;
             }
         }
 

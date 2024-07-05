@@ -11,7 +11,7 @@ namespace backend.Persistence.Repositories.Product
 	{
 		public async Task<IReadOnlyList<Category>> GetAll()
 		{
-			return await context.Categories.ToListAsync();
+			return await context.Categories.OrderBy(u => u.Name).ToListAsync();
 		}
 
 		public async Task<Category> GetById(string id)

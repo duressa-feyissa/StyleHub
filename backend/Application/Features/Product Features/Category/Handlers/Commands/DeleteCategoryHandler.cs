@@ -6,6 +6,7 @@ using backend.Application.Exceptions;
 using backend.Application.Features.Product_Features.Category.Requests.Commands;
 using backend.Application.Response;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace backend.Application.Features.Product_Features.Category.Handlers.Commands
 {
@@ -38,7 +39,13 @@ namespace backend.Application.Features.Product_Features.Category.Handlers.Comman
             {
                 Message = "Category Deleted Successfully",
                 Success = true,
-                Data = mapper.Map<CategoryResponseDTO>(Category)
+                Data = new CategoryResponseDTO
+                {
+                    Id = Category.Id,
+                    Name = Category.Name,
+                    Image = Category.Image,
+                     Domain = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(Category.Domain)
+                }
             };
         }
     }

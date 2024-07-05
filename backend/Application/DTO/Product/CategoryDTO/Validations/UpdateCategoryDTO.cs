@@ -7,28 +7,29 @@ using FluentValidation;
 
 namespace backend.Application.DTO.Product.CategoryDTO.Validations
 {
-    public class BaseCategoryValidation : AbstractValidator<CreateCategoryDTO>
+    public class UpdateCategoryValidation : AbstractValidator<UpdateCategoryDTO>
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public BaseCategoryValidation(ICategoryRepository categoryRepository)
+        public UpdateCategoryValidation(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
 
             RuleFor(x => x.Name)
-                .NotNull()
-                .WithMessage("Name is required")
-                .NotEmpty()
-                .WithMessage("Name cannot be empty")
+                .Cascade(CascadeMode.Stop)
+                .NotNull().WithMessage("Name cannot be null")
+                .NotEmpty().WithMessage("Name cannot be empty")
                 .Custom((name, context) => context.InstanceToValidate.Name = name.ToLower());
 
             RuleFor(x => x.Image)
+                .Cascade(CascadeMode.Stop)
                 .NotNull()
                 .WithMessage("Image is required")
                 .NotEmpty()
                 .WithMessage("Image cannot be empty");
 
             RuleFor(x => x.Name)
+                .Cascade(CascadeMode.Stop)
                 .MustAsync(async (name, cancellation) =>
                 {
                     var category = await _categoryRepository.GetByName(name);
@@ -37,6 +38,7 @@ namespace backend.Application.DTO.Product.CategoryDTO.Validations
                 .WithMessage("Category already exists");
 
             RuleFor(x => x.Domain)
+                .Cascade(CascadeMode.Stop)
                 .NotNull()
                 .WithMessage("Domain is required")
                 .Must(BeAValidDomain)

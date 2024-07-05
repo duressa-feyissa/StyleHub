@@ -5,6 +5,7 @@ using backend.Application.DTO.Common.Role.DTO;
 using backend.Application.DTO.Product.BrandDTO.DTO;
 using backend.Application.DTO.Product.CategoryDTO.DTO;
 using backend.Application.DTO.Product.ColorDTO.DTO;
+using backend.Application.DTO.Product.DesignDTO.DTO;
 using backend.Application.DTO.Product.MaterialDTO.DTO;
 using backend.Application.DTO.Product.ProductDTO.DTO;
 using backend.Application.DTO.Product.SizeDTO.DTO;
@@ -142,6 +143,8 @@ namespace backend.Application.Profiles
 			CreateMap<RegisterationResponseDTO, User>().ReverseMap();
 			CreateMap<ImageResponseDTO, Image>().ReverseMap();
 			CreateMap<UserSharedResponseDTO, User>().ReverseMap();
+			CreateMap<DesignResponseDTO, Design>().ReverseMap();
+			CreateMap<BaseDesignDTO, Design>().ReverseMap();
 			CreateMap<UserResponseDTO, User>().ReverseMap()
 				.ForMember(
 					dest => dest.Role,

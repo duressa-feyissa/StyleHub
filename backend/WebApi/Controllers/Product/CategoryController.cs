@@ -17,6 +17,20 @@ namespace backend.WebApi.Controllers.Product
             var result = await mediator.Send(new GetAllCategory());
             return Ok(result);
         }
+        
+        [HttpGet("domain")]
+        public async Task<ActionResult<List<Dictionary<string, List<string>>>>> fetchAllCategoryDomain()
+        {
+            var result = await mediator.Send(new GetAllCategoryDomain());
+            return Ok(result);
+        }
+        
+        [HttpGet("domain/detail")]
+        public async Task<ActionResult<Dictionary<string, Dictionary<string, List<CategoryShareResponseDTO>>>>> fetchAllCategoryDomainDetail()
+        {
+            var result = await mediator.Send(new GetAllCategoryDomainDetail());
+            return Ok(result);
+        }
 
         [HttpGet("{id}")]
         [Authorize]

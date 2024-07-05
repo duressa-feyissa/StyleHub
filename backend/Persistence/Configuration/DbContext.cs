@@ -23,6 +23,7 @@ namespace backend.Persistence.Configuration
 		public virtual DbSet<Role> Roles { get; set; }
 		public virtual DbSet<User> Users { get; set; }
 		public virtual DbSet<Image> Images { get; set; }
+		public virtual DbSet<Design> Designs { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -42,6 +43,7 @@ namespace backend.Persistence.Configuration
 			modelBuilder.Entity<User>().HasKey(u => u.Id);
 			modelBuilder.Entity<Role>().HasKey(r => r.Id);
 			modelBuilder.Entity<Image>().HasKey(i => i.Id);
+			modelBuilder.Entity<Design>().HasKey(d => d.Id);
 			base.OnModelCreating(modelBuilder);
 		}
 	}
