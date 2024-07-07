@@ -26,6 +26,31 @@ namespace backend.Application.Profiles
 			CreateMap<Product, UpdateProductDTO>().ReverseMap();
 			CreateMap<Product, ProductResponseDTO>()
 				.ForMember(
+					dest => dest.Brands,
+					opt =>
+						opt.MapFrom(src =>
+							src.ProductBrands.Select(pc => new BrandResponseDTO
+								{
+									Id = pc.Brand.Id,
+									Name = pc.Brand.Name,
+									Logo = pc.Brand.Logo
+								})
+								.ToList()
+						)
+				)
+				.ForMember(
+					dest => dest.Designs,
+					opt =>
+						opt.MapFrom(src =>
+							src.ProductDesigns.Select(pc => new DesignResponseDTO
+								{
+									Id = pc.Design.Id,
+									Name = pc.Design.Name,
+								})
+								.ToList()
+						)
+				)
+				.ForMember(
 					dest => dest.Categories,
 					opt =>
 						opt.MapFrom(src =>

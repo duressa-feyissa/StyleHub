@@ -5,8 +5,7 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
 {
     public class CreateProductValidation : AbstractValidator<CreateProductDTO>
     {
-        string[] Condition = { "new", "used" };
-        string[] Target = { "men", "women", "kid" };
+        string[] Condition = { "new", "used", "fairy used" };
 
         public CreateProductValidation()
         {
