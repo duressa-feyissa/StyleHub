@@ -54,14 +54,6 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
                 .Must(x => Condition.Contains(x))
                 .WithMessage("Condition must be new or used");
 
-            RuleFor(x => x.Target)
-                .NotNull()
-                .WithMessage("Target is required")
-                .NotEmpty()
-                .WithMessage("Target cannot be empty")
-                .Must(x => Target.Contains(x))
-                .WithMessage("Target must be men, women or kids");
-
             RuleFor(x => x.Latitude)
                 .NotNull()
                 .WithMessage("Latitude is required")

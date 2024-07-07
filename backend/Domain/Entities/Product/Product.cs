@@ -17,16 +17,10 @@ namespace backend.Domain.Entities.Product
 
         [Required]
         public required int Quantity { get; set; }
-
-        [Required]
-        public required string Target { get; set; }
-
+        
         [Required]
         public required string Condition { get; set; }
-
-        [Required]
-        public virtual required User.User User { get; set; }
-
+        
         [Required]
         public bool IsPublished { get; set; } = false;
 
@@ -38,9 +32,10 @@ namespace backend.Domain.Entities.Product
 
         [Required]
         public required double Longitude { get; set; }
-
-        [Required]
-        public virtual required Brand Brand { get; set; }
+        
+        public virtual HashSet<ProductDesign> ProductDesigns { get; set; } = new HashSet<ProductDesign>();
+        
+        public virtual HashSet<ProductBrand> ProductBrands { get; set; } = new HashSet<ProductBrand>();
         public virtual HashSet<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
         public virtual HashSet<ProductSize> ProductSizes { get; set; } = new HashSet<ProductSize>();
         public virtual HashSet<ProductColor> ProductColors { get; set; } =

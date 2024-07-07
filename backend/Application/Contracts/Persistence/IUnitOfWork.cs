@@ -13,6 +13,8 @@ namespace backend.Application.Contracts.Persistence
 		IMaterialRepository MaterialRepository { get; }
 		IDesignRepository DesignRepository { get; }
 		IProductColorRepository ProductColorRepository { get; }
+		IProductBrandRepository ProductBrandRepository { get; }
+		IProductDesignRepository ProductDesignRepository { get; }
 		IProductSizeRepository ProductSizeRepository { get; }
 		IProductMaterialRepository ProductMaterialRepository { get; }
 		ILocationRepository LocationRepository { get; }

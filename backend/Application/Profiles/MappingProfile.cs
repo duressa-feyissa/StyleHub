@@ -26,34 +26,6 @@ namespace backend.Application.Profiles
 			CreateMap<Product, UpdateProductDTO>().ReverseMap();
 			CreateMap<Product, ProductResponseDTO>()
 				.ForMember(
-					dest => dest.Brand,
-					opt =>
-						opt.MapFrom(src => new BrandResponseDTO
-						{
-							Id = src.Brand.Id,
-							Name = src.Brand.Name,
-							Logo = src.Brand.Logo
-						})
-				)
-				.ForMember(
-					dest => dest.User,
-					opt =>
-						opt.MapFrom(src => new UserSharedResponseDTO
-						{
-							Id = src.User.Id,
-							FirstName = src.User.FirstName,
-							LastName = src.User.LastName,
-							PhoneNumber = src.User.PhoneNumber,
-							Email = src.User.Email,
-							Latitude = src.User.Longitude,
-							Longitude = src.User.Longitude,
-							ProfilePicture = src.User.ProfilePicture,
-							Country = src.User.Country,
-							City = src.User.City,
-							Address = src.User.Address
-						})
-				)
-				.ForMember(
 					dest => dest.Categories,
 					opt =>
 						opt.MapFrom(src =>

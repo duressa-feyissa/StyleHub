@@ -15,16 +15,16 @@ namespace backend.WebApi.Controllers.Product
         [HttpGet]
         public async Task<ActionResult<List<ProductResponseDTO>>> FetchAllProducts(
             [FromQuery] string search = "",
-            [FromQuery] string? brandId = null,
             [FromQuery] IEnumerable<string>? colorIds = null,
             [FromQuery] IEnumerable<string>? materialIds = null,
             [FromQuery] IEnumerable<string>? sizeIds = null,
+            [FromQuery] IEnumerable<string>? brandIds = null,
+            [FromQuery] IEnumerable<string>? designIds = null,
             [FromQuery] bool? isNegotiable = null,
             [FromQuery] float? minPrice = null,
             [FromQuery] float? maxPrice = null,
             [FromQuery] int? minQuantity = null,
             [FromQuery] int? maxQuantity = null,
-            [FromQuery] string? target = null,
             [FromQuery] string? condition = null,
             [FromQuery] double? latitudes = null,
             [FromQuery] double? longitudes = null,
@@ -39,8 +39,9 @@ namespace backend.WebApi.Controllers.Product
                 new GetAllProduct
                 {
                     Search = search,
-                    BrandId = brandId,
                     ColorIds = colorIds,
+                    BrandIds = brandIds,
+                    DesignIds = designIds,
                     MaterialIds = materialIds,
                     SizeIds = sizeIds,
                     IsNegotiable = isNegotiable,
@@ -48,7 +49,6 @@ namespace backend.WebApi.Controllers.Product
                     MaxPrice = maxPrice,
                     MinQuantity = minQuantity,
                     MaxQuantity = maxQuantity,
-                    Target = target,
                     Condition = condition,
                     Latitude = latitudes,
                     Longitude = longitudes,
@@ -69,25 +69,7 @@ namespace backend.WebApi.Controllers.Product
             var result = await mediator.Send(new GetProductById { Id = id });
             return Ok(result);
         }
-
-        [HttpGet("Added-By-User")]
-        [Authorize]
-        public async Task<ActionResult<ProductResponseDTO>> fetchProductByUser(
-            [FromQuery] int Skip = 0,
-            [FromQuery] int Limit = 10
-        )
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            var result = await mediator.Send(
-                new GetAllProductUserId
-                {
-                    UserId = userId,
-                    Limit = Limit,
-                    Skip = Skip
-                }
-            );
-            return Ok(result);
-        }
+        
 
         [HttpPost]
         [Authorize]

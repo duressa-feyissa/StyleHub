@@ -24,6 +24,11 @@ namespace backend.Persistence.Repositories.Product
             var brand = await context.Brands.FirstOrDefaultAsync(u => u.Name == name);
             return brand!;
         }
+        
+        public async Task<IReadOnlyList<Brand>> GetByIds(List<string> ids)
+        {
+            return await context.Brands.Where(u => ids.Contains(u.Id)).ToListAsync();
+        }
 
     }
 }

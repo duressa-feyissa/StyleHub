@@ -29,8 +29,6 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 product.Quantity = request.Product.Quantity ?? 1;
             if (request.Product.Condition != null)
                 product.Condition = request.Product.Condition;
-            if (request.Product.Target != null)
-                product.Target = request.Product.Target;
             if (request.Product.IsPublished != null)
                 product.IsPublished = request.Product.IsPublished ?? false;
             if (request.Product.IsNegotiable != null)
@@ -49,13 +47,6 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 product.Longitude = request.Product.Longitude ?? 0;
             if (request.Product.City != null)
                 product.City = request.Product.City;
-            if (request.Product.BrandId != null)
-            {
-                var brand = await unitOfWork.BrandRepository.GetById(request.Product.BrandId);
-                if (brand == null)
-                    throw new NotFoundException("Brand Not Found");
-                product.Brand = brand;
-            }
 
             if (request.Product.CategoryIds != null && request.Product.CategoryIds.Count > 0)
             {
@@ -68,12 +59,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
 
                 await unitOfWork.ProductCategoryRepository.DeleteByProductId(product.Id);
 
-                for (int i = 0; i < categories.Count; i++)
+                foreach (var t in categories)
                 {
                     var productCategory = new ProductCategory
                     {
                         ProductId = product.Id,
-                        Category = categories[i]
+                        Category = t
                     };
                     product.ProductCategories.Add(productCategory);
                 }
@@ -88,12 +79,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
 
                 await unitOfWork.ProductColorRepository.DeleteByProductId(product.Id);
 
-                for (int i = 0; i < colors.Count; i++)
+                foreach (var t in colors)
                 {
                     var productColor = new ProductColor
                     {
                         ProductId = product.Id,
-                        Color = colors[i]
+                        Color = t
                     };
                     product.ProductColors.Add(productColor);
                 }
@@ -108,9 +99,9 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
 
                 await unitOfWork.ProductSizeRepository.DeleteByProductId(product.Id);
 
-                for (int i = 0; i < sizes.Count; i++)
+                foreach (var t in sizes)
                 {
-                    var productSize = new ProductSize { ProductId = product.Id, Size = sizes[i] };
+                    var productSize = new ProductSize { ProductId = product.Id, Size = t };
                     product.ProductSizes.Add(productSize);
                 }
             }
@@ -126,14 +117,54 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
 
                 await unitOfWork.ProductMaterialRepository.DeleteByProductId(product.Id);
 
-                for (int i = 0; i < materialIds.Count; i++)
+                foreach (var t in materialIds)
                 {
                     var productMaterial = new ProductMaterial
                     {
                         ProductId = product.Id,
-                        Material = materialIds[i]
+                        Material = t
                     };
                     product.ProductMaterials.Add(productMaterial);
+                }
+            }
+            
+            if (request.Product.BrandIds != null && request.Product.BrandIds.Count > 0)
+            {
+                var brands = await unitOfWork.BrandRepository.GetByIds(request.Product.BrandIds);
+
+                if (brands == null || brands.Count != request.Product.BrandIds.Count)
+                    throw new NotFoundException("brands Not Found");
+
+                await unitOfWork.ProductBrandRepository.DeleteByProductId(product.Id);
+
+                foreach (var t in brands)
+                {
+                    var productBrand = new ProductBrand
+                    {
+                        ProductId = product.Id,
+                        Brand = t
+                    };
+                    product.ProductBrands.Add(productBrand);
+                }
+            }
+            
+            if (request.Product.DesignIds != null && request.Product.DesignIds.Count > 0)
+            {
+                var designs = await unitOfWork.DesignRepository.GetByIds(request.Product.DesignIds);
+
+                if (designs == null || designs.Count != request.Product.DesignIds.Count)
+                    throw new NotFoundException("designs Not Found");
+
+                await unitOfWork.ProductDesignRepository.DeleteByProductId(product.Id);
+
+                foreach (var t in designs)
+                {
+                    var productDesign = new ProductDesign
+                    {
+                        ProductId = product.Id,
+                        Design = t
+                    };
+                    product.ProductDesigns.Add(productDesign);
                 }
             }
 

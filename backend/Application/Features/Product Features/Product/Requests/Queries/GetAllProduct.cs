@@ -7,17 +7,17 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 	{
 		public GetAllProduct(
 			string search = "",
-			string? brandId = null,
 			IEnumerable<string>? colorIds = null,
 			IEnumerable<string>? materialIds = null,
 			IEnumerable<string>? sizeIds = null,
 			IEnumerable<string>? categoryIds = null,
+			IEnumerable<string>? brandIds = null,
+			IEnumerable<string>? designIds = null,
 			bool? isNegotiable = null,
 			float? minPrice = null,
 			float? maxPrice = null,
 			int? minQuantity = null,
 			int? maxQuantity = null,
-			string? target = null,
 			string? condition = null,
 			double? latitude = null,
 			double? longitude = null,
@@ -29,16 +29,16 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 		)
 		{
 			Search = search;
-			BrandId = brandId;
 			ColorIds = colorIds;
 			MaterialIds = materialIds;
 			SizeIds = sizeIds;
+			BrandIds = brandIds;
+			DesignIds = designIds;
 			IsNegotiable = isNegotiable;
 			MinPrice = minPrice;
 			MaxPrice = maxPrice;
 			MinQuantity = minQuantity;
 			MaxQuantity = maxQuantity;
-			Target = target;
 			Condition = condition;
 			Latitude = latitude;
 			Longitude = longitude;
@@ -50,16 +50,17 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 		}
 
 		public string Search { get; set; }
-		public string? BrandId { get; set; }
 		public IEnumerable<string>? ColorIds { get; set; }
 		public IEnumerable<string>? MaterialIds { get; set; }
 		public IEnumerable<string>? SizeIds { get; set; }
+		public IEnumerable<string>? CategoryIds { get; set; }
+		public IEnumerable<string>? BrandIds { get; set; }
+		public IEnumerable<string>? DesignIds { get; set; }
 		public bool? IsNegotiable { get; set; }
 		public float? MinPrice { get; set; }
 		public float? MaxPrice { get; set; }
 		public int? MinQuantity { get; set; }
 		public int? MaxQuantity { get; set; }
-		public string? Target { get; set; }
 		public string? Condition { get; set; }
 		public double? Latitude { get; set; }
 		public double? Longitude { get; set; }
@@ -68,5 +69,6 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 		public string? SortOrder { get; set; }
 		public int Skip { get; set; }
 		public int Limit { get; set; }
+		
 	}
 }

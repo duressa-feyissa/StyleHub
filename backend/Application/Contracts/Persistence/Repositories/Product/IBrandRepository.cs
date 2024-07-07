@@ -9,5 +9,6 @@ namespace backend.Application.Contracts.Persistence.Repositories.Product
         Task<Brand> GetById(string id);
 
         Task<Brand> GetByName(string name);
+        Task<IReadOnlyList<Brand>> GetByIds(List<string> ids);
     }
 }

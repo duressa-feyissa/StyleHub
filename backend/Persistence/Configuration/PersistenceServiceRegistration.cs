@@ -47,6 +47,8 @@ namespace backend.Persistence.Configuration
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
+            services.AddScoped<IProductDesignRepository, ProductDesignRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();

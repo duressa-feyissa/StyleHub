@@ -16,16 +16,16 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
 		{
 			var products = await unitOfWork.ProductRepository.GetAll(
 				search: request.Search,
-				brandId: request.BrandId,
 				colorIds: request.ColorIds,
 				materialIds: request.MaterialIds,
 				sizeIds: request.SizeIds,
+				brandIds: request.BrandIds,
+				designIds: request.DesignIds,
 				isNegotiable: request.IsNegotiable,
 				minPrice: request.MinPrice,
 				maxPrice: request.MaxPrice,
 				minQuantity: request.MinQuantity,
 				maxQuantity: request.MaxQuantity,
-				target: request.Target,
 				condition: request.Condition,
 				latitude: request.Latitude,
 				longitude: request.Longitude,

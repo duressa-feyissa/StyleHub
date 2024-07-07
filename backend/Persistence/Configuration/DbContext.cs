@@ -24,6 +24,8 @@ namespace backend.Persistence.Configuration
 		public virtual DbSet<User> Users { get; set; }
 		public virtual DbSet<Image> Images { get; set; }
 		public virtual DbSet<Design> Designs { get; set; }
+		public virtual DbSet<ProductDesign> ProductDesigns { get; set; }
+		public virtual DbSet<ProductBrand> ProductBrands { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -38,6 +40,8 @@ namespace backend.Persistence.Configuration
 			modelBuilder.Entity<ProductMaterial>().HasKey(pm => pm.Id);
 			modelBuilder.Entity<Location>().HasKey(l => l.Id);
 			modelBuilder.Entity<Category>().HasKey(c => c.Id);
+			modelBuilder.Entity<ProductBrand>().HasKey(pb => pb.Id);
+			modelBuilder.Entity<ProductDesign>().HasKey(pd => pd.Id);
 			modelBuilder.Entity<ProductCategory>().HasKey(pc => pc.Id);
 			modelBuilder.Entity<ProductImage>().HasKey(pi => pi.Id);
 			modelBuilder.Entity<User>().HasKey(u => u.Id);

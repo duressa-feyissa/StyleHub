@@ -6,18 +6,17 @@ namespace backend.Application.Contracts.Persistence.Repositories.Product
 	{
 		Task<IReadOnlyList<Domain.Entities.Product.Product>> GetAll(
 			string search = "",
-			string? brandId = null,
-			string? userId = null,
 			IEnumerable<string>? colorIds = null,
 			IEnumerable<string>? materialIds = null,
 			IEnumerable<string>? sizeIds = null,
 			IEnumerable<string>? categoryIds = null,
+			IEnumerable<string>? brandIds = null,
+			IEnumerable<string>? designIds = null,
 			bool? isNegotiable = null,
 			float? minPrice = null,
 			float? maxPrice = null,
 			int? minQuantity = null,
 			int? maxQuantity = null,
-			string? target = null,
 			string? condition = null,
 			double? latitude = null,
 			double? longitude = null,
@@ -29,11 +28,6 @@ namespace backend.Application.Contracts.Persistence.Repositories.Product
 		);
 
 		Task<Domain.Entities.Product.Product> GetById(string id);
-
-		Task<IReadOnlyList<Domain.Entities.Product.Product>> GetByUserId(
-			string userId,
-			int skip = 0,
-			int limit = 10
-		);
+		
 	}
 }

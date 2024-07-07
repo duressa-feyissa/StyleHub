@@ -5,6 +5,7 @@ using backend.Application.DTO.Product.ProductDTO.Validations;
 using backend.Application.Exceptions;
 using backend.Application.Features.Product_Features.Product.Requests.Commands;
 using backend.Application.Response;
+using backend.Domain.Entities.Common;
 using backend.Domain.Entities.Product;
 using MediatR;
 
@@ -26,23 +27,6 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 );
 
             var product = mapper.Map<Domain.Entities.Product.Product>(request?.Product);
-            var user = await unitOfWork.UserRepository.GetById(request?.UserId ?? "");
-            product.User = user;
-
-            if (request?.Product.BrandId != null)
-            {
-                var brand = await unitOfWork.BrandRepository.GetById(request.Product.BrandId);
-                if (brand == null)
-                    throw new NotFoundException("Brand Not Found");
-                product.Brand = brand;
-            }
-            else
-            {
-                throw new BadRequestException("Brand Id is Required");
-            }
-            
-           
-
             if (request?.Product.CategoryIds.Count > 0)
             {
                 var categories = await unitOfWork.CategoryRepository.GetByIds(
@@ -52,12 +36,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 if (categories == null || categories.Count != request.Product.CategoryIds.Count)
                     throw new NotFoundException("category Not Found");
 
-                for (int i = 0; i < categories.Count; i++)
+                foreach (var t in categories)
                 {
                     var productCategory = new ProductCategory
                     {
                         ProductId = product.Id,
-                        Category = categories[i]
+                        Category = t
                     };
                     product.ProductCategories.Add(productCategory);
                 }
@@ -70,12 +54,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 if (images == null || images.Count != request.Product.ImageIds.Count)
                     throw new NotFoundException("image Not Found");
 
-                for (int i = 0; i < images.Count; i++)
+                foreach (var t in images)
                 {
                     var productImage = new ProductImage
                     {
                         ProductId = product.Id,
-                        Image = images[i]
+                        Image = t
                     };
                     product.ProductImages.Add(productImage);
                 }
@@ -88,12 +72,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 if (colors == null || colors.Count != request.Product.ColorIds.Count)
                     throw new NotFoundException("color Not Found");
 
-                for (int i = 0; i < colors.Count; i++)
+                foreach (var t in colors)
                 {
                     var productColor = new ProductColor
                     {
                         ProductId = product.Id,
-                        Color = colors[i]
+                        Color = t
                     };
                     product.ProductColors.Add(productColor);
                 }
@@ -106,9 +90,9 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 if (sizes == null || sizes.Count != request.Product.SizeIds.Count)
                     throw new NotFoundException("sizes Not Found");
 
-                for (int i = 0; i < sizes.Count; i++)
+                foreach (var t in sizes)
                 {
-                    var productSize = new ProductSize { ProductId = product.Id, Size = sizes[i] };
+                    var productSize = new ProductSize { ProductId = product.Id, Size = t };
                     product.ProductSizes.Add(productSize);
                 }
             }
@@ -122,14 +106,50 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 if (materialIds == null || materialIds.Count != request.Product.MaterialIds.Count)
                     throw new NotFoundException("materialIds Not Found");
 
-                for (int i = 0; i < materialIds.Count; i++)
+                foreach (var t in materialIds)
                 {
                     var productMaterial = new ProductMaterial
                     {
                         ProductId = product.Id,
-                        Material = materialIds[i]
+                        Material = t
                     };
                     product.ProductMaterials.Add(productMaterial);
+                }
+            }
+            
+            if (request?.Product.BrandIds.Count > 0)
+            {
+                var brands = await unitOfWork.BrandRepository.GetByIds(request.Product.BrandIds);
+
+                if (brands == null || brands.Count != request.Product.BrandIds.Count)
+                    throw new NotFoundException("brand Not Found");
+
+                foreach (var t in brands)
+                {
+                    var productBrand = new ProductBrand
+                    {
+                        ProductId = product.Id,
+                        Brand = t
+                    };
+                    product.ProductBrands.Add(productBrand);
+                }
+            }
+            
+            if (request?.Product.DesignIds.Count > 0)
+            {
+                var designs = await unitOfWork.DesignRepository.GetByIds(request.Product.DesignIds);
+
+                if (designs == null || designs.Count != request.Product.DesignIds.Count)
+                    throw new NotFoundException("design Not Found");
+
+                foreach (var t in designs)
+                {
+                    var productDesign = new ProductDesign
+                    {
+                        ProductId = product.Id,
+                        Design = t
+                    };
+                    product.ProductDesigns.Add(productDesign);
                 }
             }
 

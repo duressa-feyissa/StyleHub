@@ -12,8 +12,7 @@ namespace backend.Persistence.Repositories.Product
         public async Task<Domain.Entities.Product.Product> GetById(string id)
         {
             var product = await context
-                .Products.Include(p => p.Brand)
-                .Include(p => p.User)
+                .Products
                 .Include(p => p.ProductImages)
                 .ThenInclude(pi => pi.Image)
                 .Include(p => p.ProductColors)
@@ -24,6 +23,10 @@ namespace backend.Persistence.Repositories.Product
                 .ThenInclude(ps => ps.Size)
                 .Include(p => p.ProductCategories)
                 .ThenInclude(pc => pc.Category)
+                .Include(p => p.ProductDesigns)
+                .ThenInclude(pd => pd.Design)
+                .Include(p => p.ProductBrands)
+                .ThenInclude(pb => pb.Brand)
                 .AsSplitQuery()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == id && u.IsPublished);
@@ -33,18 +36,17 @@ namespace backend.Persistence.Repositories.Product
 
         public async Task<IReadOnlyList<Domain.Entities.Product.Product>> GetAll(
             string search = "",
-            string? brandId = null,
-            string? userId = null,
             IEnumerable<string>? colorIds = null,
             IEnumerable<string>? materialIds = null,
             IEnumerable<string>? sizeIds = null,
             IEnumerable<string>? categoryIds = null,
+            IEnumerable<string>? brandIds = null,
+            IEnumerable<string>? designIds = null,
             bool? isNegotiable = null,
             float? minPrice = null,
             float? maxPrice = null,
             int? minQuantity = null,
             int? maxQuantity = null,
-            string? target = null,
             string? condition = null,
             double? latitude = null,
             double? longitude = null,
@@ -57,11 +59,10 @@ namespace backend.Persistence.Repositories.Product
         {
             IQueryable<Domain.Entities.Product.Product> query = context
                 .Products
-                .Include(p => p.Brand)
-                .Include(p => p.User)
                 .Include(p => p.ProductColors)
                 .ThenInclude(pc => pc.Color)
                 .Include(p => p.ProductMaterials)
+                
                 .ThenInclude(pm => pm.Material)
                 .Include(p => p.ProductSizes)
                 .ThenInclude(ps => ps.Size)
@@ -69,6 +70,10 @@ namespace backend.Persistence.Repositories.Product
                 .ThenInclude(pc => pc.Category)
                 .Include(p => p.ProductImages)
                 .ThenInclude(pi => pi.Image)
+                .Include(p => p.ProductDesigns)
+                .ThenInclude(pd => pd.Design)
+                .Include(p => p.ProductBrands)
+                .ThenInclude(pb => pb.Brand)
                 .AsSplitQuery()
                 .AsNoTracking();
             query = query.Where(p => p.IsPublished);
@@ -110,15 +115,19 @@ namespace backend.Persistence.Repositories.Product
                     || EF.Functions.Like(p.City, $"%{search}%")
                 );
             }
-
-            if (!string.IsNullOrWhiteSpace(brandId))
+            
+            if (brandIds?.Any() == true)
             {
-                query = query.Where(p => p.Brand.Id == brandId);
+                query = query.Where(p =>
+                    p.ProductBrands.Any(pb => brandIds.Contains(pb.Brand.Id))
+                );
             }
-
-            if (!string.IsNullOrWhiteSpace(userId))
+            
+            if (designIds?.Any() == true)
             {
-                query = query.Where(p => p.User.Id == userId);
+                query = query.Where(p =>
+                    p.ProductDesigns.Any(pd => designIds.Contains(pd.Design.Id))
+                );
             }
 
             if (colorIds?.Any() == true)
@@ -170,11 +179,6 @@ namespace backend.Persistence.Repositories.Product
                 query = query.Where(p => p.Quantity <= maxQuantity);
             }
 
-            if (!string.IsNullOrWhiteSpace(target))
-            {
-                query = query.Where(p => p.Target == target);
-            }
-
             if (!string.IsNullOrWhiteSpace(condition))
             {
                 query = query.Where(p => p.Condition == condition);
@@ -214,12 +218,6 @@ namespace backend.Persistence.Repositories.Product
                         else
                             query = query.OrderBy(p => p.Condition);
                         break;
-                    case "target":
-                        if (sortOrder?.ToLower() == "desc")
-                            query = query.OrderByDescending(p => p.Target);
-                        else
-                            query = query.OrderBy(p => p.Target);
-                        break;
                     default:
                         query = query.OrderByDescending(p => p.CreatedAt);
                         break;
@@ -233,39 +231,6 @@ namespace backend.Persistence.Repositories.Product
             query = query.Skip(skip).Take(limit);
 
             return await query.ToListAsync();
-        }
-
-        public async Task<IReadOnlyList<Domain.Entities.Product.Product>> GetByUserId(
-            string userId,
-            int skip = 0,
-            int limit = 10
-        )
-        {
-            Console.WriteLine($"Fetching products by user {userId}");
-            Console.WriteLine($"Skip: {skip}, Limit: {limit}");
-            var products = await context
-                .Products.Include(p => p.Brand)
-          
-                .Include(p => p.User)
-                .Include(p => p.ProductColors)
-                .ThenInclude(pc => pc.Color)
-                .Include(p => p.ProductMaterials)
-                .ThenInclude(pm => pm.Material)
-                .Include(p => p.ProductSizes)
-                .ThenInclude(ps => ps.Size)
-                .Include(p => p.ProductCategories)
-                .ThenInclude(pc => pc.Category)
-                .Include(p => p.ProductImages)
-                .ThenInclude(pi => pi.Image)
-                .AsSplitQuery()
-                .AsNoTracking()
-                .Where(p => p.User.Id == userId)
-                .OrderByDescending(p => p.CreatedAt)
-                .Skip(skip)
-                .Take(limit)
-                .ToListAsync();
-
-            return products;
         }
     }
 }
