@@ -35,6 +35,7 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 			BrandIds = brandIds;
 			DesignIds = designIds;
 			IsNegotiable = isNegotiable;
+			CategoryIds = categoryIds;
 			MinPrice = minPrice;
 			MaxPrice = maxPrice;
 			MinQuantity = minQuantity;

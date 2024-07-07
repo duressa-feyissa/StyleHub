@@ -21,6 +21,7 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
 				sizeIds: request.SizeIds,
 				brandIds: request.BrandIds,
 				designIds: request.DesignIds,
+				categoryIds: request.CategoryIds,
 				isNegotiable: request.IsNegotiable,
 				minPrice: request.MinPrice,
 				maxPrice: request.MaxPrice,
