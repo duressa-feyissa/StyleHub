@@ -1,0 +1,13 @@
+/android/
+/.dart_tool/
+/ios/
+/linux/
+/macos/
+/web/
+/windows/
+/android
+/build
+/build/
+/linux
+/macos
+/macos/
