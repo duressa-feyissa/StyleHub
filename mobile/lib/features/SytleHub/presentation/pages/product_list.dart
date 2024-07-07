@@ -177,6 +177,7 @@ class _ProductListState extends State<ProductList> {
 
   void onChangeCategory(int index) {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
+    print(index);
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
           categoryIds: [widget.categories[index].id],
         ));
