@@ -21,6 +21,9 @@ namespace backend.Application.Contracts.Persistence
 		ICategoryRepository CategoryRepository { get; }
 		IRoleRepository RoleRepository { get; }
 		IProductCategoryRepository ProductCategoryRepository { get; }
+		IContactedProductRepository ContactedProductRepository { get; }
+		IProductViewRepository ProductViewRepository { get; }
+		IFavouriteProductRepository FavouriteProductRepository { get; }
 		IUserRepository UserRepository { get; }
 		IImageRepository ImageRepository { get; }
 		Task<int> Save();

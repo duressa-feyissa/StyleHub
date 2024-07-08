@@ -1,4 +1,5 @@
 using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Domain.Entities.Product;
 using backend.Persistence.Configuration;
 using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,7 @@ namespace backend.Persistence.Repositories.Product
             IEnumerable<string>? categoryIds = null,
             IEnumerable<string>? brandIds = null,
             IEnumerable<string>? designIds = null,
+            string? userId = null,
             bool? isNegotiable = null,
             float? minPrice = null,
             float? maxPrice = null,
@@ -229,8 +231,22 @@ namespace backend.Persistence.Repositories.Product
             }
 
             query = query.Skip(skip).Take(limit);
+            
+            var products = await query.ToListAsync();
+            
+            //count view
+            
+            foreach (var product in products)
+            {
+                await context.ProductViews.AddAsync(new ProductView
+                {
+                    ProductId = product.Id,
+                    ViewedAt = DateTime.Now,
+                    UserId = userId
+                });
+            }
 
-            return await query.ToListAsync();
+            return products;
         }
     }
 }

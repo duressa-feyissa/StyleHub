@@ -12,7 +12,7 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
     {
         public async Task<ProductResponseDTO> Handle(GetProductById request, CancellationToken cancellationToken)
         {
-            if (request.Id == null || request.Id.Length == 0)
+            if (string.IsNullOrEmpty(request.Id))
             {
                 throw new BadRequestException("Id is required");
             }

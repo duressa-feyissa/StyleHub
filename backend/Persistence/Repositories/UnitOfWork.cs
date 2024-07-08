@@ -27,6 +27,9 @@ namespace backend.Persistence.Repositories
         IDesignRepository designRepository,
         IProductBrandRepository productBrandRepository,
         IProductDesignRepository productDesignRepository,
+        IProductViewRepository productViewRepository,
+        IFavouriteProductRepository favouriteProductRepository,
+        IContactedProductRepository contactedProductRepository,
         IImageRepository imageRepository)
         : IUnitOfWork
     {
@@ -197,6 +200,36 @@ namespace backend.Persistence.Repositories
                 if (productDesignRepository == null)
                     productDesignRepository = new ProductDesignRepository(context);
                 return productDesignRepository;
+            }
+        }
+        
+        public IProductViewRepository ProductViewRepository
+        {
+            get
+            {
+                if (productViewRepository == null)
+                    productViewRepository = new ProductViewRepository(context);
+                return productViewRepository;
+            }
+        }
+        
+        public IFavouriteProductRepository FavouriteProductRepository
+        {
+            get
+            {
+                if (favouriteProductRepository == null)
+                    favouriteProductRepository = new FavouriteProductRepository(context);
+                return favouriteProductRepository;
+            }
+        }
+        
+        public IContactedProductRepository ContactedProductRepository
+        {
+            get
+            {
+                if (contactedProductRepository == null)
+                    contactedProductRepository = new ContactedProductRepository(context);
+                return contactedProductRepository;
             }
         }
 

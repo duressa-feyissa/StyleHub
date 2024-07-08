@@ -3,73 +3,50 @@ using MediatR;
 
 namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 {
-	public class GetAllProduct : IRequest<List<ProductResponseDTO>>
+	public class GetAllProduct(
+		string search = "",
+		IEnumerable<string>? colorIds = null,
+		IEnumerable<string>? materialIds = null,
+		IEnumerable<string>? sizeIds = null,
+		IEnumerable<string>? categoryIds = null,
+		IEnumerable<string>? brandIds = null,
+		IEnumerable<string>? designIds = null,
+		string? userId = null,
+		bool? isNegotiable = null,
+		float? minPrice = null,
+		float? maxPrice = null,
+		int? minQuantity = null,
+		int? maxQuantity = null,
+		string? condition = null,
+		double? latitude = null,
+		double? longitude = null,
+		double? radiusInKilometers = null,
+		string? sortBy = null,
+		string? sortOrder = null,
+		int skip = 0,
+		int limit = 10)
+		: IRequest<List<ProductResponseDTO>>
 	{
-		public GetAllProduct(
-			string search = "",
-			IEnumerable<string>? colorIds = null,
-			IEnumerable<string>? materialIds = null,
-			IEnumerable<string>? sizeIds = null,
-			IEnumerable<string>? categoryIds = null,
-			IEnumerable<string>? brandIds = null,
-			IEnumerable<string>? designIds = null,
-			bool? isNegotiable = null,
-			float? minPrice = null,
-			float? maxPrice = null,
-			int? minQuantity = null,
-			int? maxQuantity = null,
-			string? condition = null,
-			double? latitude = null,
-			double? longitude = null,
-			double? radiusInKilometers = null,
-			string? sortBy = null,
-			string? sortOrder = null,
-			int skip = 0,
-			int limit = 10
-		)
-		{
-			Search = search;
-			ColorIds = colorIds;
-			MaterialIds = materialIds;
-			SizeIds = sizeIds;
-			BrandIds = brandIds;
-			DesignIds = designIds;
-			IsNegotiable = isNegotiable;
-			CategoryIds = categoryIds;
-			MinPrice = minPrice;
-			MaxPrice = maxPrice;
-			MinQuantity = minQuantity;
-			MaxQuantity = maxQuantity;
-			Condition = condition;
-			Latitude = latitude;
-			Longitude = longitude;
-			RadiusInKilometers = radiusInKilometers;
-			SortBy = sortBy;
-			SortOrder = sortOrder;
-			Skip = skip;
-			Limit = limit;
-		}
-
-		public string Search { get; set; }
-		public IEnumerable<string>? ColorIds { get; set; }
-		public IEnumerable<string>? MaterialIds { get; set; }
-		public IEnumerable<string>? SizeIds { get; set; }
-		public IEnumerable<string>? CategoryIds { get; set; }
-		public IEnumerable<string>? BrandIds { get; set; }
-		public IEnumerable<string>? DesignIds { get; set; }
-		public bool? IsNegotiable { get; set; }
-		public float? MinPrice { get; set; }
-		public float? MaxPrice { get; set; }
-		public int? MinQuantity { get; set; }
-		public int? MaxQuantity { get; set; }
-		public string? Condition { get; set; }
-		public double? Latitude { get; set; }
-		public double? Longitude { get; set; }
-		public double? RadiusInKilometers { get; set; }
-		public string? SortBy { get; set; }
-		public string? SortOrder { get; set; }
-		public int Skip { get; set; }
-		public int Limit { get; set; }
-		
+		public string Search { get; set; } = search;
+		public IEnumerable<string>? ColorIds { get; set; } = colorIds;
+		public IEnumerable<string>? MaterialIds { get; set; } = materialIds;
+		public IEnumerable<string>? SizeIds { get; set; } = sizeIds;
+		public IEnumerable<string>? CategoryIds { get; set; } = categoryIds;
+		public IEnumerable<string>? BrandIds { get; set; } = brandIds;
+		public IEnumerable<string>? DesignIds { get; set; } = designIds;
+		public string? UserId { get; set; } = userId;
+		public bool? IsNegotiable { get; set; } = isNegotiable;
+		public float? MinPrice { get; set; } = minPrice;
+		public float? MaxPrice { get; set; } = maxPrice;
+		public int? MinQuantity { get; set; } = minQuantity;
+		public int? MaxQuantity { get; set; } = maxQuantity;
+		public string? Condition { get; set; } = condition;
+		public double? Latitude { get; set; } = latitude;
+		public double? Longitude { get; set; } = longitude;
+		public double? RadiusInKilometers { get; set; } = radiusInKilometers;
+		public string? SortBy { get; set; } = sortBy;
+		public string? SortOrder { get; set; } = sortOrder;
+		public int Skip { get; set; } = skip;
+		public int Limit { get; set; } = limit;
 	}
 }

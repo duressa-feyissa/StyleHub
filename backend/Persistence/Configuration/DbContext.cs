@@ -26,6 +26,14 @@ namespace backend.Persistence.Configuration
 		public virtual DbSet<Design> Designs { get; set; }
 		public virtual DbSet<ProductDesign> ProductDesigns { get; set; }
 		public virtual DbSet<ProductBrand> ProductBrands { get; set; }
+		
+		public virtual DbSet<FavouriteProduct> FavouriteProducts { get; set; }
+		
+		public virtual DbSet<ProductView> ProductViews { get; set; }
+		
+		public virtual DbSet<ContactedProduct> ContactedProducts { get; set; }
+		
+		
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -48,6 +56,9 @@ namespace backend.Persistence.Configuration
 			modelBuilder.Entity<Role>().HasKey(r => r.Id);
 			modelBuilder.Entity<Image>().HasKey(i => i.Id);
 			modelBuilder.Entity<Design>().HasKey(d => d.Id);
+			modelBuilder.Entity<FavouriteProduct>().HasKey(fp => fp.Id);
+			modelBuilder.Entity<ContactedProduct>().HasKey(cp => cp.Id);
+			modelBuilder.Entity<ProductView>().HasKey(pv => pv.Id);
 			base.OnModelCreating(modelBuilder);
 		}
 	}

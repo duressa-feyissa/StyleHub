@@ -4,6 +4,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../bloc/product/product_bloc.dart';
 import '../bloc/scroll/scroll_bloc.dart';
+import '../bloc/user/user_bloc.dart';
 import 'category.dart';
 import 'home.dart';
 import 'post.dart';
@@ -89,7 +90,13 @@ class _LayoutState extends State<Layout> {
       const CategoryScreen(),
       const PostScreen(),
       Container(),
-      Container()
+      Container(
+          child: Center(
+              child: GestureDetector(
+                  onTap: () {
+                    context.read<UserBloc>().add(SignOutEvent());
+                  },
+                  child: Text('Logout'))))
     ];
   }
 

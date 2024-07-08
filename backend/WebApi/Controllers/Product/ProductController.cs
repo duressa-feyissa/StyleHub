@@ -36,6 +36,7 @@ namespace backend.WebApi.Controllers.Product
             [FromQuery] int limit = 15
         )
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await mediator.Send(
                 new GetAllProduct
                 {
@@ -46,6 +47,7 @@ namespace backend.WebApi.Controllers.Product
                     MaterialIds = materialIds,
                     SizeIds = sizeIds,
                     CategoryIds = categoryIds,
+                    UserId = userId,
                     IsNegotiable = isNegotiable,
                     MinPrice = minPrice,
                     MaxPrice = maxPrice,
@@ -72,6 +74,32 @@ namespace backend.WebApi.Controllers.Product
             return Ok(result);
         }
         
+        [HttpGet("favourite")]
+        [Authorize]
+        public async Task<ActionResult<List<ProductResponseDTO>>> GetFavouriteProducts(
+            [FromQuery] int skip = 0,
+            [FromQuery] int limit = 10
+        )
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var result = await mediator.Send(
+                new GetFavouriteProduct(userId, skip, limit)
+            );
+
+            return Ok(result);
+        }
+        
+        [HttpPost("favourite/{productId}")]
+        [Authorize]
+        public async Task<ActionResult<string>> AddOrRemoveFavouriteProduct(string productId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var result = await mediator.Send(
+                new AddOrRemoveFavouriteProduct { UserId = userId, ProductId = productId }
+            );
+
+            return Ok(result);
+        }
 
         [HttpPost]
         [Authorize]
