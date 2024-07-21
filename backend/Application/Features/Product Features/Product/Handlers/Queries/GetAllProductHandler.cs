@@ -2,6 +2,7 @@ using AutoMapper;
 using backend.Application.Contracts.Persistence;
 using backend.Application.DTO.Product.ProductDTO.DTO;
 using backend.Application.Features.Product_Features.Product.Requests.Queries;
+using backend.Domain.Entities.Product;
 using MediatR;
 
 namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
@@ -37,7 +38,31 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
 				skip: request.Skip,
 				limit: request.Limit
 			);
+			
+			foreach (var product in products)
+			{
+				await unitOfWork.ProductViewRepository.Add(
+					new ProductView
+					{
+						UserId = request.UserId,
+						ProductId = product.Id,
+						ViewedAt = DateTime.Now
+					}
+				);
+			}
+			
 			var productResponse = mapper.Map<List<ProductResponseDTO>>(products);
+			if (request.UserId != null)
+			{
+				foreach (var product in productResponse)
+				{
+					product.IsFavorite = await unitOfWork.FavouriteProductRepository.IsFavourite(
+						userId: request.UserId,
+						productId: product.Id
+					);
+				}
+			}
+			
 			return productResponse;
 		}
 	}

@@ -7,11 +7,9 @@ namespace backend.Application.DTO.Product.ProductDTO.DTO
         public float? Price { get; set; }
         public int? Quantity { get; set; }
         public string? Condition { get; set; }
+        public string? VideoUrl { get; set; }
         public bool? IsNegotiable { get; set; }
         public bool? IsPublished { get; set; }
-        public string? City { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
         public List<string>? ImageIds { get; set; }
         public List<string>? CategoryIds { get; set; }
         public List<string>? DesignIds { get; set; }

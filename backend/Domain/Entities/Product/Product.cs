@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using backend.Domain.Common;
-using backend.Domain.Entities.Common;
 
 namespace backend.Domain.Entities.Product
 {
@@ -11,28 +11,18 @@ namespace backend.Domain.Entities.Product
 
         [Required]
         public required string Description { get; set; }
-
         [Required]
         public required float Price { get; set; }
-
+        [ForeignKey("Shop")]
+        public required string ShopId { get; set; }
+        public required Shop.Shop Shop { get; set; }
         [Required]
         public required int Quantity { get; set; }
-        
+        public string? VideoUrl { get; set; }
         [Required]
         public required string Condition { get; set; }
-        
         [Required]
         public bool IsPublished { get; set; } = false;
-
-        [Required]
-        public required string City { get; set; }
-
-        [Required]
-        public required double Latitude { get; set; }
-
-        [Required]
-        public required double Longitude { get; set; }
-        
         public virtual HashSet<ProductDesign> ProductDesigns { get; set; } = new HashSet<ProductDesign>();
         
         public virtual HashSet<ProductBrand> ProductBrands { get; set; } = new HashSet<ProductBrand>();

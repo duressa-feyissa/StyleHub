@@ -1,5 +1,4 @@
 using backend.Application.Contracts.Persistence.Repositories.Product;
-using backend.Domain.Entities.Product;
 using backend.Persistence.Configuration;
 using backend.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +15,7 @@ namespace backend.Persistence.Repositories.Product
                 .Products
                 .Include(p => p.ProductImages)
                 .ThenInclude(pi => pi.Image)
+                .Include( p => p.Shop)
                 .Include(p => p.ProductColors)
                 .ThenInclude(pc => pc.Color)
                 .Include(p => p.ProductMaterials)
@@ -61,6 +61,7 @@ namespace backend.Persistence.Repositories.Product
         {
             IQueryable<Domain.Entities.Product.Product> query = context
                 .Products
+                .Include(p => p.Shop)
                 .Include(p => p.ProductColors)
                 .ThenInclude(pc => pc.Color)
                 .Include(p => p.ProductMaterials)
@@ -102,10 +103,10 @@ namespace backend.Persistence.Repositories.Product
                 );
 
                 query = query.Where(p =>
-                    p.Latitude >= minLat
-                    && p.Latitude <= maxLat
-                    && p.Longitude >= minLon
-                    && p.Longitude <= maxLon
+                    p.Shop.Latitude >= minLat
+                    && p.Shop.Latitude <= maxLat
+                    && p.Shop.Longitude >= minLon
+                    && p.Shop.Longitude <= maxLon
                 );
             }
 
@@ -114,7 +115,10 @@ namespace backend.Persistence.Repositories.Product
                 query = query.Where(p =>
                     EF.Functions.Like(p.Title, $"%{search}%")
                     || EF.Functions.Like(p.Description, $"%{search}%")
-                    || EF.Functions.Like(p.City, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.City, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.State, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.Country, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.StreetAddress, $"%{search}%")
                 );
             }
             
@@ -233,18 +237,6 @@ namespace backend.Persistence.Repositories.Product
             query = query.Skip(skip).Take(limit);
             
             var products = await query.ToListAsync();
-            
-            //count view
-            
-            foreach (var product in products)
-            {
-                await context.ProductViews.AddAsync(new ProductView
-                {
-                    ProductId = product.Id,
-                    ViewedAt = DateTime.Now,
-                    UserId = userId
-                });
-            }
 
             return products;
         }

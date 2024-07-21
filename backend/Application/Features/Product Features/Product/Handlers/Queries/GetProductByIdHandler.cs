@@ -19,6 +19,7 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Queries
 
             var product = await unitOfWork.ProductRepository.GetById(request.Id);
             var productResponse = mapper.Map<ProductResponseDTO>(product);
+            
             return productResponse;
         }
 

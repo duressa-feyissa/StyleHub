@@ -1,10 +1,12 @@
 using backend.Application.Contracts.Persistence;
 using backend.Application.Contracts.Persistence.Repositories.Common;
 using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.Shop;
 using backend.Application.Contracts.Persistence.Repositories.User;
 using backend.Persistence.Repositories;
 using backend.Persistence.Repositories.Common;
 using backend.Persistence.Repositories.Product;
+using backend.Persistence.Repositories.Shop;
 using backend.Persistence.Repositories.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +35,6 @@ namespace backend.Persistence.Configuration
                     options.UseMySQL(connectionString!);
                 });
             }
-
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -56,7 +57,9 @@ namespace backend.Persistence.Configuration
             services.AddScoped<IFavouriteProductRepository, FavouriteProductRepository>();
             services.AddScoped<IContactedProductRepository, ContactedProductRepository>();
             services.AddScoped<IProductViewRepository, ProductViewRepository>();
-
+            services.AddScoped<IShopRepository, ShopRepository>();
+            services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
+            services.AddScoped<IShopReviewRepository, ShopReviewRepository>();
             return services;
         }
     }

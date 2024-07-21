@@ -3,11 +3,12 @@ using backend.Domain.Common;
 
 namespace backend.Domain.Entities.Product;
 
-public class ContactedProduct: BaseEntity
+public class ContactedProduct
 {
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     [ForeignKey("Product")]
     public required string ProductId { get; set; }
-    [ForeignKey("User")]
-    public required string UserId { get; set; }
-    public required double Offer { get; set; } = 0;
+    public Product Product { get; set; }
+    [ForeignKey("User")] public required string UserId { get; set; }
+    public DateTime ContactedAt { get; set; } = DateTime.Now;
 }

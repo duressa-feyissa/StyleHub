@@ -1,5 +1,6 @@
 using backend.Application.Contracts.Persistence.Repositories.Common;
 using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.Shop;
 using backend.Application.Contracts.Persistence.Repositories.User;
 
 namespace backend.Application.Contracts.Persistence
@@ -26,6 +27,9 @@ namespace backend.Application.Contracts.Persistence
 		IFavouriteProductRepository FavouriteProductRepository { get; }
 		IUserRepository UserRepository { get; }
 		IImageRepository ImageRepository { get; }
+		IWorkingHourRepository WorkingHourRepository { get; }
+		IShopRepository ShopRepository { get; }
+		IShopReviewRepository ShopReviewRepository { get; }
 		Task<int> Save();
 	}
 }

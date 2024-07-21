@@ -1,5 +1,6 @@
 using backend.Domain.Entities.Common;
 using backend.Domain.Entities.Product;
+using backend.Domain.Entities.Shop;
 using backend.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,15 +27,14 @@ namespace backend.Persistence.Configuration
 		public virtual DbSet<Design> Designs { get; set; }
 		public virtual DbSet<ProductDesign> ProductDesigns { get; set; }
 		public virtual DbSet<ProductBrand> ProductBrands { get; set; }
-		
 		public virtual DbSet<FavouriteProduct> FavouriteProducts { get; set; }
-		
 		public virtual DbSet<ProductView> ProductViews { get; set; }
-		
 		public virtual DbSet<ContactedProduct> ContactedProducts { get; set; }
+		public virtual DbSet<Shop> Shops { get; set; }
+		public virtual DbSet<WorkingHour> WorkingHours { get; set; }
+		public virtual DbSet<ShopReview> ShopReviews { get; set; }
+		public virtual DbSet<ShopFollow> ShopFollows { get; set; }
 		
-		
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -59,6 +59,10 @@ namespace backend.Persistence.Configuration
 			modelBuilder.Entity<FavouriteProduct>().HasKey(fp => fp.Id);
 			modelBuilder.Entity<ContactedProduct>().HasKey(cp => cp.Id);
 			modelBuilder.Entity<ProductView>().HasKey(pv => pv.Id);
+			modelBuilder.Entity<Shop>().HasKey(s => s.Id);
+			modelBuilder.Entity<WorkingHour>().HasKey(wh => wh.Id);
+			modelBuilder.Entity<ShopReview>().HasKey(sr => sr.Id);
+			modelBuilder.Entity<ShopFollow>().HasKey(sf => sf.Id);
 			base.OnModelCreating(modelBuilder);
 		}
 	}

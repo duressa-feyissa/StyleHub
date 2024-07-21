@@ -19,7 +19,7 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
             CancellationToken cancellationToken
         )
         {
-            var validator = new CreateProductValidation();
+            var validator = new CreateProductValidation(unitOfWork.ShopRepository);
             var validationResult = await validator.ValidateAsync(request.Product!);
             if (!validationResult.IsValid)
                 throw new BadRequestException(
@@ -27,6 +27,7 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 );
 
             var product = mapper.Map<Domain.Entities.Product.Product>(request?.Product);
+            
             if (request?.Product.CategoryIds.Count > 0)
             {
                 var categories = await unitOfWork.CategoryRepository.GetByIds(

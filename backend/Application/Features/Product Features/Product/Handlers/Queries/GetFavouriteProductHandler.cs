@@ -17,6 +17,12 @@ public class GetFavouriteProductHandler(IUnitOfWork unitOfWork, IMapper mapper)
             limit: request.Limit
         );
         var productResponse = mapper.Map<List<ProductResponseDTO>>(products);
+
+        foreach (var product in productResponse)
+        {
+            product.IsFavorite = true;
+        }
+        
         return productResponse;
     }
 }

@@ -13,4 +13,8 @@ public interface IFavouriteProductRepository
     
     Task<bool> AddOrRemove(string userId, string productId);
     
+    Task<bool> IsFavourite(string userId, string productId);
+    
+    Task<int> Count(string productId);
+    
 }

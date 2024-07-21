@@ -1,3 +1,4 @@
+using backend.Application.Contracts.Persistence.Repositories.Shop;
 using backend.Application.DTO.Product.ProductDTO.DTO;
 using FluentValidation;
 
@@ -7,7 +8,7 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
     {
         string[] Condition = { "new", "used", "fairy used" };
 
-        public CreateProductValidation()
+        public CreateProductValidation(IShopRepository shopRepository)
         {
             RuleFor(x => x.Title)
                 .NotNull()
@@ -53,21 +54,17 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
                 .Must(x => Condition.Contains(x))
                 .WithMessage("Condition must be new or used");
 
-            RuleFor(x => x.Latitude)
+            RuleFor(x => x.ShopId)
                 .NotNull()
-                .WithMessage("Latitude is required")
-                .GreaterThanOrEqualTo(-90)
-                .WithMessage("Latitude must be greater than -90")
-                .LessThanOrEqualTo(90)
-                .WithMessage("Latitude must be less than 90");
-
-            RuleFor(x => x.Longitude)
-                .NotNull()
-                .WithMessage("Longitude is required")
-                .GreaterThanOrEqualTo(-180)
-                .WithMessage("Longitude must be greater than -180")
-                .LessThanOrEqualTo(180)
-                .WithMessage("Longitude must be less than 180");
+                .WithMessage("ShopId is required")
+                .NotEmpty()
+                .WithMessage("ShopId cannot be empty")
+                .MustAsync(async (shopId, token) => await shopRepository.ExistsAsync(shopId));
+            
+            RuleFor(x => x.VideoUrl)
+                .Cascade(CascadeMode.Stop)
+                .Must(x => string.IsNullOrEmpty(x) || Uri.IsWellFormedUriString(x, UriKind.Absolute))
+                .WithMessage("VideoUrl must be a valid URL");
         }
     }
 }

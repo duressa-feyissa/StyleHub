@@ -1,10 +1,12 @@
 using backend.Application.Contracts.Persistence;
 using backend.Application.Contracts.Persistence.Repositories.Common;
 using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.Shop;
 using backend.Application.Contracts.Persistence.Repositories.User;
 using backend.Persistence.Configuration;
 using backend.Persistence.Repositories.Common;
 using backend.Persistence.Repositories.Product;
+using backend.Persistence.Repositories.Shop;
 using backend.Persistence.Repositories.User;
 
 namespace backend.Persistence.Repositories
@@ -30,7 +32,11 @@ namespace backend.Persistence.Repositories
         IProductViewRepository productViewRepository,
         IFavouriteProductRepository favouriteProductRepository,
         IContactedProductRepository contactedProductRepository,
-        IImageRepository imageRepository)
+        IShopRepository shopRepository,
+        IWorkingHourRepository workingHourRepository,
+        IImageRepository imageRepository,
+        IShopReviewRepository shopReviewRepository
+        )
         : IUnitOfWork
     {
         public IProductRepository ProductRepository
@@ -230,6 +236,36 @@ namespace backend.Persistence.Repositories
                 if (contactedProductRepository == null)
                     contactedProductRepository = new ContactedProductRepository(context);
                 return contactedProductRepository;
+            }
+        }
+        
+        public IShopRepository ShopRepository
+        {
+            get
+            {
+                if (shopRepository == null)
+                    shopRepository = new ShopRepository(context);
+                return shopRepository;
+            }
+        }
+        
+        public IWorkingHourRepository WorkingHourRepository
+        {
+            get
+            {
+                if (workingHourRepository == null)
+                    workingHourRepository = new WorkingHourRepository(context);
+                return workingHourRepository;
+            }
+        }
+        
+        public IShopReviewRepository ShopReviewRepository
+        {
+            get
+            {
+                if (shopReviewRepository == null)
+                    shopReviewRepository = new ShopReviewRepository(context);
+                return shopReviewRepository;
             }
         }
 

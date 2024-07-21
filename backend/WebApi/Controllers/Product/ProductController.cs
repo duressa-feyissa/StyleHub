@@ -135,5 +135,45 @@ namespace backend.WebApi.Controllers.Product
             );
             return Ok(result);
         }
+        
+        [HttpGet("{productId}/views/this-week")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetWeeklyViews(string productId)
+        {
+            var result = await mediator.Send(new GetWeeklyViews { ProductId = productId });
+            return Ok(result);
+        }
+        
+        [HttpGet("{productId}/views/this-month")]
+        public async Task<ActionResult<Dictionary<int, int>>> GetViewCountByMonth(string productId)
+        {
+            var result = await mediator.Send(new GetViewCountByMonth { ProductId = productId });
+            return Ok(result);
+        }
+        
+        [HttpGet("{productId}/views/this-year")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetViewCountByYear(string productId)
+        {
+            var result = await mediator.Send(new GetViewCountByYear { ProductId = productId });
+            return Ok(result);
+        }
+        
+        [HttpGet("{productId}/analytics")]
+        public async Task<ActionResult<ProductAnalyticResponse>> GetProductAnalytics(string productId)
+        {
+            var result = await mediator.Send(new GetTotalAnalytics { ProductId = productId });
+            return Ok(result);
+        }
+        
+        [HttpPost("{productId}/contacted")]
+        [Authorize]
+        public async Task<ActionResult<string>> ProductContacted(string productId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var result = await mediator.Send(
+                new ProductContactedRequest { UserId = userId, ProductId = productId }
+            );
+
+            return Ok(result);
+        }
     }
 }
