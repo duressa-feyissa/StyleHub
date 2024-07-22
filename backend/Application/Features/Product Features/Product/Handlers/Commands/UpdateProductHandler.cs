@@ -33,21 +33,8 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 product.IsPublished = request.Product.IsPublished ?? false;
             if (request.Product.IsNegotiable != null)
                 product.IsNegotiable = request.Product.IsNegotiable ?? false;
-            if (
-                request.Product.Latitude != null
-                && request.Product.Latitude > -90
-                && request.Product.Latitude < 90
-            )
-                product.Latitude = request.Product.Latitude ?? 0;
-            if (
-                request.Product.Longitude != null
-                && request.Product.Longitude > -180
-                && request.Product.Longitude < 180
-            )
-                product.Longitude = request.Product.Longitude ?? 0;
-            if (request.Product.City != null)
-                product.City = request.Product.City;
-
+            if (request.Product.VideoUrl != null)
+                product.VideoUrl = request.Product.VideoUrl;
             if (request.Product.CategoryIds != null && request.Product.CategoryIds.Count > 0)
             {
                 var categories = await unitOfWork.CategoryRepository.GetByIds(

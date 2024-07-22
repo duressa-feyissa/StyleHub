@@ -12,6 +12,7 @@ namespace backend.Application.Contracts.Persistence.Repositories.Product
 			IEnumerable<string>? categoryIds = null,
 			IEnumerable<string>? brandIds = null,
 			IEnumerable<string>? designIds = null,
+			string? userId = null,
 			bool? isNegotiable = null,
 			float? minPrice = null,
 			float? maxPrice = null,

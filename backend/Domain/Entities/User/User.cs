@@ -18,8 +18,9 @@ namespace backend.Domain.Entities.User
         public string? Country { get; set; }
         public string? City { get; set; }
         public string? Address { get; set; }
-        public string? productTargetPreferences { get; set; }
         public string? productCategoryPreferences { get; set; }
+        public string? productSizePreferences { get; set; }
+        public string? productDesignPreferences { get; set; }
         public string? productBrandPreferences { get; set; }
         public string? productColorPreferences { get; set; }
         public bool IsPreferencesSet { get; set; } = false;

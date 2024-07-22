@@ -5,6 +5,7 @@ using backend.Application.DTO.Product.ColorDTO.DTO;
 using backend.Application.DTO.Product.DesignDTO.DTO;
 using backend.Application.DTO.Product.MaterialDTO.DTO;
 using backend.Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.DTO.Shop.ShopDTO.DTO;
 using backend.Application.DTO.User.UserDTO.DTO;
 
 namespace backend.Application.DTO.Product.ProductDTO.DTO
@@ -17,9 +18,8 @@ namespace backend.Application.DTO.Product.ProductDTO.DTO
         public required float Price { get; set; }
         public required int Quantity { get; set; }
         public required string Condition { get; set; }
-        public required string City { get; set; }
-        public required double Latitude { get; set; }
-        public required double Longitude { get; set; }
+        public string? VideoUrl { get; set; }
+        public required bool IsFavorite { get; set; } = false;
         public required HashSet<SizeResponseDTO> Sizes { get; set; }
         public required HashSet<ColorResponseDTO> Colors { get; set; }
         public required HashSet<MaterialResponseDTO> Materials { get; set; }
@@ -27,6 +27,7 @@ namespace backend.Application.DTO.Product.ProductDTO.DTO
         public required HashSet<ImageResponseDTO> Images { get; set; }
         public required HashSet<BrandResponseDTO> Brands { get; set; }
         public required HashSet<DesignResponseDTO> Designs { get; set; }
+        public required ProductShopResponseDTO Shop { get; set; }
         public required bool IsNegotiable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

@@ -1,10 +1,12 @@
 using backend.Application.Contracts.Persistence;
 using backend.Application.Contracts.Persistence.Repositories.Common;
 using backend.Application.Contracts.Persistence.Repositories.Product;
+using backend.Application.Contracts.Persistence.Repositories.Shop;
 using backend.Application.Contracts.Persistence.Repositories.User;
 using backend.Persistence.Configuration;
 using backend.Persistence.Repositories.Common;
 using backend.Persistence.Repositories.Product;
+using backend.Persistence.Repositories.Shop;
 using backend.Persistence.Repositories.User;
 
 namespace backend.Persistence.Repositories
@@ -27,7 +29,14 @@ namespace backend.Persistence.Repositories
         IDesignRepository designRepository,
         IProductBrandRepository productBrandRepository,
         IProductDesignRepository productDesignRepository,
-        IImageRepository imageRepository)
+        IProductViewRepository productViewRepository,
+        IFavouriteProductRepository favouriteProductRepository,
+        IContactedProductRepository contactedProductRepository,
+        IShopRepository shopRepository,
+        IWorkingHourRepository workingHourRepository,
+        IImageRepository imageRepository,
+        IShopReviewRepository shopReviewRepository
+        )
         : IUnitOfWork
     {
         public IProductRepository ProductRepository
@@ -197,6 +206,66 @@ namespace backend.Persistence.Repositories
                 if (productDesignRepository == null)
                     productDesignRepository = new ProductDesignRepository(context);
                 return productDesignRepository;
+            }
+        }
+        
+        public IProductViewRepository ProductViewRepository
+        {
+            get
+            {
+                if (productViewRepository == null)
+                    productViewRepository = new ProductViewRepository(context);
+                return productViewRepository;
+            }
+        }
+        
+        public IFavouriteProductRepository FavouriteProductRepository
+        {
+            get
+            {
+                if (favouriteProductRepository == null)
+                    favouriteProductRepository = new FavouriteProductRepository(context);
+                return favouriteProductRepository;
+            }
+        }
+        
+        public IContactedProductRepository ContactedProductRepository
+        {
+            get
+            {
+                if (contactedProductRepository == null)
+                    contactedProductRepository = new ContactedProductRepository(context);
+                return contactedProductRepository;
+            }
+        }
+        
+        public IShopRepository ShopRepository
+        {
+            get
+            {
+                if (shopRepository == null)
+                    shopRepository = new ShopRepository(context);
+                return shopRepository;
+            }
+        }
+        
+        public IWorkingHourRepository WorkingHourRepository
+        {
+            get
+            {
+                if (workingHourRepository == null)
+                    workingHourRepository = new WorkingHourRepository(context);
+                return workingHourRepository;
+            }
+        }
+        
+        public IShopReviewRepository ShopReviewRepository
+        {
+            get
+            {
+                if (shopReviewRepository == null)
+                    shopReviewRepository = new ShopReviewRepository(context);
+                return shopReviewRepository;
             }
         }
 

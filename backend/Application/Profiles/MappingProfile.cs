@@ -9,13 +9,15 @@ using backend.Application.DTO.Product.DesignDTO.DTO;
 using backend.Application.DTO.Product.MaterialDTO.DTO;
 using backend.Application.DTO.Product.ProductDTO.DTO;
 using backend.Application.DTO.Product.SizeDTO.DTO;
+using backend.Application.DTO.Shop.ReviewDTO.DTO;
+using backend.Application.DTO.Shop.ShopDTO.DTO;
+using backend.Application.DTO.Shop.WorkingHourDTO.DTO;
 using backend.Application.DTO.User.AuthenticationDTO.DTO;
 using backend.Application.DTO.User.UserDTO.DTO;
 using backend.Domain.Entities.Common;
 using backend.Domain.Entities.Product;
+using backend.Domain.Entities.Shop;
 using backend.Domain.Entities.User;
-using backend.Infrastructure.Repository;
-
 namespace backend.Application.Profiles
 {
 	public class MappingProfile : Profile
@@ -26,6 +28,22 @@ namespace backend.Application.Profiles
 			CreateMap<Product, UpdateProductDTO>().ReverseMap();
 			CreateMap<Product, ProductResponseDTO>()
 				.ForMember(
+					dest => dest.Shop,
+					opt =>
+						opt.MapFrom(src => new ProductShopResponseDTO
+						{
+							Id = src.Shop.Id,
+							Name = src.Shop.Name,
+							Country = src.Shop.Country,
+							State = src.Shop.State,
+							City = src.Shop.City,
+							StreetAddress = src.Shop.StreetAddress,
+							Latitude = src.Shop.Latitude,
+							Longitude = src.Shop.Longitude,
+							Logo = src.Shop.Logo
+						})
+				)
+				.ForMember(
 					dest => dest.Brands,
 					opt =>
 						opt.MapFrom(src =>
@@ -33,7 +51,8 @@ namespace backend.Application.Profiles
 								{
 									Id = pc.Brand.Id,
 									Name = pc.Brand.Name,
-									Logo = pc.Brand.Logo
+									Logo = pc.Brand.Logo,
+									Country = pc.Brand.Country
 								})
 								.ToList()
 						)
@@ -154,6 +173,27 @@ namespace backend.Application.Profiles
 							Code = src.Role.Code
 						})
 				);
+			CreateMap<ShopResponseDTO, Shop>().ReverseMap();
+			CreateMap<CreateShopDTO, Shop>()
+				.ForMember(dest => dest.Category, opt => opt.MapFrom(src => string.Join(", ", src.Categories)))
+				.ForMember(dest => dest.SocialMedias, opt => opt.MapFrom(src => string.Join(", ", src.SocialMediaLinks.Select(kv => kv.Key + ":" + kv.Value))));
+			CreateMap<UpdateShopDTO, Shop>().ReverseMap();
+			CreateMap<WorkingHourResponseDTO, WorkingHour>().ReverseMap();
+			CreateMap<CreateWorkingHourDTO, WorkingHour>().ReverseMap();
+			CreateMap<UpdateWorkingHourDTO, WorkingHour>().ReverseMap();
+			CreateMap<ReviewResponseDTO, ShopReview>()
+				.ForMember(dest => dest.Review, opt => opt.MapFrom(src => src.Review))
+				.ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
+				.ForMember(dest => dest.ShopId, opt => opt.MapFrom(src => src.ShopId))
+				.ForMember(dest => dest.UserId, opt => opt.Ignore()) // Assuming UserId will be set separately
+				.ReverseMap()
+				.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+				.ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.User.ProfilePicture))
+				.ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+				.ForMember(dest => dest.ShopId, opt => opt.MapFrom(src => src.ShopId));
+			CreateMap<CreateReviewDTO, ShopReview>().ReverseMap();
+			CreateMap<UpdateReviewDTO, ShopReview>().ReverseMap();
 		}
 	}
 }
