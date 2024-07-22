@@ -40,6 +40,7 @@ namespace backend.Application.Profiles
 							StreetAddress = src.Shop.StreetAddress,
 							Latitude = src.Shop.Latitude,
 							Longitude = src.Shop.Longitude,
+							PhoneNumber = src.Shop.PhoneNumber,
 							Logo = src.Shop.Logo
 						})
 				)
@@ -192,6 +193,7 @@ namespace backend.Application.Profiles
 				.ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.User.ProfilePicture))
 				.ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
 				.ForMember(dest => dest.ShopId, opt => opt.MapFrom(src => src.ShopId));
+				
 			CreateMap<CreateReviewDTO, ShopReview>().ReverseMap();
 			CreateMap<UpdateReviewDTO, ShopReview>().ReverseMap();
 		}
