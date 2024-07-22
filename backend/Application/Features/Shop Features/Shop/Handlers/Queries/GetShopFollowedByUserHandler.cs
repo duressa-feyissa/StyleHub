@@ -6,9 +6,9 @@ using MediatR;
 
 namespace backend.Application.Features.Shop_Features.Shop.Handlers.Queries;
 
-public class GetShopFollowedByUserHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetShopFollowedByUser, List<ShopResponseDTO>>
+public class GetShopFollowedByUserHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetShopFollowedByUserRequest, List<ShopResponseDTO>>
 {
-    public async Task<List<ShopResponseDTO>> Handle(GetShopFollowedByUser request, CancellationToken cancellationToken)
+    public async Task<List<ShopResponseDTO>> Handle(GetShopFollowedByUserRequest request, CancellationToken cancellationToken)
     {
         var shops = await unitOfWork.ShopRepository.GetShopFollowedUsersAsync(
             userId: request.UserId,

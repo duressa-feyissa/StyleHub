@@ -5,7 +5,7 @@ namespace backend.Application.Features.Shop_Features.Review.Requests.Queries;
 
 public class GetAllReviewRequest: IRequest<List<ReviewResponseDTO>>
 {
-    public string? ShopId { get; set; }
+    public required string ShopId { get; set; }
     public string? UserId { get; set; }
     public int? Rating { get; set; }
     public string? SortBy { get; set; }

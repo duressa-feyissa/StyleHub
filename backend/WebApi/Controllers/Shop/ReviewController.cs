@@ -51,9 +51,9 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet]
+    [HttpGet("all/{shopId}")]
     public async Task<ActionResult<List<ReviewResponseDTO>>> FetchAllReviews(
-        [FromQuery] string? shopId = null,
+        string shopId,
         [FromQuery] string? userId = null,
         [FromQuery] int? rating = null,
         [FromQuery] string? sortBy = null,

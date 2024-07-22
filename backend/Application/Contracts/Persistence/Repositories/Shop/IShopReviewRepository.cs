@@ -6,7 +6,7 @@ namespace backend.Application.Contracts.Persistence.Repositories.Shop;
 public interface IShopReviewRepository: IGenericRepository<ShopReview>
 {
     Task<IReadOnlyList<ShopReview>> GetShopReviewListAsync(
-        string? shopId,
+        string shopId,
         string? userId,
         int? rating,
         string? sortBy,

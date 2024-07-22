@@ -142,7 +142,7 @@ public class ShopController(IMediator mediator) : ControllerBase
         [FromQuery] int limit = 10)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var result = await mediator.Send(new GetShopFollowedByUser
+        var result = await mediator.Send(new GetShopFollowedByUserRequest
         {
             UserId = userId!,
             Skip = skip,
