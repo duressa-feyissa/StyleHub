@@ -25,12 +25,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
                 product.Description = request.Product.Description;
             if (request.Product.Price != null)
                 product.Price = request.Product.Price ?? 1;
-            if (request.Product.Quantity != null)
-                product.Quantity = request.Product.Quantity ?? 1;
+            if (request.Product.InStock != null)
+                product.InStock = request.Product.InStock ?? false;
             if (request.Product.Condition != null)
                 product.Condition = request.Product.Condition;
-            if (request.Product.IsPublished != null)
-                product.IsPublished = request.Product.IsPublished ?? false;
+            if (request.Product.Status != null)
+                product.Status = request.Product.Status;
             if (request.Product.IsNegotiable != null)
                 product.IsNegotiable = request.Product.IsNegotiable ?? false;
             if (request.Product.VideoUrl != null)

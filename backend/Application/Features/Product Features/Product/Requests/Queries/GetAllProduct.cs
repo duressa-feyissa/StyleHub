@@ -15,8 +15,9 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 		bool? isNegotiable = null,
 		float? minPrice = null,
 		float? maxPrice = null,
-		int? minQuantity = null,
-		int? maxQuantity = null,
+		string? status = null,
+		bool? inStock = null,
+		string? shopId = null,
 		string? condition = null,
 		double? latitude = null,
 		double? longitude = null,
@@ -38,8 +39,9 @@ namespace backend.Application.Features.Product_Features.Product.Requests.Queries
 		public bool? IsNegotiable { get; set; } = isNegotiable;
 		public float? MinPrice { get; set; } = minPrice;
 		public float? MaxPrice { get; set; } = maxPrice;
-		public int? MinQuantity { get; set; } = minQuantity;
-		public int? MaxQuantity { get; set; } = maxQuantity;
+		public string? Status { get; set; } = status;
+		public bool? InStock { get; set; } = inStock;
+		public string? ShopId { get; set; } = shopId;
 		public string? Condition { get; set; } = condition;
 		public double? Latitude { get; set; } = latitude;
 		public double? Longitude { get; set; } = longitude;

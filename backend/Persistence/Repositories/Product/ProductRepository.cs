@@ -30,7 +30,7 @@ namespace backend.Persistence.Repositories.Product
                 .ThenInclude(pb => pb.Brand)
                 .AsSplitQuery()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == id && u.IsPublished);
+                .FirstOrDefaultAsync(u => u.Id == id);
 
             return product!;
         }
@@ -47,8 +47,9 @@ namespace backend.Persistence.Repositories.Product
             bool? isNegotiable = null,
             float? minPrice = null,
             float? maxPrice = null,
-            int? minQuantity = null,
-            int? maxQuantity = null,
+            string? shopId = null,
+            string? status = null,
+            bool? inStock = null,
             string? condition = null,
             double? latitude = null,
             double? longitude = null,
@@ -65,7 +66,6 @@ namespace backend.Persistence.Repositories.Product
                 .Include(p => p.ProductColors)
                 .ThenInclude(pc => pc.Color)
                 .Include(p => p.ProductMaterials)
-                
                 .ThenInclude(pm => pm.Material)
                 .Include(p => p.ProductSizes)
                 .ThenInclude(ps => ps.Size)
@@ -79,7 +79,7 @@ namespace backend.Persistence.Repositories.Product
                 .ThenInclude(pb => pb.Brand)
                 .AsSplitQuery()
                 .AsNoTracking();
-            query = query.Where(p => p.IsPublished);
+            query = query.Where(p => p.Status == (status ?? "active"));
             if (latitude != null && longitude != null && radiusInKilometers != null)
             {
                 Console.WriteLine("Filtering by location");
@@ -174,20 +174,15 @@ namespace backend.Persistence.Repositories.Product
             {
                 query = query.Where(p => p.Price <= maxPrice);
             }
-
-            if (minQuantity != null)
-            {
-                query = query.Where(p => p.Quantity >= minQuantity);
-            }
-
-            if (maxQuantity != null)
-            {
-                query = query.Where(p => p.Quantity <= maxQuantity);
-            }
-
+            
             if (!string.IsNullOrWhiteSpace(condition))
             {
                 query = query.Where(p => p.Condition == condition);
+            }
+            
+            if (!string.IsNullOrWhiteSpace(shopId))
+            {
+                query = query.Where(p => p.ShopId == shopId);
             }
 
             if (!string.IsNullOrWhiteSpace(sortBy))
@@ -212,11 +207,11 @@ namespace backend.Persistence.Repositories.Product
                         else
                             query = query.OrderBy(p => p.Price);
                         break;
-                    case "quantity":
+                    case "inStock":
                         if (sortOrder?.ToLower() == "desc")
-                            query = query.OrderByDescending(p => p.Quantity);
+                            query = query.OrderByDescending(p => p.InStock);
                         else
-                            query = query.OrderBy(p => p.Quantity);
+                            query = query.OrderBy(p => p.InStock);
                         break;
                     case "condition":
                         if (sortOrder?.ToLower() == "desc")

@@ -17,12 +17,12 @@ namespace backend.Domain.Entities.Product
         public required string ShopId { get; set; }
         public required Shop.Shop Shop { get; set; }
         [Required]
-        public required int Quantity { get; set; }
+        public required bool InStock { get; set; }
         public string? VideoUrl { get; set; }
         [Required]
         public required string Condition { get; set; }
         [Required]
-        public bool IsPublished { get; set; } = false;
+        public required string Status { get; set; }
         public virtual HashSet<ProductDesign> ProductDesigns { get; set; } = new HashSet<ProductDesign>();
         
         public virtual HashSet<ProductBrand> ProductBrands { get; set; } = new HashSet<ProductBrand>();

@@ -7,6 +7,7 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
     public class CreateProductValidation : AbstractValidator<CreateProductDTO>
     {
         string[] Condition = { "new", "used", "fairy used" };
+        private string[] Status = { "draft", "active", "archive" };
 
         public CreateProductValidation(IShopRepository shopRepository)
         {
@@ -38,13 +39,14 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
                 .GreaterThan(0)
                 .WithMessage("Price must be greater than 0");
 
-            RuleFor(x => x.Quantity)
+            RuleFor(x => x.Status)
                 .NotNull()
-                .WithMessage("Quantity is required")
+                .WithMessage("Status is required")
                 .NotEmpty()
-                .WithMessage("Quantity cannot be empty")
-                .GreaterThan(0)
-                .WithMessage("Quantity must be greater than 0");
+                .WithMessage("Status cannot be empty")
+                .Must(x => Status.Contains(x))
+                .WithMessage("Status must be draft, archive or active");
+            
 
             RuleFor(x => x.Condition)
                 .NotNull()
@@ -52,7 +54,7 @@ namespace backend.Application.DTO.Product.ProductDTO.Validations
                 .NotEmpty()
                 .WithMessage("Condition cannot be empty")
                 .Must(x => Condition.Contains(x))
-                .WithMessage("Condition must be new or used");
+                .WithMessage("Condition must be new, fairy used or used");
 
             RuleFor(x => x.ShopId)
                 .NotNull()

@@ -5,11 +5,11 @@ namespace backend.Application.DTO.Product.ProductDTO.DTO
         public string? Title { get; set; }
         public string? Description { get; set; }
         public float? Price { get; set; }
-        public int? Quantity { get; set; }
+        public bool? InStock { get; set; }
         public string? Condition { get; set; }
         public string? VideoUrl { get; set; }
         public bool? IsNegotiable { get; set; }
-        public bool? IsPublished { get; set; }
+        public string? Status { get; set; }
         public List<string>? ImageIds { get; set; }
         public List<string>? CategoryIds { get; set; }
         public List<string>? DesignIds { get; set; }
