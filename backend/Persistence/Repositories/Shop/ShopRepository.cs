@@ -204,9 +204,11 @@ public class ShopRepository(StyleHubDBContext context)
             .OrderBy(i => i.CreatedAt)
             .Skip(skip)
             .Take(limit)
+            .Distinct()
             .ToListAsync();
         return images;
     }
+
 
     public async Task<IReadOnlyList<string>> GetShopVideosAsync(string shopId, int skip = 0, int limit = 10)
     {
