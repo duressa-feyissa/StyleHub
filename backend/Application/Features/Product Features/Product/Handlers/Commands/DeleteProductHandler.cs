@@ -29,7 +29,12 @@ namespace backend.Application.Features.Product_Features.Product.Handlers.Command
 				throw new NotFoundException("Product Not Found");
 
 			foreach (var image in product.ProductImages)
-				await imageRepository.Delete(image.Id);
+			{
+				if (await unitOfWork.ProductRepository.GetCountProductImages(image.ProductId) == 1)
+				{
+					await imageRepository.Delete(image.Id);
+				}
+			}
 
 			await unitOfWork.ProductRepository.Delete(product);
 

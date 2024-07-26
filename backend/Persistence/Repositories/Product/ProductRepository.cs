@@ -35,6 +35,11 @@ namespace backend.Persistence.Repositories.Product
             return product!;
         }
 
+        public async Task<int> GetCountProductImages(string productId)
+        {
+            return await context.ProductImages.CountAsync(pi => pi.ProductId == productId);
+        }
+
         public async Task<IReadOnlyList<Domain.Entities.Product.Product>> GetAll(
             string search = "",
             IEnumerable<string>? colorIds = null,
