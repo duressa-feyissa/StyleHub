@@ -44,10 +44,10 @@ namespace backend.Persistence.Repositories.Product
             IEnumerable<string>? brandIds = null,
             IEnumerable<string>? designIds = null,
             string? userId = null,
+            string? shopId = null,
             bool? isNegotiable = null,
             float? minPrice = null,
             float? maxPrice = null,
-            string? shopId = null,
             string? status = null,
             bool? inStock = null,
             string? condition = null,
@@ -80,6 +80,11 @@ namespace backend.Persistence.Repositories.Product
                 .AsSplitQuery()
                 .AsNoTracking();
             query = query.Where(p => p.Status == (status ?? "active"));
+            if (!string.IsNullOrWhiteSpace(shopId))
+            {
+                query = query.Where(p => p.Shop.Id == shopId);
+            }
+            Console.WriteLine($"Status: {shopId}");
             if (latitude != null && longitude != null && radiusInKilometers != null)
             {
                 Console.WriteLine("Filtering by location");
@@ -180,10 +185,7 @@ namespace backend.Persistence.Repositories.Product
                 query = query.Where(p => p.Condition == condition);
             }
             
-            if (!string.IsNullOrWhiteSpace(shopId))
-            {
-                query = query.Where(p => p.ShopId == shopId);
-            }
+     
 
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
