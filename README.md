@@ -1,1 +1,2 @@
 # StyleHub
+StyleHub is a fashion e-commerce platform designed to provide users with a seamless shopping experience. The mobile app offers a user-friendly interface, easy navigation, and a wide range of products across various categories. Users can browse products, view product details, and make purchases directly on the app. The app aims to enhance the shopping experience for users and support local fashion brands.
