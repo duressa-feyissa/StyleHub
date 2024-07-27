@@ -1,4 +1,5 @@
 using backend.Application.Contracts.Persistence.Repositories.Common;
+using backend.Domain.Entities.Product;
 
 namespace backend.Application.Contracts.Persistence.Repositories.Product
 {
@@ -13,11 +14,12 @@ namespace backend.Application.Contracts.Persistence.Repositories.Product
 			IEnumerable<string>? brandIds = null,
 			IEnumerable<string>? designIds = null,
 			string? userId = null,
+			string? shopId = null,
 			bool? isNegotiable = null,
 			float? minPrice = null,
 			float? maxPrice = null,
-			int? minQuantity = null,
-			int? maxQuantity = null,
+			string? status = null,
+			bool? inStock = null,
 			string? condition = null,
 			double? latitude = null,
 			double? longitude = null,
@@ -29,6 +31,8 @@ namespace backend.Application.Contracts.Persistence.Repositories.Product
 		);
 
 		Task<Domain.Entities.Product.Product> GetById(string id);
+		
+		Task<int> GetCountProductImages(string productId); 
 		
 	}
 }

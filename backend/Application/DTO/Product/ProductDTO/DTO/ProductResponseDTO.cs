@@ -16,7 +16,8 @@ namespace backend.Application.DTO.Product.ProductDTO.DTO
         public required string Title { get; set; }
         public required string Description { get; set; }
         public required float Price { get; set; }
-        public required int Quantity { get; set; }
+        public required string Status { get; set; }
+        public required bool InStock { get; set; }
         public required string Condition { get; set; }
         public string? VideoUrl { get; set; }
         public required bool IsFavorite { get; set; } = false;
