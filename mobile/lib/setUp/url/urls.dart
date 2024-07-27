@@ -24,4 +24,16 @@ abstract class Urls {
   static const String resetPassword = '$baseUrl/Authentication/Reset-Password';
   static const String resetPasswordCodeVerification =
       '$baseUrl/Authentication/Verify-Password-Reset-Code';
+
+  // Shop
+  static const String shop = '$baseUrl/Shop';
+  
+  // Review
+  static const String review = '$baseUrl/Review';
+
+  // Working Hour
+  static const String workingHour = '$baseUrl/WorkingHour';
+
+  // Image
+  static const String image = '$baseUrl/Image';
 }

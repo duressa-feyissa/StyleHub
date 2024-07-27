@@ -95,6 +95,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     final result = await getProductsUseCase(
       product_usecase.Params(
+        token: event.token,
         search: event.search,
         colorIds: event.colorIds,
         sizeIds: event.sizeIds,
@@ -131,6 +132,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     final result = await getProductsUseCase(
       product_usecase.Params(
+        token: event.token,
         search: event.search,
         colorIds: event.colorIds,
         sizeIds: event.sizeIds,

@@ -138,6 +138,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getProducts({
+    required String token,
     String? search,
     List<String>? colorIds,
     List<String>? sizeIds,
@@ -182,6 +183,7 @@ class ProductRepositoryImpl implements ProductRepository {
           sortOrder: sortOrder,
           skip: skip,
           limit: limit,
+          token: token,
         );
         return Right(products);
       } on ServerException catch (e) {
@@ -191,4 +193,5 @@ class ProductRepositoryImpl implements ProductRepository {
       return const Left(CacheFailure(message: 'No internet connection'));
     }
   }
+  
 }

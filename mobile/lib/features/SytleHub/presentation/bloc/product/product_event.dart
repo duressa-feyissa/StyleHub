@@ -36,6 +36,7 @@ class GetDomainsEvent extends ProductEvent {
 }
 
 class GetProductsEvent extends ProductEvent {
+  final String token;
   final String? search;
   final List<String>? colorIds;
   final List<String>? sizeIds;
@@ -58,6 +59,7 @@ class GetProductsEvent extends ProductEvent {
   final int? limit = 10;
 
   GetProductsEvent({
+    required this.token,
     this.search,
     this.colorIds,
     this.sizeIds,
@@ -80,6 +82,7 @@ class GetProductsEvent extends ProductEvent {
 }
 
 class GetFilteredProductsEvent extends ProductEvent {
+  final String token;
   final String? search;
   final List<String>? colorIds;
   final List<String>? sizeIds;
@@ -102,6 +105,7 @@ class GetFilteredProductsEvent extends ProductEvent {
   final int? limit = 10;
 
   GetFilteredProductsEvent({
+    required this.token,
     this.search,
     this.colorIds,
     this.sizeIds,

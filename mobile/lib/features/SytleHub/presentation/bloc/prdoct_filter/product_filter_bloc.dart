@@ -125,7 +125,6 @@ class ProductFilterBloc extends Bloc<ProductFilterEvent, ProductFilterState> {
     // location
 
     on<SetLocationEvent>((event, emit) {
-      print('---------------x--------------------x---------------');
       emit(state.copyWith(
           location: event.location,
           latitute: event.latitute,

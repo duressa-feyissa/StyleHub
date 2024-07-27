@@ -7,7 +7,7 @@ import '../../../domain/entities/product/design_entity.dart';
 import '../../bloc/prdoct_filter/product_filter_bloc.dart';
 import '../../bloc/product/product_bloc.dart';
 import '../../widgets/filter/bottom_filter_bar.dart';
-import '../../widgets/search.dart';
+import '../../widgets/common/search.dart';
 
 class DesignFullFilterScreen extends StatefulWidget {
   const DesignFullFilterScreen({super.key, this.isAdd, this.onTap});

@@ -2,14 +2,25 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop_by_id.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop_products.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop_products_images.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop_products_video.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop_reviews.dart';
+import 'package:style_hub/features/SytleHub/domain/usecases/shop/get_shop_working_hour.dart';
+import 'package:style_hub/features/SytleHub/presentation/bloc/shop/shop_bloc.dart';
 
 import 'core/network/internet.dart';
 import 'features/SytleHub/data/datasources/local/user.dart';
 import 'features/SytleHub/data/datasources/remote/product.dart';
+import 'features/SytleHub/data/datasources/remote/shop.dart';
 import 'features/SytleHub/data/datasources/remote/user.dart';
 import 'features/SytleHub/data/repositories/product.dart';
+import 'features/SytleHub/data/repositories/shop.dart';
 import 'features/SytleHub/data/repositories/user.dart';
 import 'features/SytleHub/domain/repositories/product.dart';
+import 'features/SytleHub/domain/repositories/shop.dart';
 import 'features/SytleHub/domain/repositories/user.dart';
 import 'features/SytleHub/domain/usecases/product/get_brand.dart';
 import 'features/SytleHub/domain/usecases/product/get_category.dart';
@@ -20,6 +31,9 @@ import 'features/SytleHub/domain/usecases/product/get_location.dart';
 import 'features/SytleHub/domain/usecases/product/get_material.dart';
 import 'features/SytleHub/domain/usecases/product/get_product.dart';
 import 'features/SytleHub/domain/usecases/product/get_size.dart';
+import 'features/SytleHub/domain/usecases/shop/add_image.dart';
+import 'features/SytleHub/domain/usecases/shop/add_product.dart';
+import 'features/SytleHub/domain/usecases/shop/delete_product.dart';
 import 'features/SytleHub/domain/usecases/user/load_currect_user.dart';
 import 'features/SytleHub/domain/usecases/user/password_reset_verify_code.dart';
 import 'features/SytleHub/domain/usecases/user/reset_password.dart';
@@ -62,6 +76,20 @@ Future<void> init() async {
         signOutUseCase: sl(),
       ));
 
+  // Shop
+  sl.registerFactory(() => ShopBloc(
+        getShopByIdUseCase: sl(),
+        getShopProductsImageUseCase: sl(),
+        getShopProductsVideoUseCase: sl(),
+        getShopProductUseCase: sl(),
+        getShopReviewUseCase: sl(),
+        getShopWorkingHourUseCase: sl(),
+        getShopUseCase: sl(),
+        addImageUseCase: sl(),
+        addProductsUseCase: sl(),
+        deleteProductByIdUseCase: sl(),
+      ));
+
   // Use cases
   // - Product
   sl.registerLazySingleton(() => GetColorsUseCase(sl()));
@@ -85,6 +113,18 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoadCurrectUserUseCase(sl()));
   sl.registerLazySingleton(() => SignOutUseCase(sl()));
 
+  // - Shop
+  sl.registerLazySingleton(() => GetShopByIdUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopProductsImageUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopProductsVideoUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopProductUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopReviewUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopWorkingHourUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopUseCase(sl()));
+  sl.registerLazySingleton(() => AddImageUseCase(sl()));
+  sl.registerLazySingleton(() => AddProductsUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteProductByIdUseCase(sl()));
+
   // Repository
   // - Product
   sl.registerLazySingleton<ProductRepository>(
@@ -96,6 +136,10 @@ Future<void> init() async {
         remoteDataSource: sl(), networkInfo: sl(), localDataSource: sl()),
   );
 
+  sl.registerLazySingleton<ShopRepository>(
+    () => ShopRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()),
+  );
+
   // Data sources - Remote
   // - Product
   sl.registerLazySingleton<ProductRemoteDataSource>(
@@ -103,6 +147,9 @@ Future<void> init() async {
 
   sl.registerLazySingleton<UserRemoteDataSource>(
       () => UserRemoteDataSourceImpl(client: sl()));
+
+  sl.registerLazySingleton<ShopRemoteDataSource>(
+      () => ShopRemoteDataSourceImpl(client: sl()));
 
   // Data sources - Local
   // - User

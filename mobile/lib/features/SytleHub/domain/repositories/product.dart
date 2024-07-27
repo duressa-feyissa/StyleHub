@@ -21,6 +21,7 @@ abstract class ProductRepository {
   Future<Either<Failure, List<DesignEntity>>> getDesigns();
   Future<Either<Failure, List<DomainEntity>>> getDomains();
   Future<Either<Failure, List<ProductEntity>>> getProducts({
+    required String token,
     String? search,
     List<String>? colorIds,
     List<String>? sizeIds,

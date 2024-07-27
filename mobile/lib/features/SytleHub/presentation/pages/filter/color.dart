@@ -9,7 +9,7 @@ import '../../../domain/entities/product/color_entity.dart';
 import '../../bloc/prdoct_filter/product_filter_bloc.dart';
 import '../../bloc/product/product_bloc.dart';
 import '../../widgets/filter/bottom_filter_bar.dart';
-import '../../widgets/search.dart';
+import '../../widgets/common/search.dart';
 
 class ColorFullFilterScreen extends StatefulWidget {
   const ColorFullFilterScreen({super.key, this.isAdd, this.onTap});

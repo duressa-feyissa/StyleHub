@@ -5,6 +5,7 @@ import 'color_model.dart';
 import 'design_model.dart';
 import 'image_model.dart';
 import 'material_model.dart';
+import 'shop_info_model.dart';
 import 'size_model.dart';
 
 class ProductModel extends ProductEntity {
@@ -13,11 +14,10 @@ class ProductModel extends ProductEntity {
     required super.title,
     required super.description,
     required super.price,
-    required super.quantity,
+    required super.status,
+    required super.inStock,
+    required super.isFavorite,
     required super.condition,
-    required super.latitude,
-    required super.longitude,
-    required super.city,
     required super.sizes,
     required super.colors,
     required super.materials,
@@ -28,6 +28,8 @@ class ProductModel extends ProductEntity {
     required super.isNegotiable,
     required super.createdAt,
     required super.updatedAt,
+    required super.shopInfo,
+    super.videoUrl,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -36,11 +38,10 @@ class ProductModel extends ProductEntity {
       title: json['title'],
       description: json['description'],
       price: json['price'].toDouble(),
-      quantity: json['quantity'],
+      shopInfo: ShopInfoModel.fromJson(json['shop']),
+      status: json['status'],
+      inStock: json['inStock'],
       condition: json['condition'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-      city: json['city'],
       sizes:
           List<SizeModel>.from(json['sizes'].map((x) => SizeModel.fromJson(x))),
       colors: List<ColorModel>.from(
@@ -58,6 +59,8 @@ class ProductModel extends ProductEntity {
       isNegotiable: json['isNegotiable'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
+      isFavorite: json['isFavorite'],
+      videoUrl: json['videoUrl'],
     );
   }
 }

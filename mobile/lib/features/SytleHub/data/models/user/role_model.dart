@@ -22,4 +22,12 @@ class RoleModel extends RoleEntity {
       'description': description,
     };
   }
+
+  RoleEntity toEntity() {
+    return RoleEntity(
+      id: id,
+      name: name,
+      description: description,
+    );
+  }
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:style_hub/features/SytleHub/presentation/widgets/common/app_bar_one.dart';
 
 import '../../../../core/utils/captilizations.dart';
 import '../../../../setUp/size/app_size.dart';
@@ -11,7 +11,8 @@ import '../../domain/entities/product/category_entity.dart';
 import '../bloc/prdoct_filter/product_filter_bloc.dart';
 import '../bloc/product/product_bloc.dart';
 import '../bloc/scroll/scroll_bloc.dart';
-import '../widgets/button.dart';
+import '../bloc/user/user_bloc.dart';
+import '../widgets/common/button.dart';
 import '../widgets/filter/all_filter.dart';
 import '../widgets/filter/half_brand_filter.dart';
 import '../widgets/filter/half_color_filter.dart';
@@ -20,8 +21,7 @@ import '../widgets/filter/half_location_filter.dart';
 import '../widgets/filter/half_material_filter.dart';
 import '../widgets/filter/half_price_filter.dart';
 import '../widgets/filter/half_size_filter.dart';
-import '../widgets/product.dart';
-import '../widgets/search.dart';
+import '../widgets/common/product.dart';
 import 'filter/brand.dart';
 import 'filter/color.dart';
 import 'filter/design.dart';
@@ -48,6 +48,7 @@ class _ProductListState extends State<ProductList> {
     super.initState();
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           categoryIds: [widget.categories[currentIndex].id],
         ));
 
@@ -84,6 +85,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterMaterial() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           materialIds: context
               .read<ProductFilterBloc>()
               .state
@@ -96,6 +98,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterSize() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           sizeIds:
               context.read<ProductFilterBloc>().state.selectedSizes.toList(),
           categoryIds: [widget.categories[currentIndex].id],
@@ -105,6 +108,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterBrand() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           brandIds:
               context.read<ProductFilterBloc>().state.selectedBrands.toList(),
           categoryIds: [widget.categories[currentIndex].id],
@@ -114,6 +118,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterColor() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           colorIds:
               context.read<ProductFilterBloc>().state.selectedColors.toList(),
           categoryIds: [widget.categories[currentIndex].id],
@@ -123,6 +128,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterLocation() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           latitudes: context.read<ProductFilterBloc>().state.latitute,
           longitudes: context.read<ProductFilterBloc>().state.longitude,
           radiusInKilometers: context.read<ProductFilterBloc>().state.distance,
@@ -133,6 +139,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterDesign() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           designIds:
               context.read<ProductFilterBloc>().state.selectedDesigns.toList(),
           categoryIds: [widget.categories[currentIndex].id],
@@ -142,6 +149,7 @@ class _ProductListState extends State<ProductList> {
   void onfilterPrice() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           minPrice: context.read<ProductFilterBloc>().state.priceMin,
           maxPrice: context.read<ProductFilterBloc>().state.priceMax,
           categoryIds: [widget.categories[currentIndex].id],
@@ -151,6 +159,7 @@ class _ProductListState extends State<ProductList> {
   void onfilter() {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           categoryIds: [widget.categories[currentIndex].id],
           materialIds: context
               .read<ProductFilterBloc>()
@@ -179,6 +188,7 @@ class _ProductListState extends State<ProductList> {
     context.read<ProductFilterBloc>().add(ClearAllEvent());
     print(index);
     context.read<ProductBloc>().add(GetFilteredProductsEvent(
+          token: context.read<UserBloc>().state.user?.token ?? "",
           categoryIds: [widget.categories[index].id],
         ));
     setState(() {
@@ -297,34 +307,15 @@ class _ProductListState extends State<ProductList> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        body: Padding(
-          padding: const EdgeInsets.all(AppSize.smallSize),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back_outlined,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(width: AppSize.smallSize),
-                  Search(
-                    title: "What are you looking for?",
-                    controller: searchController,
-                  ),
-                  const SizedBox(width: AppSize.smallSize),
-                  SvgPicture.asset(
-                    "assets/icons/notifaction.svg",
-                    height: 32,
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSize.smallSize),
-              Expanded(
+        body: Column(
+          children: [
+            const AppBarOne(),
+            Container(
+                height: 2,
+                color: Theme.of(context).colorScheme.primaryContainer),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSize.smallSize),
                 child: CustomScrollView(
                   controller: _scrollController,
                   slivers: [
@@ -534,9 +525,9 @@ class _ProductListState extends State<ProductList> {
                       ),
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
