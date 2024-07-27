@@ -52,6 +52,8 @@ class UserModel extends UserEntity {
       'country': country,
       'city': city,
       'address': address,
+      'token': token,
+      'role': role,
     };
   }
 }

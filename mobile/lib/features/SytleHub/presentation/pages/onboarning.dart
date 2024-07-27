@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../bloc/shop/shop_bloc.dart';
 import '../bloc/user/user_bloc.dart';
 import 'auth.dart';
 import 'layout.dart';
@@ -25,6 +28,10 @@ class _OnBoardingState extends State<OnBoarding> {
   void initState() {
     super.initState();
     context.read<UserBloc>().add(LoadCurrentUserEvent());
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+      statusBarIconBrightness: Brightness.light,
+    ));
   }
 
   @override
@@ -56,9 +63,14 @@ class _OnBoardingState extends State<OnBoarding> {
         child: BlocListener<UserBloc, UserState>(
           listener: (context, state) {
             if (state.loadCurrentUserStatus == LoadCurrentUserStatus.success) {
-              Navigator.push(
+              context.read<ShopBloc>().add(GetMyShopEvent(
+                  userId: state.user?.id ?? '', token: state.user?.token));
+              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                 context,
-                MaterialPageRoute(builder: (context) => const Layout()),
+                settings: const RouteSettings(name: '/home'),
+                withNavBar: false,
+                screen: const Layout(),
+                pageTransitionAnimation: PageTransitionAnimation.fade,
               );
             }
           },

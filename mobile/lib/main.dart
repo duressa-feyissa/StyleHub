@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/SytleHub/presentation/bloc/prdoct_filter/product_filter_bloc.dart';
 import 'features/SytleHub/presentation/bloc/product/product_bloc.dart';
 import 'features/SytleHub/presentation/bloc/scroll/scroll_bloc.dart';
+import 'features/SytleHub/presentation/bloc/shop/shop_bloc.dart';
 import 'features/SytleHub/presentation/bloc/user/user_bloc.dart';
 import 'features/SytleHub/presentation/pages/onboarning.dart';
 import 'injection_container.dart' as di;
@@ -30,6 +31,7 @@ class Starter extends StatelessWidget {
         BlocProvider(create: (context) => ProductFilterBloc()),
         BlocProvider(create: (context) => di.sl<ProductBloc>()),
         BlocProvider(create: (context) => di.sl<UserBloc>()),
+        BlocProvider(create: (context) => di.sl<ShopBloc>()),
       ],
       child: MaterialApp(
           title: "Style Hub",

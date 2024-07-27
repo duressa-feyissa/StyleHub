@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/user/user_bloc.dart';
-import '../CustomInputField.dart';
+import '../common/CustomInputField.dart';
 
 class NewPassword extends StatefulWidget {
   const NewPassword({super.key, required this.changeIndex});

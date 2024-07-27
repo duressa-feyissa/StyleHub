@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:style_hub/features/SytleHub/presentation/bloc/shop/shop_bloc.dart';
+import 'package:style_hub/features/SytleHub/presentation/pages/chat.dart';
+import 'package:style_hub/features/SytleHub/presentation/pages/shop.dart';
 
 import '../bloc/product/product_bloc.dart';
 import '../bloc/scroll/scroll_bloc.dart';
 import '../bloc/user/user_bloc.dart';
 import 'category.dart';
 import 'home.dart';
-import 'post.dart';
+import 'profile.dart';
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -24,7 +27,8 @@ class _LayoutState extends State<Layout> {
 
   @override
   void initState() {
-    context.read<ProductBloc>().add(GetProductsEvent());
+    context.read<ProductBloc>().add(GetProductsEvent(
+        token: context.read<UserBloc>().state.user?.token ?? ''));
     context.read<ScrollBloc>().add(ScrollEventInitial());
     context.read<ProductBloc>().add(GetColorsEvent());
     context.read<ProductBloc>().add(GetBrandsEvent());
@@ -34,6 +38,8 @@ class _LayoutState extends State<Layout> {
     context.read<ProductBloc>().add(GetLocationsEvent());
     context.read<ProductBloc>().add(GetDesignsEvent());
     context.read<ProductBloc>().add(GetDomainsEvent());
+    context.read<ShopBloc>().add(GetAllShopEvent(
+        token: context.read<UserBloc>().state.user?.token ?? ''));
 
     super.initState();
   }
@@ -61,16 +67,16 @@ class _LayoutState extends State<Layout> {
         inactiveColorPrimary: Theme.of(context).colorScheme.outline,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.chat_bubble),
-        inactiveIcon: const Icon(Icons.chat_bubble_outline),
-        title: 'Chat',
+        icon: const Icon(Icons.storefront_rounded),
+        inactiveIcon: const Icon(Icons.storefront_outlined),
+        title: 'Shops',
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: Theme.of(context).colorScheme.outline,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.favorite),
-        inactiveIcon: const Icon(Icons.favorite_border),
-        title: 'Favorite',
+        icon: const Icon(Icons.chat_bubble),
+        inactiveIcon: const Icon(Icons.chat_bubble_outline),
+        title: 'Chat',
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: Theme.of(context).colorScheme.outline,
       ),
@@ -86,17 +92,11 @@ class _LayoutState extends State<Layout> {
 
   List<Widget> _buildScreens() {
     return [
-      const Home(),
+      const HomeScreen(),
       const CategoryScreen(),
-      const PostScreen(),
-      Container(),
-      Container(
-          child: Center(
-              child: GestureDetector(
-                  onTap: () {
-                    context.read<UserBloc>().add(SignOutEvent());
-                  },
-                  child: Text('Logout'))))
+      const ShopScreen(),
+      const ChatScreen(),
+      const ProfileScreen(),
     ];
   }
 

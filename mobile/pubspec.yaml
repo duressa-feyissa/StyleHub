@@ -30,6 +30,12 @@ dependencies:
     git:
       url: https://github.com/duressa-feyissa/PersistentBottomNavBar.git
   shared_preferences: ^2.2.3
+  url_launcher: ^6.3.0
+  share_plus: ^9.0.0
+  flutter_rating_stars: ^1.1.0
+  timeago: ^3.7.0
+  image_picker: ^1.1.2
+  image_cropper: ^7.1.0
 
 dev_dependencies:
   flutter_test:
@@ -67,3 +73,15 @@ flutter:
     - assets/images/onboarding/1.png
     - assets/images/onboarding/2.png
     - assets/images/onboarding/3.png
+    - assets/images/Screens/review.png
+    - assets/icons/facebook.svg
+    - assets/icons/instagram.svg
+    - assets/icons/linkedin.svg
+    - assets/icons/notifaction.svg
+    - assets/icons/telegram.svg
+    - assets/icons/tiktok.svg
+    - assets/icons/whatsup.svg
+    - assets/icons/x.svg
+    - assets/icons/youtube.svg
+    - assets/images/Screens/person.png
+

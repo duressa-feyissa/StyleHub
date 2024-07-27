@@ -14,6 +14,7 @@ class GetProductsUseCase extends UseCase<List<ProductEntity>, Params> {
   @override
   Future<Either<Failure, List<ProductEntity>>> call(Params params) async {
     return await repository.getProducts(
+      token: params.token,
       search: params.search,
       colorIds: params.colorIds,
       sizeIds: params.sizeIds,
@@ -39,6 +40,7 @@ class GetProductsUseCase extends UseCase<List<ProductEntity>, Params> {
 }
 
 class Params extends Equatable {
+  final String token;
   final String? search;
   final List<String>? colorIds;
   final List<String>? sizeIds;
@@ -61,6 +63,7 @@ class Params extends Equatable {
   final int? limit;
 
   const Params({
+    required this.token,
     this.search,
     this.colorIds,
     this.sizeIds,
@@ -103,5 +106,6 @@ class Params extends Equatable {
         condition,
         sortBy,
         sortOrder,
+        token,
       ];
 }

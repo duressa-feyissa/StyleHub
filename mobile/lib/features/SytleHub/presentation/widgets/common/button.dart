@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../setUp/size/app_size.dart';
+import '../../../../../setUp/size/app_size.dart';
 
 class ChipButton extends StatelessWidget {
   final String text;

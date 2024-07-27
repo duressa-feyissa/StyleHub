@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../setUp/size/app_size.dart';
+import '../../../../../setUp/size/app_size.dart';
 import 'category_chip.dart';
 
 class SubCategoryList extends StatelessWidget {

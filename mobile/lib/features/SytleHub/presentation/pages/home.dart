@@ -4,27 +4,26 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:style_hub/features/SytleHub/presentation/pages/product_list.dart';
 
 import '../../../../setUp/size/app_size.dart';
 import '../bloc/product/product_bloc.dart';
 import '../bloc/scroll/scroll_bloc.dart';
-import '../widgets/button.dart';
-import '../widgets/category_chip.dart';
-import '../widgets/product.dart';
-import '../widgets/search.dart';
+import '../widgets/common/button.dart';
+import '../widgets/common/category_chip.dart';
+import '../widgets/common/app_bar_two.dart';
+import '../widgets/common/product.dart';
+import '../widgets/common/search.dart';
 
-const image =
-    "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
@@ -93,39 +92,13 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(AppSize.smallSize),
           child: Column(
             children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundImage: NetworkImage(image),
-                    radius: 22.5,
-                  ),
-                  const Spacer(),
-                  SvgPicture.asset(
-                    "assets/icons/notifaction.svg",
-                    height: 32,
-                  ),
-                ],
-              ),
+              const AppBarTwo(),
               const SizedBox(height: AppSize.smallSize),
               Row(
                 children: [
                   Search(
                     title: "What are you looking for?",
                     controller: searchController,
-                  ),
-                  const SizedBox(width: AppSize.smallSize),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 45,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(AppSize.xSmallSize),
-                    ),
-                    child: Icon(
-                      Icons.location_on_outlined,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
                   ),
                 ],
               ),
@@ -186,7 +159,22 @@ class _HomeState extends State<Home> {
                                     .map((e) => CategoryChip(
                                           name: e.name,
                                           image: e.image,
-                                          onTap: () {},
+                                          onTap: () {
+                                            PersistentNavBarNavigator
+                                                .pushNewScreenWithRouteSettings(
+                                              context,
+                                              settings: const RouteSettings(
+                                                  name: '/productList'),
+                                              withNavBar: false,
+                                              screen: ProductList(
+                                                  categories: context
+                                                      .read<ProductBloc>()
+                                                      .state
+                                                      .categories),
+                                              pageTransitionAnimation:
+                                                  PageTransitionAnimation.fade,
+                                            );
+                                          },
                                         ))
                                     .toList()),
                           if (width >= 700)
@@ -194,14 +182,41 @@ class _HomeState extends State<Home> {
                               height: 108,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 28,
+                                itemCount: context
+                                    .watch<ProductBloc>()
+                                    .state
+                                    .categories
+                                    .length,
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 16),
                                     child: CategoryChip(
-                                        name: "category",
-                                        image: image,
-                                        onTap: () {}),
+                                        name: context
+                                            .watch<ProductBloc>()
+                                            .state
+                                            .categories[index]
+                                            .name,
+                                        image: context
+                                            .watch<ProductBloc>()
+                                            .state
+                                            .categories[index]
+                                            .image,
+                                        onTap: () {
+                                          PersistentNavBarNavigator
+                                              .pushNewScreenWithRouteSettings(
+                                            context,
+                                            settings: const RouteSettings(
+                                                name: '/productList'),
+                                            withNavBar: false,
+                                            screen: ProductList(
+                                                categories: context
+                                                    .read<ProductBloc>()
+                                                    .state
+                                                    .categories),
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation.fade,
+                                          );
+                                        }),
                                   );
                                 },
                               ),

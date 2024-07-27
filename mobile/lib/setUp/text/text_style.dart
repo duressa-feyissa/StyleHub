@@ -40,7 +40,7 @@ class TextThemes {
   );
   static const TextStyle titleLarge = TextStyle(
     fontSize: 22,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     height: 1.272727, // 28/22
     fontFamily: 'Mulish',
   );

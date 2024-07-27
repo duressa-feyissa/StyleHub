@@ -24,6 +24,7 @@ abstract class ProductRemoteDataSource {
   Future<List<DesignModel>> getDesigns();
   Future<List<DomainModel>> getDomains();
   Future<List<ProductModel>> getProducts({
+    required String token,
     String? search,
     List<String>? colorIds,
     List<String>? sizeIds,
@@ -164,6 +165,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<List<ProductModel>> getProducts({
+    required String token,
     String? search,
     List<String>? colorIds,
     List<String>? sizeIds,
@@ -243,8 +245,10 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     if (limit != null) query += 'limit=$limit&';
 
     final uri = Uri.parse(Urls.product + query);
-    final response = await client.get(uri);
-
+    final response = await client.get(uri, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List)
           .map((e) => ProductModel.fromJson(e))
