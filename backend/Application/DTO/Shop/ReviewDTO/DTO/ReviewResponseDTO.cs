@@ -9,5 +9,6 @@ public class ReviewResponseDTO
     public string Image { get; set; }
     public string Review { get; set; }
     public int Rating { get; set; }
+    public string UserId { get; set; }
     public DateTime CreatedAt { get; set; }
 }

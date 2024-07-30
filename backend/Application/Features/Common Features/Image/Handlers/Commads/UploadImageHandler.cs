@@ -30,13 +30,13 @@ namespace backend.Application.Features.Common_Features.Image.Handlers.Commads
 
 			var user = await unitOfWork.UserRepository.GetById(request.UserId);
 			
-
 			var _image = new Domain.Entities.Common.Image
 			{
-				ImageUrl = request.Image.Base64Image,
+				ImageUrl = "",
 				User = user
 			};
 			_image.ImageUrl = await imageRepository.Upload(request.Image.Base64Image, _image.Id);
+		
 			await unitOfWork.ImageRepository.Add(_image);
 
 			return new BaseResponse<ImageResponseDTO>
