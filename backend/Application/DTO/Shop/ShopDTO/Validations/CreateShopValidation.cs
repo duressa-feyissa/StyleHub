@@ -66,9 +66,7 @@ namespace backend.Application.DTO.Shop.ShopDTO.Validations
 
             RuleFor(x => x.PostalCode)
                 .NotNull()
-                .WithMessage("PostalCode is required")
-                .NotEmpty()
-                .WithMessage("PostalCode cannot be empty");
+                .WithMessage("PostalCode is required");
 
             RuleFor(x => x.Latitude)
                 .NotNull()
