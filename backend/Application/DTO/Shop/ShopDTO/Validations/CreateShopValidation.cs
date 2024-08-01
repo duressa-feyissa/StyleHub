@@ -88,6 +88,7 @@ namespace backend.Application.DTO.Shop.ShopDTO.Validations
                 .NotEmpty()
                 .WithMessage("Logo cannot be empty");
 
+            
             RuleFor(x => x.SocialMediaLinks)
                 .NotNull()
                 .WithMessage("SocialMediaLinks is required")
