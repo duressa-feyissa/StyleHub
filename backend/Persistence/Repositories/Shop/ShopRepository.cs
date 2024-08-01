@@ -344,11 +344,20 @@ public class ShopRepository(StyleHubDBContext context)
 
     public async Task<double> GetShopAverageRatingAsync(string shopId)
     {
-        var averageRating = await context.ShopReviews
+        var ratings = await context.ShopReviews
             .Where(r => r.ShopId == shopId)
-            .AverageAsync(r => r.Rating);
-        return averageRating;
+            .Select(r => (double?)r.Rating)
+            .ToListAsync();
+        
+        if (ratings.Count == 0)
+        {
+            return 0.0;
+        }
+
+        return ratings.Average() ?? 0.0;
+    
     }
+
 
     public async Task<bool> IsShopFollowedByUserAsync(string shopId, string userId)
     {
