@@ -64,10 +64,6 @@ namespace backend.Application.DTO.Shop.ShopDTO.Validations
                 .NotEmpty()
                 .WithMessage("SubAdministrativeArea cannot be empty");
 
-            RuleFor(x => x.PostalCode)
-                .NotNull()
-                .WithMessage("PostalCode is required");
-
             RuleFor(x => x.Latitude)
                 .NotNull()
                 .WithMessage("Latitude is required")
@@ -90,16 +86,7 @@ namespace backend.Application.DTO.Shop.ShopDTO.Validations
                 .NotNull()
                 .WithMessage("Logo is required")
                 .NotEmpty()
-                .WithMessage("Logo cannot be empty")
-                .Must(x => Uri.IsWellFormedUriString(x, UriKind.Absolute));
-
-            RuleFor(x => x.Banner)
-                .Cascade(CascadeMode.Stop)
-                .NotNull()
-                .WithMessage("Banner is required")
-                .NotEmpty()
-                .WithMessage("Banner cannot be empty")
-                .Must(x => Uri.IsWellFormedUriString(x, UriKind.Absolute));
+                .WithMessage("Logo cannot be empty");
 
             RuleFor(x => x.SocialMediaLinks)
                 .NotNull()
