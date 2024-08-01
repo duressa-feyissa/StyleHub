@@ -39,24 +39,24 @@ public class UpdateShopHandler(IUnitOfWork unitOfWork, IMapper mapper)
             shop.Category = JsonConvert.SerializeObject(request.Shop.Category);
         }
         
-        if (!string.IsNullOrEmpty(request.Shop.Country))
+        if (!string.IsNullOrEmpty(request.Shop.Street))
         {
-            shop.Country = request.Shop.Country;
+            shop.Street = request.Shop.Street;
         }
         
-        if (!string.IsNullOrEmpty(request.Shop.State))
+        if (!string.IsNullOrEmpty(request.Shop.SubLocality))
         {
-            shop.State = request.Shop.State;
+            shop.SubLocality = request.Shop.SubLocality;
         }
         
-        if (!string.IsNullOrEmpty(request.Shop.City))
+        if (!string.IsNullOrEmpty(request.Shop.SubAdministrativeArea))
         {
-            shop.City = request.Shop.City;
+            shop.SubAdministrativeArea = request.Shop.SubAdministrativeArea;
         }
         
-        if (!string.IsNullOrEmpty(request.Shop.StreetAddress))
+        if (!string.IsNullOrEmpty(request.Shop.PostalCode))
         {
-            shop.StreetAddress = request.Shop.StreetAddress;
+            shop.PostalCode = request.Shop.PostalCode;
         }
         
         if (request.Shop.Latitude != null)

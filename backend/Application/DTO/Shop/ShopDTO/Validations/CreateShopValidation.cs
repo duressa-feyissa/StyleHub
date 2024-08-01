@@ -46,29 +46,29 @@ namespace backend.Application.DTO.Shop.ShopDTO.Validations
                         .WithMessage("Category must be one of the following: " + string.Join(", ", categories))
                 );
 
-            RuleFor(x => x.Country)
+            RuleFor(x => x.Street)
                 .NotNull()
-                .WithMessage("Country is required")
+                .WithMessage("Street is required")
                 .NotEmpty()
-                .WithMessage("Country cannot be empty");
+                .WithMessage("Street cannot be empty");
 
-            RuleFor(x => x.State)
+            RuleFor(x => x.SubLocality)
                 .NotNull()
-                .WithMessage("State is required")
+                .WithMessage("SubLocality is required")
                 .NotEmpty()
-                .WithMessage("State cannot be empty");
+                .WithMessage("SubLocality cannot be empty");
 
-            RuleFor(x => x.City)
+            RuleFor(x => x.SubAdministrativeArea)
                 .NotNull()
-                .WithMessage("City is required")
+                .WithMessage("SubAdministrativeArea is required")
                 .NotEmpty()
-                .WithMessage("City cannot be empty");
+                .WithMessage("SubAdministrativeArea cannot be empty");
 
-            RuleFor(x => x.StreetAddress)
+            RuleFor(x => x.PostalCode)
                 .NotNull()
-                .WithMessage("StreetAddress is required")
+                .WithMessage("PostalCode is required")
                 .NotEmpty()
-                .WithMessage("StreetAddress cannot be empty");
+                .WithMessage("PostalCode cannot be empty");
 
             RuleFor(x => x.Latitude)
                 .NotNull()

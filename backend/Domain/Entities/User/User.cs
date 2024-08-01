@@ -9,24 +9,23 @@ namespace backend.Domain.Entities.User
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Password { get; set; }
+        public string? Street { get; set; }
+        public string? SubLocality { get; set; }
+        public string? SubAdministrativeArea { get; set; }
+        public string? PostalCode { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string? ProfilePicture { get; set; }
         public string? Email { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? Gender { get; set; }
-        public string? Country { get; set; }
-        public string? City { get; set; }
-        public string? Address { get; set; }
         public string? productCategoryPreferences { get; set; }
         public string? productSizePreferences { get; set; }
         public string? productDesignPreferences { get; set; }
         public string? productBrandPreferences { get; set; }
         public string? productColorPreferences { get; set; }
-        public bool IsPreferencesSet { get; set; } = false;
         public bool IsEmailVerified { get; set; } = false;
         public bool IsPhoneNumberVerified { get; set; } = false;
-        public bool IsProfileCompleted { get; set; } = false;
         public string? PhoneNumberVerificationCode { get; set; }
         public DateTime? PhoneNumberVerificationCodeExpiration { get; set; }
         public string? ResetPasswordCode { get; set; }

@@ -9,10 +9,10 @@ public class Shop: BaseEntity
     public required string Name { get; set; }
     public required string Description { get; set; }
     public required string Category { get; set; }
-    public required string Country { get; set; }
-    public required string State { get; set; }
-    public required string City { get; set; }
-    public required string StreetAddress { get; set; }
+    public required string Street { get; set; }
+    public required string SubLocality { get; set; }
+    public required string SubAdministrativeArea { get; set; }
+    public required string PostalCode { get; set; }
     public required double Latitude { get; set; }
     public required double Longitude { get; set; }
     public required string PhoneNumber { get; set; }

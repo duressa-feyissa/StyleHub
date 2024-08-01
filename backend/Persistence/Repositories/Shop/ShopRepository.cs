@@ -54,10 +54,10 @@ public class ShopRepository(StyleHubDBContext context)
             query = query.Where(p =>
                 EF.Functions.Like(p.Name, $"%{search}%")
                 || EF.Functions.Like(p.Description, $"%{search}%")
-                || EF.Functions.Like(p.City, $"%{search}%")
-                || EF.Functions.Like(p.Country, $"%{search}%")
-                || EF.Functions.Like(p.StreetAddress, $"%{search}%")
-                || EF.Functions.Like(p.State, $"%{search}%")
+                || EF.Functions.Like(p.Street, $"%{search}%")
+                || EF.Functions.Like(p.SubLocality, $"%{search}%")
+                || EF.Functions.Like(p.SubAdministrativeArea, $"%{search}%")
+                || EF.Functions.Like(p.PostalCode, $"%{search}%")
             );
         }
         
@@ -109,12 +109,12 @@ public class ShopRepository(StyleHubDBContext context)
                 "category" => sortOrder == "asc"
                     ? query.OrderBy(p => p.Category)
                     : query.OrderByDescending(p => p.Category),
-                "country" => sortOrder == "asc"
-                    ? query.OrderBy(p => p.Country)
-                    : query.OrderByDescending(p => p.Country),
-                "city" => sortOrder == "asc"
-                    ? query.OrderBy(p => p.City)
-                    : query.OrderByDescending(p => p.City),
+                "subLocality" => sortOrder == "asc"
+                    ? query.OrderBy(p => p.SubLocality)
+                    : query.OrderByDescending(p => p.SubLocality),
+                "subAdministrativeArea" => sortOrder == "asc"
+                    ? query.OrderBy(p => p.SubAdministrativeArea)
+                    : query.OrderByDescending(p => p.SubAdministrativeArea),
                 "verified" => sortOrder == "asc"
                     ? query.OrderBy(p => p.Verified)
                     : query.OrderByDescending(p => p.Verified),

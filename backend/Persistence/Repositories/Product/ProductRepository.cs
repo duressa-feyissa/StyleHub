@@ -125,10 +125,10 @@ namespace backend.Persistence.Repositories.Product
                 query = query.Where(p =>
                     EF.Functions.Like(p.Title, $"%{search}%")
                     || EF.Functions.Like(p.Description, $"%{search}%")
-                    || EF.Functions.Like(p.Shop.City, $"%{search}%")
-                    || EF.Functions.Like(p.Shop.State, $"%{search}%")
-                    || EF.Functions.Like(p.Shop.Country, $"%{search}%")
-                    || EF.Functions.Like(p.Shop.StreetAddress, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.Street, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.SubLocality, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.SubAdministrativeArea, $"%{search}%")
+                    || EF.Functions.Like(p.Shop.PostalCode, $"%{search}%")
                 );
             }
             

@@ -58,9 +58,10 @@ namespace backend.Persistence.Repositories.User
                     || (u.LastName != null && u.LastName.Contains(search))
                     || (u.PhoneNumber != null && u.PhoneNumber.Contains(search))
                     || (u.Email != null && u.Email.Contains(search))
-                    || (u.Country != null && u.Country.Contains(search))
-                    || (u.City != null && u.City.Contains(search))
-                    || (u.Address != null && u.Address.Contains(search))
+                    || (u.Street != null && u.Street.Contains(search))
+                    || (u.SubLocality != null && u.SubLocality.Contains(search))
+                    || (u.SubAdministrativeArea != null && u.SubAdministrativeArea.Contains(search))
+                    || (u.PostalCode != null && u.PostalCode.Contains(search))
                 );
             }
 
@@ -87,18 +88,6 @@ namespace backend.Persistence.Repositories.User
                     => orderBy == "asc"
                         ? query.OrderBy(u => u.Email)
                         : query.OrderByDescending(u => u.Email),
-                "country"
-                    => orderBy == "asc"
-                        ? query.OrderBy(u => u.Country)
-                        : query.OrderByDescending(u => u.Country),
-                "city"
-                    => orderBy == "asc"
-                        ? query.OrderBy(u => u.City)
-                        : query.OrderByDescending(u => u.City),
-                "address"
-                    => orderBy == "asc"
-                        ? query.OrderBy(u => u.Address)
-                        : query.OrderByDescending(u => u.Address),
                 _ => query
             };
 

@@ -69,22 +69,24 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
             }
 
             if (
-                request.updateUserProfileDTO.Country != null
-                && request.updateUserProfileDTO.Country.Length > 0
+                request.updateUserProfileDTO.Street is { Length: > 0 }
             )
-                user.Country = request.updateUserProfileDTO.Country;
+                user.Street = request.updateUserProfileDTO.Street;
 
             if (
-                request.updateUserProfileDTO.City != null
-                && request.updateUserProfileDTO.City.Length > 0
+                request.updateUserProfileDTO.SubLocality is { Length: > 0 }
             )
-                user.City = request.updateUserProfileDTO.City;
+                user.SubLocality = request.updateUserProfileDTO.SubLocality;
 
             if (
-                request.updateUserProfileDTO.Address != null
-                && request.updateUserProfileDTO.Address.Length > 0
+                request.updateUserProfileDTO.SubAdministrativeArea is { Length: > 0 }
             )
-                user.Address = request.updateUserProfileDTO.Address;
+                user.SubAdministrativeArea = request.updateUserProfileDTO.SubAdministrativeArea;
+            
+            if (
+                request.updateUserProfileDTO.PostalCode is { Length: > 0 }
+            )
+                user.PostalCode = request.updateUserProfileDTO.PostalCode;
 
             if (request.updateUserProfileDTO.Password != null)
             {
