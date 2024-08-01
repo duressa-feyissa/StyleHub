@@ -1,4 +1,5 @@
 using AutoMapper;
+using backend.Application.Contracts.Infrastructure.Repositories;
 using backend.Application.Contracts.Persistence;
 using backend.Application.DTO.Shop.ShopDTO.DTO;
 using backend.Application.Exceptions;
@@ -9,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace backend.Application.Features.Shop_Features.Shop.Handlers.Commands;
 
-public class UpdateShopHandler(IUnitOfWork unitOfWork, IMapper mapper)
+public class UpdateShopHandler(IUnitOfWork unitOfWork, IMapper mapper, IImageRepository imageRepository)
     : IRequestHandler<UpdateShopRequest, BaseResponse<ShopResponseDTO>>
 {
     public async Task<BaseResponse<ShopResponseDTO>> Handle(UpdateShopRequest request, CancellationToken cancellationToken)
@@ -76,12 +77,12 @@ public class UpdateShopHandler(IUnitOfWork unitOfWork, IMapper mapper)
         
         if (!string.IsNullOrEmpty(request.Shop.Banner))
         {
-            shop.Banner = request.Shop.Banner;
+            shop.Banner = await imageRepository.Update(request.Shop.Banner, shop.Id + "-banner");
         }
         
         if (!string.IsNullOrEmpty(request.Shop.Logo))
         {
-            shop.Logo = request.Shop.Logo;
+            shop.Logo = await imageRepository.Update(request.Shop.Logo, shop.Id + "-logo");
         }
         
         if (request.Shop.SocialMediaLinks is { Count: > 0 })

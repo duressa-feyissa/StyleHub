@@ -6,10 +6,11 @@ using backend.Application.Features.Shop_Features.Shop.Requests.Commands;
 using backend.Application.Response;
 using MediatR;
 using Newtonsoft.Json;
+using IImageRepository = backend.Application.Contracts.Infrastructure.Repositories.IImageRepository;
 
 namespace backend.Application.Features.Shop_Features.Shop.Handlers.Commands;
 
-public class DeleteShopHandler(IUnitOfWork unitOfWork, IMapper mapper)
+public class DeleteShopHandler(IUnitOfWork unitOfWork, IMapper mapper, IImageRepository imageRepository)
     : IRequestHandler<DeleteShopRequest, BaseResponse<ShopResponseDTO>>
 {
     public async Task<BaseResponse<ShopResponseDTO>> Handle(DeleteShopRequest request, CancellationToken cancellationToken)
@@ -20,9 +21,10 @@ public class DeleteShopHandler(IUnitOfWork unitOfWork, IMapper mapper)
         
         if (shop.UserId != request.UserId)
             throw new BadRequestException("You are not the owner of this shop");
-        
+        await imageRepository.Delete(shop.Id + "-logo");
+        if (shop.Banner != null)
+            await imageRepository.Delete(shop.Id + "-banner");
         await unitOfWork.ShopRepository.Delete(shop);
-        
         var shopResponse = mapper.Map<ShopResponseDTO>(shop);
         shopResponse.Categories =  JsonConvert.DeserializeObject<List<string>>(shop.Category) ?? new List<string>();
         shopResponse.SocialMediaLinks = JsonConvert.DeserializeObject<Dictionary<string, string>>(shop.SocialMedias) ?? new Dictionary<string, string>();
