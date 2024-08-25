@@ -24,7 +24,17 @@ namespace backend.Persistence.Configuration
             {
                 services.AddDbContext<StyleHubDBContext>(options =>
                 {
-                    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!);
+                    options.UseSqlServer(
+                        configuration.GetConnectionString("DefaultConnection"),
+                        sqlServerOptionsAction: sqlOptions =>
+                        {
+                            sqlOptions.EnableRetryOnFailure(
+                                maxRetryCount: 5,
+                                maxRetryDelay: TimeSpan.FromSeconds(10),
+                                errorNumbersToAdd: null);
+                        });
+                    // options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")!);
+                    //options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!);
                 });
             }
             else

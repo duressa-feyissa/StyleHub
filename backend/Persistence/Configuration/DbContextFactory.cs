@@ -14,7 +14,7 @@ namespace backend.Persistence.Configuration
 
             var optionsBuilder = new DbContextOptionsBuilder<StyleHubDBContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseMySQL(connectionString!);
+            optionsBuilder.UseSqlServer(connectionString!);
 
             optionsBuilder.EnableSensitiveDataLogging();
             return new StyleHubDBContext(optionsBuilder.Options);

@@ -51,8 +51,7 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
             if (request.updateUserProfileDTO.Latitude != null)
             {
                 if (
-                    request.updateUserProfileDTO.Latitude < -90
-                    || request.updateUserProfileDTO.Latitude > 90
+                    request.updateUserProfileDTO.Latitude is < -90 or > 90
                 )
                     throw new ValidationException("Latitude must be between -90 and 90");
                 user.Latitude = request.updateUserProfileDTO.Latitude;
@@ -61,8 +60,7 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
             if (request.updateUserProfileDTO.Longitude != null)
             {
                 if (
-                    request.updateUserProfileDTO.Longitude < -180
-                    || request.updateUserProfileDTO.Longitude > 180
+                    request.updateUserProfileDTO.Longitude is < -180 or > 180
                 )
                     throw new ValidationException("Longitude must be between -180 and 180");
                 user.Longitude = request.updateUserProfileDTO.Longitude;
@@ -146,7 +144,7 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
 
             if (request.updateUserProfileDTO.Gender != null)
             {
-                if (request.updateUserProfileDTO.Gender == "male" || request.updateUserProfileDTO.Gender == "female")
+                if (request.updateUserProfileDTO.Gender is "male" or "female")
                 {
                     user.Gender = request.updateUserProfileDTO.Gender;
                 }
@@ -156,11 +154,11 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
                 }
             }
 
-            await unitOfWork.UserRepository.Update(user);
+            var newUser =  await unitOfWork.UserRepository.Update(user);
             
             return new BaseResponse<UserResponseDTO>
             {
-                Data = mapper.Map<UserResponseDTO>(user),
+                Data = mapper.Map<UserResponseDTO>(newUser),
                 Message = "User deleted successfully",
                 Success = true
             };
