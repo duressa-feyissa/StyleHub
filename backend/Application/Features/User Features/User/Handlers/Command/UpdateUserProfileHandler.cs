@@ -88,7 +88,7 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
             )
                 user.PostalCode = request.updateUserProfileDTO.PostalCode;
 
-            if (request.updateUserProfileDTO.Password != null)
+            if (request.updateUserProfileDTO is { Password: not null, OldPassword: not null })
             {
                 if (
                     request.updateUserProfileDTO.Password.Length < 6
@@ -96,6 +96,11 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
                 )
                     throw new ValidationException(
                         "Password must be at least 6 characters long and at most 20 characters long"
+                    );
+                
+                if (HashPassword(request.updateUserProfileDTO.OldPassword) != user.Password)
+                    throw new ValidationException(
+                        "Old password is incorrect"
                     );
 
                 if (HashPassword(request.updateUserProfileDTO.Password) == user.Password)
@@ -122,7 +127,37 @@ namespace backend.Application.Features.User_Features.User.Handlers.Command
                         user.Id
                     );
             }
+            
+            if (request.updateUserProfileDTO.PhoneNumber != null)
+            {
+                if (request.updateUserProfileDTO.PhoneNumber.Length < 10)
+                    throw new ValidationException("Phone number must be at least 10 characters long");
 
+                user.PhoneNumber = request.updateUserProfileDTO.PhoneNumber;
+            }
+            
+            if (request.updateUserProfileDTO.DateOfBirth != null)
+            {
+                if (request.updateUserProfileDTO.DateOfBirth > DateTime.Now)
+                    throw new ValidationException("Date of birth must be in the past");
+
+                user.DateOfBirth = request.updateUserProfileDTO.DateOfBirth;
+            }
+
+            if (request.updateUserProfileDTO.Gender != null)
+            {
+                if (request.updateUserProfileDTO.Gender == "male" || request.updateUserProfileDTO.Gender == "female")
+                {
+                    user.Gender = request.updateUserProfileDTO.Gender;
+                }
+                else
+                {
+                    throw new ValidationException("Gender must be male or female");
+                }
+            }
+
+            await unitOfWork.UserRepository.Update(user);
+            
             return new BaseResponse<UserResponseDTO>
             {
                 Data = mapper.Map<UserResponseDTO>(user),

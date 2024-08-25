@@ -11,6 +11,10 @@ namespace backend.Application.DTO.User.UserDTO.DTO
         public string? SubAdministrativeArea { get; set; }
         public string? PostalCode { get; set; }
         public string? ProfilePictureBase64 { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? Password { get; set; }
+        public string? OldPassword { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? Gender { get; set; }
     }
 }
